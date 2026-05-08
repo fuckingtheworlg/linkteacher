@@ -34,3 +34,12 @@ server/prisma/dev.db*
 # Mini-program
 miniprogram/miniprogram_npm/
 miniprogram/.history/
+# 微信开发者工具私有配置（每个开发者本地各异）
+miniprogram/project.private.config.json
+# tabBar 图标资源（按需放置，先不强制提交占位）
+miniprogram/assets/tabbar/
+
+# 操作系统/编辑器
+Thumbs.db
+*.iml
+.history/
