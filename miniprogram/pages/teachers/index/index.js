@@ -89,7 +89,7 @@ Page({
     const headlineList = Array.isArray(t.headlines) ? t.headlines : [];
     return {
       id: t.id,
-      avatarUrl: (t.user && t.user.avatarUrl) || '/assets/avatar-default.png',
+      avatarUrl: (t.user && t.user.avatarUrl) || '',
       nickname: (t.user && t.user.nickname) || '老师',
       genderIcon: genderToText(t.gender),
       addressLine: [t.country, t.city].filter(Boolean).join(''),

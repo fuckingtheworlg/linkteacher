@@ -2,7 +2,7 @@
   <!-- 头部 -->
   <view class="header">
     <view class="header-row">
-      <image class="avatar" src="{{ teacher.user.avatarUrl || '/assets/avatar-default.png' }}" mode="aspectFill" />
+      <image class="avatar" src="{{ teacher.user.avatarUrl }}" mode="aspectFill" />
       <view class="header-info">
         <view class="name-line">
           <text class="name">{{ teacher.user.nickname }}</text>
@@ -49,7 +49,7 @@
           <view class="qs-rank" wx:if="{{ e.qsLabel }}">{{ e.qsLabel }}</view>
           <view class="degree-tag">{{ e.degreeText }}</view>
         </view>
-        <image class="edu-logo" src="{{ e.logoUrl || '/assets/edu-default.png' }}" mode="aspectFit" />
+        <image class="edu-logo" src="{{ e.logoUrl }}" mode="aspectFit" />
         <view class="edu-name-en">{{ e.nameEn }}</view>
         <view class="edu-name-zh">{{ e.nameZh }}</view>
         <view class="edu-major">{{ e.major }}</view>

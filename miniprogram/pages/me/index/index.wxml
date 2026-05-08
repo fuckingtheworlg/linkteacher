@@ -1,6 +1,6 @@
 <view class="page">
   <view class="user-card">
-    <image class="avatar" src="{{ (user && user.avatarUrl) || '/assets/avatar-default.png' }}" mode="aspectFill" />
+    <image class="avatar" src="{{ (user && user.avatarUrl) || '' }}" mode="aspectFill" />
     <view class="info">
       <view class="nick">{{ (user && user.nickname) || ('用户-' + ((user && user.id) || '')) }}</view>
       <view class="role-tag" wx:if="{{ teacher }}">导师 · {{ statusText }}</view>

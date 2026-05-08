@@ -9,7 +9,7 @@
   <view class="section-title">个人卡片<text class="required">*</text></view>
   <view class="card">
     <view class="card-row">
-      <image class="avatar" src="{{ (user && user.avatarUrl) || '/assets/avatar-default.png' }}" mode="aspectFill" bindtap="goEdit" data-field="avatar" />
+      <image class="avatar" src="{{ (user && user.avatarUrl) || '' }}" mode="aspectFill" bindtap="goEdit" data-field="avatar" />
       <view class="grid">
         <view class="cell" bindtap="goEdit" data-field="nickname">
           <view class="cell-label">昵称 ✎</view>

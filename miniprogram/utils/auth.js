@@ -13,7 +13,13 @@ function ensureLogin() {
       success: async (res) => {
         if (!res.code) return reject(new Error('wx.login 未返回 code'));
         try {
-          const data = await post('/wx/login', { code: res.code });
+          const resp = await post('/wx/login', { code: res.code });
+          // 后端 ResponseInterceptor 统一包装为 { code: 0, data: { token, user }, message }
+          // 兼容包装版与裸版两种格式
+          const data =
+            resp && typeof resp === 'object' && resp.code === 0 && resp.data
+              ? resp.data
+              : resp;
           if (data && data.token) {
             wx.setStorageSync(STORAGE_KEYS.TOKEN, data.token);
             if (data.user) wx.setStorageSync(STORAGE_KEYS.USER, data.user);
@@ -25,6 +31,7 @@ function ensureLogin() {
             }
             resolve(data.token);
           } else {
+            console.error('[auth] /wx/login 响应未包含 token:', resp);
             reject(new Error('后端未返回 token'));
           }
         } catch (err) {
