@@ -50,11 +50,22 @@ if [[ "$MODE" != "quick" ]]; then
   npm install --no-audit --no-fund
 fi
 
-# ============= 4. 数据库迁移 =============
+# ============= 4. 数据库结构同步 =============
 if [[ "$MODE" != "quick" ]]; then
-  log "执行 Prisma migrate deploy（生产模式：只 apply 已有迁移，不会改 schema）"
   npm --workspace server run prisma:generate
-  npm --workspace server exec -- prisma migrate deploy
+
+  # 当前阶段：MVP 单人开发，直接用 prisma db push 同步 schema 到 DB
+  #   - 优点：不依赖 migration 文件（仓库目前没有 migrations/）
+  #   - 缺点：没有 migration 历史；未来多人/灰度时需切换到 migrate flow
+  #
+  # 优先尝试 migrate deploy（如果已经有 migrations/ 目录），否则回落到 db push
+  if [[ -d server/prisma/migrations ]] && [[ -n "$(ls -A server/prisma/migrations 2>/dev/null)" ]]; then
+    log "检测到 migrations/，使用 prisma migrate deploy"
+    npm --workspace server exec -- prisma migrate deploy
+  else
+    log "未检测到 migrations/，使用 prisma db push 同步 schema 到数据库"
+    npm --workspace server exec -- prisma db push --skip-generate
+  fi
 
   if [[ "$MODE" == "first" ]]; then
     log "首次部署：执行 seed"
