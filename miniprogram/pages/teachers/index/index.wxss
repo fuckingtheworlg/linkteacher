@@ -1,0 +1,140 @@
+.page {
+  padding: 24rpx 24rpx 120rpx;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+/* 搜索栏 */
+.search-bar { padding: 8rpx 0 16rpx; }
+.search-input {
+  display: flex; align-items: center;
+  background: #fff;
+  border-radius: 36rpx;
+  padding: 0 24rpx;
+  height: 72rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.04);
+}
+.search-input .icon { margin-right: 12rpx; color: #6b7280; }
+.search-input input { flex: 1; font-size: 28rpx; }
+.search-input .ph { color: #9ca3af; }
+
+/* CTB Banner */
+.banner-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx 28rpx;
+  margin: 20rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+.banner-sub { font-size: 24rpx; color: #6b7280; letter-spacing: 4rpx; }
+.banner-title { font-size: 36rpx; font-weight: 700; color: #1f2937; margin-top: 6rpx; letter-spacing: 4rpx; }
+.banner-cta { color: #1f2937; font-size: 26rpx; }
+
+/* 科目标签 */
+.subjects {
+  white-space: nowrap;
+  margin: 16rpx 0;
+}
+.subject-tab {
+  display: inline-block;
+  padding: 14rpx 28rpx;
+  margin-right: 14rpx;
+  font-size: 28rpx;
+  color: #6b7280;
+  border-radius: 40rpx;
+}
+.subject-tab.active {
+  background: #1f2937;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 二级筛选 */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+.filter-item {
+  background: #fff;
+  border-radius: 32rpx;
+  padding: 12rpx 24rpx;
+  font-size: 26rpx;
+  color: #6b7280;
+  border: 1rpx solid #e5e7eb;
+}
+.filter-item.on { color: #1f2937; border-color: #1f2937; }
+
+.dropdown {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 8rpx 0;
+  margin-bottom: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.06);
+}
+.dropdown-item {
+  padding: 22rpx 32rpx;
+  font-size: 28rpx;
+  color: #4b5563;
+}
+.dropdown-item.on { color: #fbbf24; font-weight: 600; }
+
+/* 老师卡片 */
+.list { display: flex; flex-direction: column; gap: 20rpx; }
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+.avatar { width: 140rpx; height: 180rpx; border-radius: 12rpx; background: #e5e7eb; flex-shrink: 0; }
+.card-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10rpx; }
+.row1 { display: flex; justify-content: space-between; align-items: center; }
+.row1-left { display: flex; align-items: center; gap: 8rpx; flex-wrap: wrap; }
+.name { font-size: 32rpx; font-weight: 600; color: #1f2937; }
+.gender { font-size: 24rpx; color: #f472b6; }
+.addr { color: #6b7280; }
+.cert { color: #16a34a; font-size: 22rpx; flex-shrink: 0; }
+.major { color: #4b5563; }
+.tags-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10rpx; }
+.curri-line { color: #6b7280; }
+.price-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12rpx; }
+.price-label { color: #9ca3af; }
+.price { color: #1f2937; font-weight: 600; font-size: 28rpx; }
+.headline { color: #6b7280; line-height: 1.5; }
+
+.empty, .loading, .finished {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 26rpx;
+  padding: 40rpx 0;
+}
+
+/* 帮我匹配 悬浮按钮 */
+.match-fab {
+  position: fixed;
+  right: 32rpx;
+  bottom: 140rpx;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  background: #1f2937;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.18);
+  border: none;
+  padding: 0;
+}
+.match-fab::after { border: none; }

@@ -1,0 +1,23 @@
+{
+  "name": "linkteacher",
+  "version": "0.1.0",
+  "private": true,
+  "description": "UniClass 国际课程导师匹配平台 monorepo（小程序 + 后端 + 管理后台）",
+  "workspaces": [
+    "server",
+    "admin"
+  ],
+  "scripts": {
+    "dev:server": "npm --workspace server run start:dev",
+    "dev:admin": "npm --workspace admin run dev",
+    "build:server": "npm --workspace server run build",
+    "build:admin": "npm --workspace admin run build",
+    "db:up": "docker compose up -d mysql",
+    "db:down": "docker compose down",
+    "db:migrate": "npm --workspace server run prisma:migrate",
+    "db:seed": "npm --workspace server run prisma:seed"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

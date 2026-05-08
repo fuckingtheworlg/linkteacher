@@ -1,0 +1,263 @@
+// UniClass Prisma schema
+// 设计目标：覆盖 plan 中所有核心实体，约束在 MVP 范围（不含支付/IM/视频）
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// =============== 用户与管理员 ===============
+
+enum UserRole {
+  STUDENT
+  TEACHER
+}
+
+enum Gender {
+  UNKNOWN
+  MALE
+  FEMALE
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  openid     String?   @unique
+  unionid    String?
+  role       UserRole  @default(STUDENT)
+  nickname   String?
+  avatarUrl  String?   @db.VarChar(512)
+  mbti       String?   @db.VarChar(8)
+  address    String?   @db.VarChar(255)
+  phone      String?   @db.VarChar(32)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  teacher    Teacher?
+  matchLogs  MatchLog[]
+  favorites  Favorite[]
+
+  @@index([role])
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  AUDITOR
+}
+
+model AdminUser {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique @db.VarChar(64)
+  passwordHash  String    @db.VarChar(255)
+  name          String    @db.VarChar(64)
+  role          AdminRole @default(AUDITOR)
+  active        Boolean   @default(true)
+  mustChangePwd Boolean   @default(true)
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// =============== 字典：科目 / 课程体系 / 大学库 ===============
+
+model Subject {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(32)
+  code      String   @unique @db.VarChar(32)
+  sort      Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teacherSubjects TeacherSubject[]
+}
+
+model Curriculum {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(64) // iGCSE / ALevel-CAIE / ALevel-Edexcel / IB-HL / AP ...
+  code      String   @unique @db.VarChar(64)
+  sort      Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teacherCurriculums TeacherSubjectCurriculum[]
+}
+
+model University {
+  id         Int      @id @default(autoincrement())
+  nameZh     String   @db.VarChar(128)
+  nameEn     String   @db.VarChar(128)
+  country    String   @db.VarChar(64)
+  city       String?  @db.VarChar(64)
+  qsRank     Int?
+  qsYear     Int?
+  logoUrl    String?  @db.VarChar(512)
+  sortWeight Int      @default(0)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  educations TeacherEducation[]
+
+  @@unique([nameEn, country])
+  @@index([qsRank])
+}
+
+// =============== 导师 ===============
+
+enum TeacherStatus {
+  DRAFT      // 未提交
+  PENDING    // 待审核
+  APPROVED   // 已通过 / 已上架
+  REJECTED   // 已驳回
+  OFFLINE    // 通过后被后台下架
+}
+
+enum DegreeType {
+  BACHELOR
+  MASTER
+  PHD
+  OTHER
+}
+
+model Teacher {
+  id               Int           @id @default(autoincrement())
+  userId           Int           @unique
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gender           Gender        @default(UNKNOWN)
+  country          String?       @db.VarChar(64)
+  city             String?       @db.VarChar(64)
+  // 详情页头部要点列表，例如 ["放榜前被伯明翰大学生物医学无条件录取", "IGCSE全A*/9", "可协助处理UCAS"]
+  headlines        Json?
+  // 授课语言，例：["中文", "英文"]，详情页展示为「中英双语，纯英文流畅授课」等
+  languages        Json?
+  teachingYears    Int?
+  mentorExperience String?       @db.Text
+  // 自定义标签：["05后老师", "INTJ"] 等
+  tags             Json?
+  workHistory      String?       @db.Text
+  honors           String?       @db.Text
+
+  hourlyRate       Decimal?      @db.Decimal(10, 2)  // 课时费 ¥/h
+  trialRate        Decimal?      @db.Decimal(10, 2)  // 试听价 ¥/h
+  minHours         Int           @default(1)         // 起报小时数
+
+  status           TeacherStatus @default(DRAFT)
+  rejectReason     String?       @db.VarChar(500)
+  isCertified      Boolean       @default(false)     // 是否在列表卡片显示「已认证」
+  sortWeight       Int           @default(0)         // 后台可调，越大越靠前
+
+  submittedAt      DateTime?
+  approvedAt       DateTime?
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  educations       TeacherEducation[]
+  subjects         TeacherSubject[]
+  favorites        Favorite[]
+  matchLogs        MatchLog[]
+
+  @@index([status, sortWeight])
+}
+
+model TeacherEducation {
+  id           Int        @id @default(autoincrement())
+  teacherId    Int
+  teacher      Teacher    @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+
+  degree       DegreeType
+  major        String     @db.VarChar(128)
+  startYear    Int?
+  endYear      Int?
+  sort         Int        @default(0)  // 学历背景1 / 学历背景2 排序
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([teacherId])
+}
+
+model TeacherSubject {
+  id          Int     @id @default(autoincrement())
+  teacherId   Int
+  teacher     Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  subjectId   Int
+  subject     Subject @relation(fields: [subjectId], references: [id])
+  // 该科目可补充说明（详情页「• iGCSE」「• ALevel: 爱德思,CAIE,AQA」从 curriculums 关联生成；如需手写补充也可放此）
+  note        String? @db.VarChar(255)
+
+  curriculums TeacherSubjectCurriculum[]
+
+  @@unique([teacherId, subjectId])
+  @@index([subjectId])
+}
+
+model TeacherSubjectCurriculum {
+  id               Int            @id @default(autoincrement())
+  teacherSubjectId Int
+  teacherSubject   TeacherSubject @relation(fields: [teacherSubjectId], references: [id], onDelete: Cascade)
+  curriculumId     Int
+  curriculum       Curriculum     @relation(fields: [curriculumId], references: [id])
+
+  @@unique([teacherSubjectId, curriculumId])
+  @@index([curriculumId])
+}
+
+// =============== 运营位 ===============
+
+enum BannerPosition {
+  HOME_TOP   // 列表页顶部 banner（CTB 位）
+  HOME_MID   // 备用
+}
+
+model Banner {
+  id        Int             @id @default(autoincrement())
+  title     String          @db.VarChar(64)
+  subtitle  String?         @db.VarChar(128)
+  imageUrl  String?         @db.VarChar(512)
+  link      String?         @db.VarChar(512)  // 可选跳转：H5 链接、小程序内路径或为空（仅展示）
+  position  BannerPosition  @default(HOME_TOP)
+  sort      Int             @default(0)
+  active    Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([position, active, sort])
+}
+
+// =============== 用户行为 ===============
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teacherId Int
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, teacherId])
+  @@index([teacherId])
+}
+
+// 仅记录"用户从哪个入口跳客服"，用于后台统计转化
+model MatchLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  teacherId   Int?
+  teacher     Teacher? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  sessionFrom String   @db.VarChar(64)  // 例：home_match_button / teacher_detail
+  meta        Json?
+  createdAt   DateTime @default(now())
+
+  @@index([sessionFrom])
+  @@index([createdAt])
+}

@@ -1,0 +1,114 @@
+.page { padding-bottom: 160rpx; min-height: 100vh; background: #f5f7fa; }
+
+/* Header 深色背景区 */
+.header {
+  background: #1f2937;
+  color: #fff;
+  padding: 32rpx 32rpx 36rpx;
+}
+.header-row { display: flex; align-items: center; gap: 20rpx; }
+.avatar { width: 140rpx; height: 140rpx; border-radius: 70rpx; background: #374151; }
+.header-info { flex: 1; min-width: 0; }
+.name-line { display: flex; align-items: center; gap: 12rpx; }
+.name { font-size: 36rpx; font-weight: 700; color: #fff; }
+.gender { color: #f472b6; font-size: 28rpx; }
+.gender.male { color: #60a5fa; }
+.cert { color: #22c55e; font-size: 24rpx; background: #fff; border-radius: 50%; width: 28rpx; height: 28rpx; line-height: 28rpx; text-align: center; }
+.addr-line { color: #9ca3af; font-size: 26rpx; margin-top: 8rpx; display: flex; gap: 8rpx; align-items: center; }
+.fav { font-size: 44rpx; color: #fbbf24; }
+
+.headlines { margin-top: 24rpx; color: #fff; font-size: 26rpx; line-height: 1.7; }
+.headline-item { color: #f3f4f6; }
+
+.meta-line { display: flex; flex-wrap: wrap; gap: 12rpx; align-items: center; margin-top: 20rpx; }
+.meta-tag {
+  background: #fbbf24;
+  color: #1f2937;
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+  font-weight: 600;
+}
+.meta-text { color: #d1d5db; font-size: 26rpx; }
+
+.subjects-pill-row { margin-top: 24rpx; display: flex; align-items: center; flex-wrap: wrap; gap: 14rpx; }
+.pill {
+  background: #fbbf24;
+  color: #1f2937;
+  font-size: 24rpx;
+  padding: 6rpx 18rpx;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+.price-line { display: flex; align-items: baseline; gap: 12rpx; flex-wrap: wrap; }
+.hourly { color: #fbbf24; font-size: 32rpx; font-weight: 700; }
+.trial { color: #fbbf24; font-size: 24rpx; }
+
+/* Section */
+.section {
+  background: #fff;
+  margin: 20rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+.section-title { font-size: 30rpx; font-weight: 700; color: #1f2937; margin-bottom: 20rpx; padding-left: 6rpx; border-left: 6rpx solid #1f2937; }
+
+/* 教育背景 */
+.edu-list { display: flex; flex-direction: column; gap: 24rpx; }
+.edu-card {
+  position: relative;
+  background: #f9fafb;
+  border-radius: 16rpx;
+  padding: 28rpx 28rpx 36rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.edu-header { position: absolute; top: 16rpx; left: 24rpx; right: 24rpx; display: flex; justify-content: space-between; align-items: flex-start; }
+.qs-rank { color: #1f2937; font-weight: 700; font-size: 28rpx; line-height: 1.2; }
+.degree-tag { background: #1f2937; color: #fff; font-size: 22rpx; padding: 6rpx 18rpx; border-radius: 6rpx; }
+.edu-logo { width: 120rpx; height: 120rpx; margin-top: 60rpx; background: #e5e7eb; border-radius: 8rpx; }
+.edu-name-en { font-size: 28rpx; color: #4b5563; margin-top: 12rpx; }
+.edu-name-zh { font-size: 28rpx; color: #1f2937; font-weight: 600; }
+.edu-major { color: #6b7280; margin-top: 8rpx; font-size: 26rpx; }
+
+/* 辅导内容 */
+.subject-blocks { display: flex; flex-wrap: wrap; gap: 24rpx; }
+.subject-block { flex: 1; min-width: 45%; }
+.subject-pill {
+  display: inline-block;
+  background: #1f2937;
+  color: #fff;
+  padding: 6rpx 22rpx;
+  font-size: 24rpx;
+  border-radius: 8rpx;
+  margin-bottom: 14rpx;
+}
+.subject-line { color: #4b5563; font-size: 26rpx; line-height: 1.7; }
+
+/* 底部 */
+.footer-spacer { height: 60rpx; }
+.footer-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 16rpx 32rpx env(safe-area-inset-bottom);
+  background: #fff;
+  box-shadow: 0 -2rpx 8rpx rgba(0,0,0,0.06);
+}
+.contact-btn {
+  width: 100%;
+  background: #fff;
+  color: #1f2937;
+  border: 2rpx solid #1f2937;
+  border-radius: 16rpx;
+  height: 84rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.contact-btn::after { border: none; }
+
+.loading { padding: 200rpx 0; text-align: center; color: #9ca3af; }

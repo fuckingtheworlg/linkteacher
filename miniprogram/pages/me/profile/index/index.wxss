@@ -1,0 +1,76 @@
+.page { padding: 24rpx 24rpx 80rpx; background: #f5f7fa; min-height: 100vh; }
+
+.custom-nav {
+  display: flex; align-items: center; gap: 16rpx;
+  background: #1f2937; color: #fff;
+  border-radius: 36rpx; padding: 12rpx 28rpx; margin-bottom: 24rpx;
+}
+.nav-btn { font-size: 36rpx; padding: 0 12rpx; }
+.nav-title { flex: 1; text-align: center; font-size: 30rpx; font-weight: 600; padding-right: 80rpx; }
+
+.section-title { font-size: 28rpx; color: #4b5563; margin: 24rpx 4rpx 12rpx; font-weight: 600; }
+.required { color: #ef4444; margin-left: 4rpx; }
+
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+/* 个人卡片头像 + 网格 */
+.card-row { display: flex; gap: 24rpx; align-items: flex-start; }
+.avatar { width: 130rpx; height: 130rpx; border-radius: 65rpx; background: #e5e7eb; }
+.grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
+
+.cell {
+  background: #f9fafb;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  min-height: 88rpx;
+}
+.cell.wide { grid-column: span 2; }
+.cell-label { font-size: 24rpx; color: #6b7280; }
+.cell-value { font-size: 28rpx; color: #1f2937; margin-top: 6rpx; word-break: break-all; }
+.cell-value.strong { font-weight: 600; }
+.rate-value { color: #1f2937; font-size: 32rpx; font-weight: 700; }
+
+.kv { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
+
+.hint { color: #6b7280; font-size: 24rpx; line-height: 1.7; padding: 24rpx 4rpx; }
+.hint .required { color: #ef4444; }
+
+.submit {
+  width: 60%;
+  margin: 24rpx auto;
+  background: #1f2937;
+  color: #fff;
+  border-radius: 16rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+.submit[disabled] { background: #9ca3af; color: #fff; }
+.submit::after { border: none; }
+
+.qr-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-top: 24rpx;
+  text-align: center;
+}
+.qr-label { font-weight: 600; color: #1f2937; }
+.qr-placeholder {
+  width: 320rpx; height: 320rpx;
+  margin: 24rpx auto;
+  border: 2rpx dashed #d1d5db;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 24rpx;
+}
+.qr-tip { color: #6b7280; font-size: 26rpx; }

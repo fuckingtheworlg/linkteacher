@@ -1,0 +1,127 @@
+<view class="page" bindtap="closePanels">
+  <view class="search-bar" catchtap="">
+    <view class="search-input">
+      <text class="icon">🔍</text>
+      <input
+        type="text"
+        placeholder="搜索老师关键词"
+        placeholder-class="ph"
+        value="{{ keyword }}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+        confirm-type="search"
+      />
+    </view>
+  </view>
+
+  <block wx:for="{{ banners }}" wx:key="id" wx:for-item="b">
+    <view class="banner-card" catchtap="">
+      <view class="banner-text">
+        <view class="banner-sub">{{ b.subtitle }}</view>
+        <view class="banner-title">{{ b.title }}</view>
+      </view>
+      <view class="banner-cta">查看列表 ⟩⟩</view>
+    </view>
+  </block>
+
+  <scroll-view class="subjects" scroll-x enable-flex catchtap="">
+    <view
+      class="subject-tab {{ activeSubjectId === 0 ? 'active' : '' }}"
+      data-id="0"
+      bindtap="onSubjectTap"
+    >全部</view>
+    <view
+      wx:for="{{ subjects }}"
+      wx:key="id"
+      class="subject-tab {{ activeSubjectId === item.id ? 'active' : '' }}"
+      data-id="{{ item.id }}"
+      bindtap="onSubjectTap"
+    >{{ item.name }}</view>
+  </scroll-view>
+
+  <view class="filter-bar" catchtap="">
+    <view class="filter-item {{ activeCurriculumId !== 0 ? 'on' : '' }}" bindtap="toggleCurriculumPanel">
+      课程体系 ▾
+    </view>
+    <view class="filter-item">课时收费 ▾</view>
+    <view class="filter-item {{ sort !== 'smart' ? 'on' : '' }}" bindtap="toggleSortPanel">智能排序 ▾</view>
+    <view class="filter-item">更多筛选 ▾</view>
+  </view>
+
+  <view wx:if="{{ showCurriculumPanel }}" class="dropdown" catchtap="">
+    <view
+      class="dropdown-item {{ activeCurriculumId === 0 ? 'on' : '' }}"
+      data-id="0"
+      bindtap="onCurriculumPick"
+    >全部体系</view>
+    <view
+      wx:for="{{ curriculums }}"
+      wx:key="id"
+      class="dropdown-item {{ activeCurriculumId === item.id ? 'on' : '' }}"
+      data-id="{{ item.id }}"
+      bindtap="onCurriculumPick"
+    >{{ item.name }}</view>
+  </view>
+
+  <view wx:if="{{ showSortPanel }}" class="dropdown" catchtap="">
+    <view class="dropdown-item {{ sort === 'smart' ? 'on' : '' }}" data-value="smart" bindtap="onSortPick">智能推荐</view>
+    <view class="dropdown-item {{ sort === 'rate-asc' ? 'on' : '' }}" data-value="rate-asc" bindtap="onSortPick">课时费由低到高</view>
+    <view class="dropdown-item {{ sort === 'rate-desc' ? 'on' : '' }}" data-value="rate-desc" bindtap="onSortPick">课时费由高到低</view>
+    <view class="dropdown-item {{ sort === 'newest' ? 'on' : '' }}" data-value="newest" bindtap="onSortPick">最新上架</view>
+  </view>
+
+  <view class="list">
+    <view
+      class="card"
+      wx:for="{{ list }}"
+      wx:key="id"
+      data-id="{{ item.id }}"
+      bindtap="goDetail"
+    >
+      <image class="avatar" src="{{ item.avatarUrl }}" mode="aspectFill" lazy-load="true" />
+      <view class="card-main">
+        <view class="row1">
+          <view class="row1-left">
+            <text class="name">{{ item.nickname }}</text>
+            <text class="gender" wx:if="{{ item.genderIcon }}">{{ item.genderIcon }}</text>
+            <text class="addr text-muted text-sm" wx:if="{{ item.addressLine }}">{{ item.addressLine }}</text>
+          </view>
+          <view class="cert" wx:if="{{ item.isCertified }}">✓ 已认证</view>
+        </view>
+        <view class="major text-sm" wx:if="{{ item.major }}">{{ item.major }}</view>
+        <view class="tags-row">
+          <view class="tag tag-warm" wx:for="{{ item.subjectsView }}" wx:for-item="s" wx:key="code">
+            {{ s.name }}
+          </view>
+          <view class="curri-line text-sm text-muted">
+            <block wx:for="{{ item.subjectsView }}" wx:for-item="s" wx:key="code">
+              <text wx:if="{{ s.curriculums }}">{{ s.curriculums }}</text>
+            </block>
+          </view>
+        </view>
+        <view class="price-row">
+          <text class="price-label text-sm">课时费</text>
+          <text class="price">¥{{ item.hourlyRate }}/h</text>
+          <text class="price-label text-sm">试听</text>
+          <text class="price">¥{{ item.trialRate }}/h</text>
+        </view>
+        <view class="headline text-sm text-muted" wx:if="{{ item.headlineSummary }}">
+          {{ item.headlineSummary }}
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{ !loading && list.length === 0 }}">
+      暂无符合条件的老师
+    </view>
+    <view class="loading" wx:if="{{ loading }}">加载中...</view>
+    <view class="finished" wx:if="{{ finished && list.length > 0 }}">— 已显示全部 —</view>
+  </view>
+
+  <button
+    class="match-fab"
+    open-type="contact"
+    session-from="home_match_button"
+    bindtap="onMatchContact"
+  >帮我匹配</button>
+</view>

@@ -1,0 +1,156 @@
+const { teachersApi, dictApi, bannersApi, matchApi } = require('../../../utils/api');
+const { fmtPrice, genderToText } = require('../../../utils/format');
+
+Page({
+  data: {
+    keyword: '',
+    banners: [],
+    subjects: [],         // [{id,name,code}]
+    activeSubjectId: 0,   // 0 表示「全部」
+    curriculums: [],
+    activeCurriculumId: 0,
+    sort: 'smart',        // smart / rate-asc / rate-desc / newest
+    showSortPanel: false,
+    showCurriculumPanel: false,
+    list: [],
+    page: 1,
+    pageSize: 10,
+    total: 0,
+    loading: false,
+    finished: false,
+  },
+
+  async onLoad() {
+    try {
+      const [subjects, curriculums, banners] = await Promise.all([
+        dictApi.subjects(),
+        dictApi.curriculums(),
+        bannersApi.list('HOME_TOP'),
+      ]);
+      this.setData({ subjects, curriculums, banners });
+    } catch (err) {
+      console.error('[teachers/index] load dict failed:', err);
+      wx.showToast({ title: err.message || '加载字典失败', icon: 'none' });
+    }
+    this.loadList(true);
+  },
+
+  onPullDownRefresh() {
+    this.loadList(true).finally(() => wx.stopPullDownRefresh());
+  },
+
+  onReachBottom() {
+    if (!this.data.finished && !this.data.loading) {
+      this.loadList(false);
+    }
+  },
+
+  async loadList(reset) {
+    if (this.data.loading) return;
+    this.setData({ loading: true });
+    const { keyword, activeSubjectId, activeCurriculumId, sort } = this.data;
+    const page = reset ? 1 : this.data.page + 1;
+    try {
+      const data = await teachersApi.list({
+        keyword: keyword || undefined,
+        subjectId: activeSubjectId || undefined,
+        curriculumId: activeCurriculumId || undefined,
+        sort,
+        page,
+        pageSize: this.data.pageSize,
+      });
+      const enriched = (data.list || []).map((t) => this.enrichItem(t));
+      const merged = reset ? enriched : this.data.list.concat(enriched);
+      this.setData({
+        list: merged,
+        page,
+        total: data.total || 0,
+        finished: merged.length >= (data.total || 0),
+      });
+    } catch (err) {
+      console.error('[teachers/index] loadList failed:', err);
+      wx.showToast({ title: err.message || '加载失败', icon: 'none' });
+    } finally {
+      this.setData({ loading: false });
+    }
+  },
+
+  enrichItem(t) {
+    const edu = (t.educations && t.educations[0]) || null;
+    const major = edu ? edu.major : '';
+    const subjectsView = (t.subjects || []).map((ts) => {
+      const curs = (ts.curriculums || []).map((c) => c.curriculum.name).join(',');
+      return {
+        name: ts.subject.name,
+        code: ts.subject.code,
+        curriculums: curs,
+      };
+    });
+    const headlineList = Array.isArray(t.headlines) ? t.headlines : [];
+    return {
+      id: t.id,
+      avatarUrl: (t.user && t.user.avatarUrl) || '/assets/avatar-default.png',
+      nickname: (t.user && t.user.nickname) || '老师',
+      genderIcon: genderToText(t.gender),
+      addressLine: [t.country, t.city].filter(Boolean).join(''),
+      isCertified: !!t.isCertified,
+      hourlyRate: fmtPrice(t.hourlyRate),
+      trialRate: fmtPrice(t.trialRate),
+      major,
+      subjectsView,
+      firstHeadline: headlineList[0] || '',
+      headlineSummary: headlineList.slice(0, 3).join('；'),
+    };
+  },
+
+  onSearchInput(e) {
+    this.setData({ keyword: e.detail.value });
+  },
+  onSearchConfirm() {
+    this.loadList(true);
+  },
+
+  onSubjectTap(e) {
+    const id = Number(e.currentTarget.dataset.id) || 0;
+    if (id === this.data.activeSubjectId) return;
+    this.setData({ activeSubjectId: id });
+    this.loadList(true);
+  },
+
+  toggleCurriculumPanel() {
+    this.setData({
+      showCurriculumPanel: !this.data.showCurriculumPanel,
+      showSortPanel: false,
+    });
+  },
+  onCurriculumPick(e) {
+    const id = Number(e.currentTarget.dataset.id) || 0;
+    this.setData({ activeCurriculumId: id, showCurriculumPanel: false });
+    this.loadList(true);
+  },
+
+  toggleSortPanel() {
+    this.setData({
+      showSortPanel: !this.data.showSortPanel,
+      showCurriculumPanel: false,
+    });
+  },
+  onSortPick(e) {
+    const value = e.currentTarget.dataset.value;
+    this.setData({ sort: value, showSortPanel: false });
+    this.loadList(true);
+  },
+
+  closePanels() {
+    this.setData({ showSortPanel: false, showCurriculumPanel: false });
+  },
+
+  goDetail(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({ url: `/pages/teachers/detail/detail?id=${id}` });
+  },
+
+  onMatchContact() {
+    matchApi.log('home_match_button').catch((err) => console.warn('match log fail', err));
+  },
+});

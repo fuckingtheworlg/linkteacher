@@ -1,0 +1,30 @@
+<view class="page">
+  <view class="title">辅导内容（{{ slotIndex === 0 ? '一' : '二' }}）</view>
+
+  <view class="block-title">选择科目</view>
+  <view class="grid">
+    <view
+      class="cell {{ selectedSubjectId === item.id ? 'on' : '' }}"
+      wx:for="{{ subjects }}"
+      wx:key="id"
+      data-id="{{ item.id }}"
+      bindtap="pickSubject"
+    >{{ item.name }}</view>
+  </view>
+
+  <view class="block-title">选择可教课程体系（多选）</view>
+  <view class="grid">
+    <view
+      class="cell {{ item._selected ? 'on' : '' }}"
+      wx:for="{{ curriculums }}"
+      wx:key="id"
+      data-id="{{ item.id }}"
+      bindtap="toggleCurriculum"
+    >{{ item.name }}</view>
+  </view>
+
+  <view class="block-title">补充说明（选填）</view>
+  <textarea class="textarea" placeholder="例：可针对 PAT / Physics Bowl 等专项辅导" placeholder-class="ph" maxlength="255" value="{{ note }}" bindinput="onNoteInput" />
+
+  <button class="save" bindtap="onSave" disabled="{{ saving }}">{{ saving ? '保存中...' : '保存' }}</button>
+</view>

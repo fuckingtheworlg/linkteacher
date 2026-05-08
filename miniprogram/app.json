@@ -1,0 +1,37 @@
+{
+  "pages": [
+    "pages/teachers/index/index",
+    "pages/teachers/detail/detail",
+    "pages/me/index/index",
+    "pages/me/profile/index/index",
+    "pages/me/profile/edit/edit",
+    "pages/me/profile/education/education",
+    "pages/me/profile/subjects/subjects"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1f2937",
+    "navigationBarTitleText": "UniClass",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f7fa"
+  },
+  "tabBar": {
+    "color": "#9ca3af",
+    "selectedColor": "#fbbf24",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/teachers/index/index",
+        "text": "老师"
+      },
+      {
+        "pagePath": "pages/me/index/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

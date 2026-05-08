@@ -1,0 +1,127 @@
+<view class="page">
+  <view class="custom-nav">
+    <view class="nav-btn" bindtap="goBack">↶</view>
+    <view class="nav-btn" bindtap="goHome">⌂</view>
+    <view class="nav-title">编辑资料</view>
+  </view>
+
+  <!-- 个人卡片 -->
+  <view class="section-title">个人卡片<text class="required">*</text></view>
+  <view class="card">
+    <view class="card-row">
+      <image class="avatar" src="{{ (user && user.avatarUrl) || '/assets/avatar-default.png' }}" mode="aspectFill" bindtap="goEdit" data-field="avatar" />
+      <view class="grid">
+        <view class="cell" bindtap="goEdit" data-field="nickname">
+          <view class="cell-label">昵称 ✎</view>
+          <view class="cell-value">{{ (user && user.nickname) || '未填写' }}</view>
+        </view>
+        <view class="cell" bindtap="goEdit" data-field="mbti">
+          <view class="cell-label">MBTI ✎</view>
+          <view class="cell-value">{{ (user && user.mbti) || '未填写' }}</view>
+        </view>
+        <view class="cell wide" bindtap="goEdit" data-field="address">
+          <view class="cell-label">地址 ✎</view>
+          <view class="cell-value">{{ (user && user.address) || '未填写' }}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导师报价信息 -->
+  <view class="section-title">导师报价信息<text class="required">*</text></view>
+  <view class="card">
+    <view class="kv">
+      <view class="cell wide" bindtap="goEdit" data-field="subjects-1">
+        <view class="cell-label">辅导内容（一） ✎</view>
+        <view class="cell-value">{{ teacher && teacher.subjects && teacher.subjects[0] ? teacher.subjects[0].subject.name : '未填写' }}</view>
+      </view>
+      <view class="cell wide" bindtap="goEdit" data-field="subjects-2">
+        <view class="cell-label">辅导内容（二） ✎</view>
+        <view class="cell-value">{{ teacher && teacher.subjects && teacher.subjects[1] ? teacher.subjects[1].subject.name : '未填写' }}</view>
+      </view>
+      <view class="cell" bindtap="goEdit" data-field="trialRate">
+        <view class="cell-label">试听价 ✎</view>
+        <view class="cell-value">¥{{ trialRateText }}/h</view>
+      </view>
+      <view class="cell" bindtap="goEdit" data-field="hourlyRate">
+        <view class="cell-label">我的报价单 ✎</view>
+        <view class="cell-value rate-value">¥{{ hourlyRateText }}/h</view>
+      </view>
+      <view class="cell wide" bindtap="goEdit" data-field="minHours">
+        <view class="cell-label">{{ minHoursText }} 小时起报</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导师背景信息 -->
+  <view class="section-title">导师背景信息<text class="required">*</text></view>
+  <view class="card">
+    <view class="kv">
+      <view class="cell wide" bindtap="goEdit" data-field="education-1">
+        <view class="cell-label">学历背景1 ✎</view>
+        <view class="cell-value">
+          <text wx:if="{{ teacher && teacher.educations && teacher.educations[0] }}">
+            {{ teacher.educations[0].university.nameZh }} · {{ teacher.educations[0].major }}
+          </text>
+          <text wx:else>暂无</text>
+        </view>
+      </view>
+      <view class="cell wide" bindtap="goEdit" data-field="education-2">
+        <view class="cell-label">学历背景2 ✎</view>
+        <view class="cell-value">
+          <text wx:if="{{ teacher && teacher.educations && teacher.educations[1] }}">
+            {{ teacher.educations[1].university.nameZh }} · {{ teacher.educations[1].major }}
+          </text>
+          <text wx:else>暂无</text>
+        </view>
+      </view>
+      <view class="cell" bindtap="goEdit" data-field="languages">
+        <view class="cell-label">授课语言 ✎</view>
+        <view class="cell-value">{{ teacher && teacher.languages && teacher.languages.length ? teacher.languages.join('，') : '未填写' }}</view>
+      </view>
+      <view class="cell" bindtap="goEdit" data-field="teachingYears">
+        <view class="cell-label">教龄 ✎</view>
+        <view class="cell-value">{{ teacher && teacher.teachingYears ? (teacher.teachingYears + '年') : '0年' }}</view>
+      </view>
+      <view class="cell wide" bindtap="goEdit" data-field="mentorExperience">
+        <view class="cell-label">指导经验 ✎</view>
+        <view class="cell-value">{{ teacher && teacher.mentorExperience ? teacher.mentorExperience : '未填写' }}</view>
+      </view>
+      <view class="cell wide" bindtap="goEdit" data-field="tags">
+        <view class="cell-label">我的标签 ✎</view>
+        <view class="cell-value">{{ teacher && teacher.tags && teacher.tags.length ? teacher.tags.join(' / ') : '未填写' }}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导师补充信息 -->
+  <view class="section-title">导师补充信息</view>
+  <view class="card">
+    <view class="kv">
+      <view class="cell" bindtap="goEdit" data-field="workHistory">
+        <view class="cell-label">工作履历 ✎</view>
+        <view class="cell-value strong">{{ teacher && teacher.workHistory ? '已填写' : '未填写' }}</view>
+      </view>
+      <view class="cell" bindtap="goEdit" data-field="honors">
+        <view class="cell-label">个人荣誉 ✎</view>
+        <view class="cell-value strong">{{ teacher && teacher.honors ? '已填写' : '未填写' }}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="hint">
+    <view><text class="required">*</text> 必填项</view>
+    <view><text class="required">*</text> 以上信息确保属实，平台有权无条件下架导师。</view>
+    <view>注：部分填写信息不会立刻显示，经审核通过后才会生效。信息填写完毕后请耐心等待约 2-5 个工作日的审核流程。</view>
+  </view>
+
+  <button class="submit" bindtap="onSubmit" disabled="{{ saving }}">
+    {{ saving ? '提交中...' : '提交审核' }}
+  </button>
+
+  <view class="qr-card">
+    <view class="qr-label">UniClass 小助手</view>
+    <view class="qr-placeholder">— 长按识别二维码 —</view>
+    <view class="qr-tip">长按识别</view>
+  </view>
+</view>

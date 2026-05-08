@@ -1,0 +1,31 @@
+page {
+  background: #f5f7fa;
+  color: #1f2937;
+  font-size: 28rpx;
+  font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+}
+
+.container { padding: 24rpx; }
+
+.flex-row { display: flex; align-items: center; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+
+.text-muted { color: #6b7280; }
+.text-primary { color: #fbbf24; }
+.text-danger { color: #ef4444; }
+.text-sm { font-size: 24rpx; }
+.text-lg { font-size: 32rpx; font-weight: 600; }
+
+.tag {
+  display: inline-block;
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+  font-size: 22rpx;
+  background: #1f2937;
+  color: #fff;
+  margin-right: 8rpx;
+}
+
+.tag-warm { background: #fbbf24; color: #1f2937; }
+.tag-blue { background: #3b82f6; }

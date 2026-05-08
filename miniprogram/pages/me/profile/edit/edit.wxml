@@ -1,0 +1,61 @@
+<view class="page" wx:if="{{ meta }}">
+  <view class="title">{{ meta.title }}</view>
+
+  <input
+    wx:if="{{ meta.type === 'input' }}"
+    class="input"
+    value="{{ valueText }}"
+    placeholder="{{ meta.placeholder }}"
+    placeholder-class="ph"
+    maxlength="{{ meta.max || -1 }}"
+    bindinput="onInput"
+  />
+
+  <input
+    wx:elif="{{ meta.type === 'number' }}"
+    class="input"
+    type="digit"
+    value="{{ valueText }}"
+    placeholder="{{ meta.placeholder }}"
+    placeholder-class="ph"
+    bindinput="onInput"
+  />
+
+  <input
+    wx:elif="{{ meta.type === 'integer' }}"
+    class="input"
+    type="number"
+    value="{{ valueText }}"
+    placeholder="{{ meta.placeholder }}"
+    placeholder-class="ph"
+    bindinput="onInput"
+  />
+
+  <textarea
+    wx:elif="{{ meta.type === 'textarea' || meta.type === 'lines' || meta.type === 'tags' }}"
+    class="textarea"
+    value="{{ valueText }}"
+    placeholder="{{ meta.placeholder }}"
+    placeholder-class="ph"
+    maxlength="{{ meta.max || 1000 }}"
+    bindinput="onInput"
+  />
+
+  <view wx:elif="{{ meta.type === 'mbti' }}" class="mbti-grid">
+    <view
+      class="mbti-cell {{ valueText === item ? 'on' : '' }}"
+      wx:for="{{ mbtiOptions }}"
+      wx:key="*this"
+      data-value="{{ item }}"
+      bindtap="onMbtiPick"
+    >{{ item }}</view>
+  </view>
+
+  <view class="hint" wx:if="{{ meta.type === 'tags' || meta.type === 'lines' }}">
+    多个值用换行或英文逗号分隔
+  </view>
+
+  <button class="save" bindtap="onSave" disabled="{{ saving }}">
+    {{ saving ? '保存中...' : '保存' }}
+  </button>
+</view>

@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+.pm2/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Server uploads
+server/uploads/
+!server/uploads/.gitkeep
+
+# Prisma
+server/prisma/dev.db*
+
+# Mini-program
+miniprogram/miniprogram_npm/
+miniprogram/.history/
