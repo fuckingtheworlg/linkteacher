@@ -32,9 +32,10 @@ export class WxAuthService {
     let openid: string;
     let unionid: string | undefined;
 
-    if (!appid || appid === 'wx0000000000000000' || !secret || secret.startsWith('please-fill')) {
-      // 开发期允许 mock：appid/secret 未配置时，用 code 当作伪 openid，方便本地全链路联调
-      this.logger.warn('WX_APPID/WX_SECRET 未配置，使用 mock openid（仅限开发环境）');
+    // 占位 secret 模式：本地开发时无需真实 AppSecret 也能跑全链路（用 code 派生 mock openid）
+    const isSecretPlaceholder = !secret || /please-fill|CHANGE_ME|do-not-commit/i.test(secret);
+    if (!appid || appid === 'wx0000000000000000' || isSecretPlaceholder) {
+      this.logger.warn('WX_SECRET 为占位/未配置，使用 mock openid（仅限开发环境，生产环境必须填真实值）');
       openid = `mock_${code}`;
     } else {
       const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${encodeURIComponent(code)}&grant_type=authorization_code`;
