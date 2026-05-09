@@ -1,5 +1,19 @@
 .page { padding-bottom: 160rpx; min-height: 100vh; background: #f5f7fa; }
 
+/* 预览模式横幅 */
+.preview-banner {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+  color: #1f2937;
+  padding: 16rpx 32rpx;
+}
+.preview-icon { font-size: 36rpx; }
+.preview-text { display: flex; flex-direction: column; }
+.preview-title { font-size: 26rpx; font-weight: 700; }
+.preview-sub { font-size: 22rpx; opacity: 0.85; margin-top: 2rpx; }
+
 /* Header 深色背景区 */
 .header {
   background: #1f2937;

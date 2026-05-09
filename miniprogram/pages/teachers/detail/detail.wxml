@@ -1,4 +1,13 @@
 <view class="page" wx:if="{{ teacher }}">
+  <!-- 预览模式横幅 -->
+  <view class="preview-banner" wx:if="{{ isPreview }}">
+    <text class="preview-icon">👁</text>
+    <view class="preview-text">
+      <text class="preview-title">预览模式 · 仅本人可见</text>
+      <text class="preview-sub" wx:if="{{ statusText }}">{{ statusText }}</text>
+    </view>
+  </view>
+
   <!-- 头部 -->
   <view class="header">
     <view class="header-row">
@@ -70,9 +79,17 @@
 
   <view class="footer-spacer"></view>
 
-  <!-- 底部对接老师按钮（客服） -->
+  <!-- 底部按钮：预览模式 vs 公共模式 -->
   <view class="footer-bar">
     <button
+      wx:if="{{ isPreview }}"
+      class="contact-btn"
+      bindtap="goEditProfile"
+    >
+      ✎ 返回编辑资料
+    </button>
+    <button
+      wx:else
       class="contact-btn"
       open-type="contact"
       session-from="teacher_detail_{{ teacherId }}"

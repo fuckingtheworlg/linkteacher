@@ -108,14 +108,13 @@ Page({
 
   gotoMyPage() {
     const t = this.data.teacher;
-    if (t && t.status === 'APPROVED') {
-      wx.navigateTo({ url: `/pages/teachers/detail/detail?id=${t.id}` });
-    } else if (t) {
-      wx.showToast({ title: `当前状态：${this.data.statusText}，通过审核后可预览`, icon: 'none' });
+    if (t) {
+      // 预览模式：调用 me 接口拉数据，无视审核状态，本人随时可看
+      wx.navigateTo({ url: `/pages/teachers/detail/detail?preview=1&id=${t.id}` });
     } else {
       wx.showModal({
-        title: '尚未成为导师',
-        content: '前往「编辑个人资料」完善信息后提交审核，审核通过即可对外展示。',
+        title: '尚未填写资料',
+        content: '前往「编辑个人资料」完善信息后即可在此预览自己的展示页。',
         confirmText: '去填写',
         success: (res) => {
           if (res.confirm) wx.navigateTo({ url: '/pages/me/profile/index/index' });

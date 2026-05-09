@@ -1,4 +1,4 @@
-const { teachersApi, matchApi } = require('../../../utils/api');
+const { teachersApi, matchApi, meApi } = require('../../../utils/api');
 const { fmtPrice, genderToText } = require('../../../utils/format');
 
 Page({
@@ -12,18 +12,26 @@ Page({
     subjectsView: [],
     educationsView: [],
     favorited: false,
+    isPreview: false,         // 本人预览模式
+    statusText: '',           // 预览模式下顶部状态横幅
   },
 
   async onLoad(options) {
-    const id = options.id;
-    this.setData({ teacherId: id });
-    await this.fetch(id);
+    const isPreview = options.preview === '1' || options.preview === 'me';
+    this.setData({ teacherId: options.id || null, isPreview });
+    await this.fetch(options.id, isPreview);
   },
 
-  async fetch(id) {
+  async fetch(id, isPreview) {
     this.setData({ loading: true });
     try {
-      const t = await teachersApi.detail(id);
+      // 预览模式调 me 接口（无视审核状态）；公共模式走 /teachers/:id（仅 APPROVED）
+      const t = isPreview ? await meApi.get() : await teachersApi.detail(id);
+      if (!t) {
+        wx.showToast({ title: '请先填写并保存导师资料', icon: 'none' });
+        wx.navigateBack({ delta: 1, fail: () => {} });
+        return;
+      }
       const headlines = Array.isArray(t.headlines) ? t.headlines : [];
       const languages = Array.isArray(t.languages) ? t.languages : [];
       const tags = Array.isArray(t.tags) ? t.tags : [];
@@ -49,6 +57,14 @@ Page({
         igcseLine: this.buildIgcseLine(ts.curriculums || []),
       }));
 
+      const STATUS_TEXT = {
+        DRAFT: '草稿（未提交审核）',
+        PENDING: '审核中（学生暂时看不到）',
+        APPROVED: '已上架（外部可见）',
+        REJECTED: '已驳回',
+        OFFLINE: '已下架',
+      };
+
       this.setData({
         teacher: t,
         headlines,
@@ -58,9 +74,12 @@ Page({
         subjectsView,
         hourlyRateText: fmtPrice(t.hourlyRate),
         trialRateText: fmtPrice(t.trialRate),
+        statusText: isPreview ? (STATUS_TEXT[t.status] || '') : '',
         loading: false,
       });
-      wx.setNavigationBarTitle({ title: (t.user && t.user.nickname) || '老师详情' });
+      wx.setNavigationBarTitle({
+        title: isPreview ? '预览·我的页面' : ((t.user && t.user.nickname) || '老师详情'),
+      });
     } catch (err) {
       console.error('[teacher.detail] fetch failed', err);
       wx.showToast({ title: err.message || '加载失败', icon: 'none' });
@@ -92,6 +111,10 @@ Page({
 
   onContact() {
     matchApi.log('teacher_detail_contact', this.data.teacherId).catch(() => {});
+  },
+
+  goEditProfile() {
+    wx.redirectTo({ url: '/pages/me/profile/index/index' });
   },
 
   genderText() {
