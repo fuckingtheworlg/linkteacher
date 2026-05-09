@@ -26,7 +26,10 @@ export interface TeacherStats {
   pending: number;
   approved: number;
   todayMatch: number;
+  pendingResume: number;
 }
+
+export type ResumeStatus = 'EMPTY' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED';
 
 export const teacherApi = {
   list: (params: {
@@ -41,6 +44,8 @@ export const teacherApi = {
   detail: (id: number) => http.get<unknown, any>(`/admin/teachers/${id}`),
   audit: (id: number, approve: boolean, reason?: string) =>
     http.post<unknown, any>(`/admin/teachers/${id}/audit`, { approve, reason }),
+  auditResume: (id: number, approve: boolean, reason?: string) =>
+    http.post<unknown, any>(`/admin/teachers/${id}/resume-audit`, { approve, reason }),
   flags: (id: number, payload: { isCertified?: boolean; sortWeight?: number; status?: TeacherStatus }) =>
     http.post<unknown, any>(`/admin/teachers/${id}/flags`, payload),
   stats: () => http.get<unknown, TeacherStats>('/admin/teachers/stats/overview'),

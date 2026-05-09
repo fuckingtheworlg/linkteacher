@@ -124,6 +124,13 @@ enum DegreeType {
   OTHER
 }
 
+enum ResumeStatus {
+  EMPTY            // 未上传
+  PENDING_REVIEW   // 已上传，待审核
+  APPROVED         // 已通过
+  REJECTED         // 已驳回（保留 url 让老师能查看原文件）
+}
+
 model Teacher {
   id               Int           @id @default(autoincrement())
   userId           Int           @unique
@@ -151,8 +158,10 @@ model Teacher {
   resumeUrl        String?       @db.VarChar(512)
   resumeFilename   String?       @db.VarChar(255)
   resumeAllowDisplay Boolean     @default(false)
+  resumeStatus     ResumeStatus  @default(EMPTY)
   resumeRejectReason String?     @db.VarChar(500)
   resumeUploadedAt DateTime?
+  resumeReviewedAt DateTime?
 
   status           TeacherStatus @default(DRAFT)
   rejectReason     String?       @db.VarChar(500)

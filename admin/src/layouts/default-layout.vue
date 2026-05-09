@@ -13,6 +13,7 @@
             <span>导师</span>
           </template>
           <el-menu-item index="/teachers/audit">导师审核</el-menu-item>
+          <el-menu-item index="/teachers/resume-audit">简历审核</el-menu-item>
           <el-menu-item index="/teachers/list">导师管理</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="dict">

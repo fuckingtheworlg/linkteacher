@@ -103,15 +103,51 @@
         <pre class="long-text" v-if="drawer.teacher.honors">个人荣誉：{{ drawer.teacher.honors }}</pre>
 
         <h4 class="mt">简历（PDF）</h4>
-        <div v-if="drawer.teacher.resumeUrl" class="resume-row">
-          <el-link type="primary" :href="drawer.teacher.resumeUrl" target="_blank" :underline="false">
-            📄 {{ drawer.teacher.resumeFilename || '查看简历' }}
-          </el-link>
-          <el-tag v-if="drawer.teacher.resumeAllowDisplay" type="success" size="small" style="margin-left: 8px">同意展示</el-tag>
-          <el-tag v-else type="info" size="small" style="margin-left: 8px">不同意展示</el-tag>
-          <span class="muted" v-if="drawer.teacher.resumeUploadedAt" style="margin-left: 8px">
-            上传于 {{ formatDate(drawer.teacher.resumeUploadedAt) }}
-          </span>
+        <div v-if="drawer.teacher.resumeUrl" class="resume-block">
+          <div class="resume-row">
+            <el-link type="primary" :href="drawer.teacher.resumeUrl" target="_blank" :underline="false">
+              📄 {{ drawer.teacher.resumeFilename || '查看简历' }}
+            </el-link>
+            <el-tag :type="resumeTagType(drawer.teacher.resumeStatus)" size="small">
+              {{ resumeStatusText(drawer.teacher.resumeStatus) }}
+            </el-tag>
+            <el-tag v-if="drawer.teacher.resumeAllowDisplay" type="success" size="small">同意展示</el-tag>
+            <el-tag v-else type="info" size="small">不同意展示</el-tag>
+          </div>
+          <div class="muted resume-meta">
+            <span v-if="drawer.teacher.resumeUploadedAt">
+              上传：{{ formatDate(drawer.teacher.resumeUploadedAt) }}
+            </span>
+            <span v-if="drawer.teacher.resumeReviewedAt" style="margin-left: 12px">
+              审核：{{ formatDate(drawer.teacher.resumeReviewedAt) }}
+            </span>
+          </div>
+          <div v-if="drawer.teacher.resumeStatus === 'REJECTED' && drawer.teacher.resumeRejectReason" class="resume-reject">
+            驳回原因：{{ drawer.teacher.resumeRejectReason }}
+          </div>
+
+          <div class="resume-actions">
+            <el-input
+              v-model="drawer.resumeReason"
+              size="small"
+              placeholder="驳回原因（仅驳回时必填）"
+              style="max-width: 320px; margin-right: 8px"
+            />
+            <el-button
+              size="small"
+              type="success"
+              :disabled="drawer.teacher.resumeStatus === 'APPROVED'"
+              :loading="drawer.resumeSaving"
+              @click="onAuditResume(true)"
+            >通过简历</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              :disabled="drawer.teacher.resumeStatus === 'REJECTED'"
+              :loading="drawer.resumeSaving"
+              @click="onAuditResume(false)"
+            >驳回简历</el-button>
+          </div>
         </div>
         <div v-else class="muted">未上传简历</div>
       </div>
@@ -148,6 +184,8 @@ const drawer = reactive({
   teacher: null as any,
   reason: '',
   saving: false,
+  resumeReason: '',
+  resumeSaving: false,
 });
 
 async function reload() {
@@ -171,8 +209,43 @@ async function openAudit(row: any) {
     const detail = await teacherApi.detail(row.id);
     drawer.teacher = detail;
     drawer.reason = '';
+    drawer.resumeReason = '';
     drawer.visible = true;
   } catch { /* interceptor */ }
+}
+
+function resumeStatusText(s?: string) {
+  return ({
+    EMPTY: '未上传',
+    PENDING_REVIEW: '待审核',
+    APPROVED: '已通过',
+    REJECTED: '已驳回',
+  } as Record<string, string>)[s || ''] || s || '-';
+}
+function resumeTagType(s?: string) {
+  return ({
+    PENDING_REVIEW: 'warning',
+    APPROVED: 'success',
+    REJECTED: 'danger',
+    EMPTY: 'info',
+  } as Record<string, any>)[s || 'EMPTY'];
+}
+
+async function onAuditResume(approve: boolean) {
+  if (!drawer.teacher) return;
+  if (!approve && !drawer.resumeReason.trim()) {
+    ElMessage.warning('驳回简历必须填写原因');
+    return;
+  }
+  drawer.resumeSaving = true;
+  try {
+    const updated = await teacherApi.auditResume(drawer.teacher.id, approve, drawer.resumeReason);
+    drawer.teacher = { ...drawer.teacher, ...updated };
+    drawer.resumeReason = '';
+    ElMessage.success(approve ? '简历已通过' : '简历已驳回');
+  } finally {
+    drawer.resumeSaving = false;
+  }
 }
 
 async function onAudit(approve: boolean) {
@@ -225,5 +298,9 @@ onMounted(reload);
 .teacher-detail { padding-bottom: 16px; }
 .mt { margin-top: 16px; }
 .long-text { white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px; }
-.resume-row { display: flex; align-items: center; gap: 6px; padding: 8px 0; }
+.resume-block { padding: 8px 0; }
+.resume-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.resume-meta { font-size: 12px; margin-top: 6px; }
+.resume-reject { color: #b91c1c; font-size: 13px; margin-top: 6px; background: #fef2f2; padding: 6px 10px; border-radius: 4px; border-left: 3px solid #ef4444; }
+.resume-actions { margin-top: 12px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 </style>

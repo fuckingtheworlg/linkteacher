@@ -4,15 +4,28 @@
 .notice { font-size: 28rpx; color: #1f2937; margin-top: 24rpx; }
 .notice-text { font-size: 28rpx; color: #1f2937; line-height: 1.7; margin-top: 8rpx; }
 
+.status-bar {
+  margin: 24rpx 0;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+.status-pending { background: #fef3c7; color: #92400e; border-left: 6rpx solid #f59e0b; }
+.status-approved { background: #dcfce7; color: #166534; border-left: 6rpx solid #16a34a; }
+
 .reject {
   margin: 24rpx 0;
   background: #fef2f2;
   border-left: 6rpx solid #ef4444;
   padding: 20rpx;
   border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
 }
-.reject-title { display: block; color: #b91c1c; font-weight: 600; margin-bottom: 6rpx; font-size: 26rpx; }
+.reject-title { color: #b91c1c; font-weight: 600; font-size: 26rpx; }
 .reject-content { color: #7f1d1d; font-size: 24rpx; line-height: 1.5; }
+.reject-tip { color: #b91c1c; font-size: 22rpx; margin-top: 4rpx; }
 
 .block-title { color: #1f2937; font-size: 28rpx; margin-top: 40rpx; }
 .radio-row { display: flex; gap: 80rpx; margin-top: 24rpx; }

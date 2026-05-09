@@ -157,11 +157,19 @@ export class TeachersService {
         resumeUrl: dto.resumeUrl,
         resumeFilename: dto.resumeFilename,
         resumeAllowDisplay: dto.resumeAllowDisplay,
-        // 当 resumeUrl 被更新时同步刷新上传时间，并清空之前的驳回原因
+        // 当 resumeUrl 被更新时：
+        //   - 如果是上传新简历（非空字符串）→ 置为待审核
+        //   - 如果是删除（空字符串）→ 状态回到 EMPTY
+        // 同步刷新上传时间并清空之前的驳回原因 / 审核时间
         ...(dto.resumeUrl !== undefined
-          ? { resumeUploadedAt: new Date(), resumeRejectReason: null }
+          ? {
+              resumeStatus: dto.resumeUrl ? 'PENDING_REVIEW' : 'EMPTY',
+              resumeUploadedAt: dto.resumeUrl ? new Date() : null,
+              resumeReviewedAt: null,
+              resumeRejectReason: null,
+            }
           : {}),
-      };
+      } as Prisma.TeacherUpsertArgs['create'];
       const updateData = { ...teacherData };
       delete (updateData as Partial<typeof teacherData>).userId;
 

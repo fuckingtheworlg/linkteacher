@@ -91,6 +91,35 @@ export class AdminTeachersController {
     return teacher;
   }
 
+  @Post(':id/resume-audit')
+  async auditResume(@Param('id', ParseIntPipe) id: number, @Body() dto: AuditTeacherDto) {
+    const teacher = await this.prisma.teacher.findUnique({ where: { id } });
+    if (!teacher) throw new BusinessException('导师不存在', 404);
+    if (!teacher.resumeUrl) throw new BusinessException('该导师未上传简历');
+    if (!dto.approve && !dto.reason) throw new BusinessException('驳回必须填写原因');
+
+    return this.prisma.teacher.update({
+      where: { id },
+      data: dto.approve
+        ? {
+            resumeStatus: 'APPROVED',
+            resumeReviewedAt: new Date(),
+            resumeRejectReason: null,
+          }
+        : {
+            resumeStatus: 'REJECTED',
+            resumeReviewedAt: new Date(),
+            resumeRejectReason: dto.reason,
+          },
+      select: {
+        id: true,
+        resumeStatus: true,
+        resumeRejectReason: true,
+        resumeReviewedAt: true,
+      },
+    });
+  }
+
   @Post(':id/audit')
   async audit(@Param('id', ParseIntPipe) id: number, @Body() dto: AuditTeacherDto) {
     const teacher = await this.prisma.teacher.findUnique({ where: { id } });
@@ -132,13 +161,14 @@ export class AdminTeachersController {
 
   @Get('stats/overview')
   async overview() {
-    const [pending, approved, todayMatch] = await this.prisma.$transaction([
+    const [pending, approved, todayMatch, pendingResume] = await this.prisma.$transaction([
       this.prisma.teacher.count({ where: { status: TeacherStatus.PENDING } }),
       this.prisma.teacher.count({ where: { status: TeacherStatus.APPROVED } }),
       this.prisma.matchLog.count({
         where: { createdAt: { gte: new Date(new Date().toDateString()) } },
       }),
+      this.prisma.teacher.count({ where: { resumeStatus: 'PENDING_REVIEW' } }),
     ]);
-    return { pending, approved, todayMatch };
+    return { pending, approved, todayMatch, pendingResume };
   }
 }

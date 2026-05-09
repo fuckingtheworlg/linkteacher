@@ -1,6 +1,13 @@
 const { meApi } = require('../../../../utils/api');
 const { API_BASE, STORAGE_KEYS } = require('../../../../utils/config');
 
+const STATUS_TEXT = {
+  EMPTY: '',
+  PENDING_REVIEW: '审核中',
+  APPROVED: '已通过',
+  REJECTED: '已驳回',
+};
+
 Page({
   data: {
     loading: true,
@@ -10,18 +17,23 @@ Page({
     resumeFilename: '',
     resumeUploadedAt: '',
     resumeRejectReason: '',
+    resumeStatus: 'EMPTY',
+    statusText: '',
     allowDisplay: false,   // 「是否同意展示」单选；默认不同意（与截图一致）
   },
 
   async onLoad() {
     try {
       const teacher = await meApi.get();
+      const status = (teacher && teacher.resumeStatus) || 'EMPTY';
       this.setData({
         loading: false,
         resumeUrl: (teacher && teacher.resumeUrl) || '',
         resumeFilename: (teacher && teacher.resumeFilename) || '',
         resumeUploadedAt: (teacher && teacher.resumeUploadedAt) || '',
         resumeRejectReason: (teacher && teacher.resumeRejectReason) || '',
+        resumeStatus: status,
+        statusText: STATUS_TEXT[status] || '',
         allowDisplay: !!(teacher && teacher.resumeAllowDisplay),
       });
     } catch (err) {
@@ -111,9 +123,11 @@ Page({
               resumeFilename: file.name,
               resumeUploadedAt: new Date().toISOString(),
               resumeRejectReason: '',
+              resumeStatus: 'PENDING_REVIEW',
+              statusText: STATUS_TEXT.PENDING_REVIEW,
               uploading: false,
             });
-            wx.showToast({ title: '上传成功', icon: 'success' });
+            wx.showToast({ title: '已提交审核', icon: 'success' });
             resolve(true);
           } catch (err) {
             console.error('[resume] save resume meta failed:', err);
@@ -148,6 +162,9 @@ Page({
         resumeUrl: '',
         resumeFilename: '',
         resumeUploadedAt: '',
+        resumeRejectReason: '',
+        resumeStatus: 'EMPTY',
+        statusText: '',
       });
       wx.showToast({ title: '已删除', icon: 'success' });
     } catch (err) {

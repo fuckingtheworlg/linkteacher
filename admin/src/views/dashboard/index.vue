@@ -22,9 +22,9 @@
       </el-col>
       <el-col :span="6">
         <el-card>
-          <div class="metric-label">系统状态</div>
-          <div class="metric-value status-ok">运行中</div>
-          <div class="metric-sub">{{ now }}</div>
+          <div class="metric-label">待审简历</div>
+          <div class="metric-value">{{ stats.pendingResume }}</div>
+          <el-link type="primary" :underline="false" @click="$router.push('/teachers/resume-audit')">前往审核 →</el-link>
         </el-card>
       </el-col>
     </el-row>
@@ -41,11 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { teacherApi, type TeacherStats } from '@/api/admin';
 
-const stats = reactive<TeacherStats>({ pending: 0, approved: 0, todayMatch: 0 });
-const now = ref(new Date().toLocaleString());
+const stats = reactive<TeacherStats>({ pending: 0, approved: 0, todayMatch: 0, pendingResume: 0 });
 
 async function load() {
   try {
@@ -53,6 +52,7 @@ async function load() {
     stats.pending = data.pending;
     stats.approved = data.approved;
     stats.todayMatch = data.todayMatch;
+    stats.pendingResume = data.pendingResume;
   } catch {
     // interceptor 已提示
   }

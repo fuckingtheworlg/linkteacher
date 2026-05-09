@@ -3,9 +3,16 @@
   <view class="notice">上传须知：</view>
   <view class="notice-text">将简历 pdf 文件发在微信聊天群内，再返回本页面点击下方加号键。</view>
 
-  <view class="reject" wx:if="{{ resumeRejectReason }}">
+  <view class="status-bar status-pending" wx:if="{{ resumeStatus === 'PENDING_REVIEW' }}">
+    🕐 简历审核中，预计 2-5 个工作日完成
+  </view>
+  <view class="status-bar status-approved" wx:if="{{ resumeStatus === 'APPROVED' }}">
+    ✓ 简历已通过审核
+  </view>
+  <view class="reject" wx:if="{{ resumeStatus === 'REJECTED' && resumeRejectReason }}">
     <text class="reject-title">⚠ 简历被驳回</text>
     <text class="reject-content">{{ resumeRejectReason }}</text>
+    <text class="reject-tip">请按上方原因调整后重新上传</text>
   </view>
 
   <view class="block-title">是否同意展示材料：</view>

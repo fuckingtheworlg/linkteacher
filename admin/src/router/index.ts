@@ -27,6 +27,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true, title: '导师审核' },
       },
       {
+        path: 'teachers/resume-audit',
+        name: 'teachers-resume-audit',
+        component: () => import('@/views/teachers/resume-audit.vue'),
+        meta: { requiresAuth: true, title: '简历审核' },
+      },
+      {
         path: 'teachers/list',
         name: 'teachers-list',
         component: () => import('@/views/teachers/list.vue'),
