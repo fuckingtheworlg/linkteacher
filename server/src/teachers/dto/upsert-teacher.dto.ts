@@ -50,6 +50,11 @@ export class UpsertTeacherDto {
   @IsOptional() @IsString() @MaxLength(64) nickname?: string;
   @IsOptional() @IsString() avatarUrl?: string;
 
+  // ===== 简历（PDF 由 /api/upload/resume 上传后回写到这里）=====
+  @IsOptional() @IsString() @MaxLength(512) resumeUrl?: string;
+  @IsOptional() @IsString() @MaxLength(255) resumeFilename?: string;
+  @IsOptional() resumeAllowDisplay?: boolean;
+
   @IsOptional() @IsArray() @ValidateNested({ each: true }) @Type(() => EducationItem)
   educations?: EducationItem[];
 

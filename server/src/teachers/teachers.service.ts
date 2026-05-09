@@ -153,6 +153,14 @@ export class TeachersService {
         hourlyRate: dto.hourlyRate,
         trialRate: dto.trialRate,
         minHours: dto.minHours ?? 1,
+        // 简历相关：仅当客户端显式传了对应字段时才会同步（undefined 不会改）
+        resumeUrl: dto.resumeUrl,
+        resumeFilename: dto.resumeFilename,
+        resumeAllowDisplay: dto.resumeAllowDisplay,
+        // 当 resumeUrl 被更新时同步刷新上传时间，并清空之前的驳回原因
+        ...(dto.resumeUrl !== undefined
+          ? { resumeUploadedAt: new Date(), resumeRejectReason: null }
+          : {}),
       };
       const updateData = { ...teacherData };
       delete (updateData as Partial<typeof teacherData>).userId;

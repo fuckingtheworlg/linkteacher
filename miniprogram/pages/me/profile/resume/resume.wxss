@@ -1,0 +1,89 @@
+.page { padding: 32rpx 32rpx 80rpx; min-height: 100vh; background: #fff; }
+
+.title { font-size: 36rpx; font-weight: 700; color: #1f2937; }
+.notice { font-size: 28rpx; color: #1f2937; margin-top: 24rpx; }
+.notice-text { font-size: 28rpx; color: #1f2937; line-height: 1.7; margin-top: 8rpx; }
+
+.reject {
+  margin: 24rpx 0;
+  background: #fef2f2;
+  border-left: 6rpx solid #ef4444;
+  padding: 20rpx;
+  border-radius: 8rpx;
+}
+.reject-title { display: block; color: #b91c1c; font-weight: 600; margin-bottom: 6rpx; font-size: 26rpx; }
+.reject-content { color: #7f1d1d; font-size: 24rpx; line-height: 1.5; }
+
+.block-title { color: #1f2937; font-size: 28rpx; margin-top: 40rpx; }
+.radio-row { display: flex; gap: 80rpx; margin-top: 24rpx; }
+.radio { display: flex; align-items: center; gap: 12rpx; font-size: 28rpx; color: #1f2937; }
+.radio-dot {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 18rpx;
+  border: 2rpx solid #d1d5db;
+  background: #fff;
+  position: relative;
+}
+.radio.on .radio-dot {
+  background: #16a34a;
+  border-color: #16a34a;
+}
+.radio.on .radio-dot::after {
+  content: '';
+  position: absolute;
+  left: 10rpx;
+  top: 4rpx;
+  width: 10rpx;
+  height: 18rpx;
+  border-right: 4rpx solid #fff;
+  border-bottom: 4rpx solid #fff;
+  transform: rotate(45deg);
+}
+
+.upload-area { margin: 64rpx 0 32rpx; display: flex; justify-content: center; }
+.upload-btn {
+  width: 240rpx;
+  height: 240rpx;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upload-btn .plus {
+  font-size: 80rpx;
+  color: #9ca3af;
+  font-weight: 300;
+  line-height: 1;
+}
+.upload-btn.disabled { opacity: 0.6; }
+
+.file-card {
+  background: #f9fafb;
+  border: 2rpx solid #e5e7eb;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+.file-icon { font-size: 48rpx; }
+.file-info { flex: 1; min-width: 0; }
+.file-name { color: #1f2937; font-size: 28rpx; font-weight: 600; word-break: break-all; }
+.file-tip { color: #6b7280; font-size: 24rpx; margin-top: 4rpx; }
+.file-remove {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 24rpx;
+  background: #e5e7eb;
+  color: #6b7280;
+  font-size: 36rpx;
+  text-align: center;
+  line-height: 44rpx;
+  font-weight: 600;
+}
+
+.footnote { color: #6b7280; font-size: 24rpx; line-height: 1.7; margin-top: 16rpx; }

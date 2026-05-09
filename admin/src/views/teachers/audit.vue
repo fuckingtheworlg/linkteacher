@@ -101,6 +101,19 @@
         <pre class="long-text">{{ formatHeadlines(drawer.teacher.headlines) }}</pre>
         <pre class="long-text" v-if="drawer.teacher.workHistory">工作履历：{{ drawer.teacher.workHistory }}</pre>
         <pre class="long-text" v-if="drawer.teacher.honors">个人荣誉：{{ drawer.teacher.honors }}</pre>
+
+        <h4 class="mt">简历（PDF）</h4>
+        <div v-if="drawer.teacher.resumeUrl" class="resume-row">
+          <el-link type="primary" :href="drawer.teacher.resumeUrl" target="_blank" :underline="false">
+            📄 {{ drawer.teacher.resumeFilename || '查看简历' }}
+          </el-link>
+          <el-tag v-if="drawer.teacher.resumeAllowDisplay" type="success" size="small" style="margin-left: 8px">同意展示</el-tag>
+          <el-tag v-else type="info" size="small" style="margin-left: 8px">不同意展示</el-tag>
+          <span class="muted" v-if="drawer.teacher.resumeUploadedAt" style="margin-left: 8px">
+            上传于 {{ formatDate(drawer.teacher.resumeUploadedAt) }}
+          </span>
+        </div>
+        <div v-else class="muted">未上传简历</div>
       </div>
 
       <template #footer>
@@ -212,4 +225,5 @@ onMounted(reload);
 .teacher-detail { padding-bottom: 16px; }
 .mt { margin-top: 16px; }
 .long-text { white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px; }
+.resume-row { display: flex; align-items: center; gap: 6px; padding: 8px 0; }
 </style>

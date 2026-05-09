@@ -147,6 +147,13 @@ model Teacher {
   trialRate        Decimal?      @db.Decimal(10, 2)  // 试听价 ¥/h
   minHours         Int           @default(1)         // 起报小时数
 
+  // 简历（PDF）
+  resumeUrl        String?       @db.VarChar(512)
+  resumeFilename   String?       @db.VarChar(255)
+  resumeAllowDisplay Boolean     @default(false)
+  resumeRejectReason String?     @db.VarChar(500)
+  resumeUploadedAt DateTime?
+
   status           TeacherStatus @default(DRAFT)
   rejectReason     String?       @db.VarChar(500)
   isCertified      Boolean       @default(false)     // 是否在列表卡片显示「已认证」

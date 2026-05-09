@@ -92,8 +92,10 @@ Page({
       case 'invite':
         wx.navigateTo({ url: '/pages/me/invite/invite' });
         break;
-      case 'reviews':
       case 'resume':
+        wx.navigateTo({ url: '/pages/me/profile/resume/resume' });
+        break;
+      case 'reviews':
       case 'demo':
       case 'whiteboard':
       case 'cases':

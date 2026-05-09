@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="title">简历管理</view>
+  <view class="notice">上传须知：</view>
+  <view class="notice-text">将简历 pdf 文件发在微信聊天群内，再返回本页面点击下方加号键。</view>
+
+  <view class="reject" wx:if="{{ resumeRejectReason }}">
+    <text class="reject-title">⚠ 简历被驳回</text>
+    <text class="reject-content">{{ resumeRejectReason }}</text>
+  </view>
+
+  <view class="block-title">是否同意展示材料：</view>
+  <view class="radio-row">
+    <view class="radio {{ allowDisplay ? 'on' : '' }}" data-value="true" bindtap="pickAllow">
+      <view class="radio-dot"></view>
+      <text>同意</text>
+    </view>
+    <view class="radio {{ !allowDisplay ? 'on' : '' }}" data-value="false" bindtap="pickAllow">
+      <view class="radio-dot"></view>
+      <text>不同意</text>
+    </view>
+  </view>
+
+  <view class="upload-area">
+    <view class="file-card" wx:if="{{ resumeUrl }}" bindtap="onPreview">
+      <view class="file-icon">📄</view>
+      <view class="file-info">
+        <view class="file-name">{{ resumeFilename || '简历.pdf' }}</view>
+        <view class="file-tip">点击预览</view>
+      </view>
+      <view class="file-remove" catchtap="onRemove">×</view>
+    </view>
+
+    <view class="upload-btn {{ uploading ? 'disabled' : '' }}" wx:else bindtap="onPickFile">
+      <text wx:if="{{ uploading }}">上传中…</text>
+      <text wx:else class="plus">+</text>
+    </view>
+  </view>
+
+  <view class="footnote">* 文件格式：pdf。请去除如电话、电子邮箱、微信号、详细住址等联系方式。</view>
+  <view class="footnote">* 若文件不符合平台标准，平台将驳回该文件，届时请重新上传简历。</view>
+</view>
