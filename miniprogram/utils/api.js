@@ -36,4 +36,8 @@ const meApi = {
   submit: () => unwrap(post('/teacher/me/submit', {}, { requireAuth: true })),
 };
 
-module.exports = { teachersApi, dictApi, bannersApi, matchApi, meApi };
+const articlesApi = {
+  bySlug: (slug) => unwrap(get(`/articles/${slug}`)),
+};
+
+module.exports = { teachersApi, dictApi, bannersApi, matchApi, meApi, articlesApi };

@@ -88,6 +88,28 @@ export const bannerApi = {
   remove: (id: number) => http.delete<unknown, { ok: true }>(`/admin/banners/${id}`),
 };
 
+export interface ArticleSummary {
+  id: number;
+  slug: string;
+  title: string;
+  active: boolean;
+  updatedAt: string;
+}
+export interface ArticleDetail extends ArticleSummary {
+  content: string;
+  createdAt: string;
+}
+
+export const articleApi = {
+  list: () => http.get<unknown, ArticleSummary[]>('/admin/articles'),
+  detail: (id: number) => http.get<unknown, ArticleDetail>(`/admin/articles/${id}`),
+  create: (data: { slug: string; title: string; content: string; active?: boolean }) =>
+    http.post<unknown, ArticleDetail>('/admin/articles', data),
+  update: (id: number, data: { slug: string; title: string; content: string; active?: boolean }) =>
+    http.put<unknown, ArticleDetail>(`/admin/articles/${id}`, data),
+  remove: (id: number) => http.delete<unknown, { ok: true }>(`/admin/articles/${id}`),
+};
+
 export const adminUserApi = {
   list: () => http.get<unknown, any[]>('/admin/users'),
   create: (data: { username: string; password: string; name: string; role: AdminRole }) =>

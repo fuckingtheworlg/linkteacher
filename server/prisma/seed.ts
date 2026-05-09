@@ -118,6 +118,84 @@ async function main() {
     });
   }
 
+  console.log('--- Seed: about-us banner ---');
+  const existingAbout = await prisma.banner.findFirst({
+    where: { position: BannerPosition.ABOUT_US },
+  });
+  if (!existingAbout) {
+    await prisma.banner.create({
+      data: {
+        title: '直连全球优秀独立老师的非机构平台',
+        subtitle: '自由匹配心仪老师',
+        imageUrl: '',
+        link: 'about-us', // 点击跳 article 页 slug=about-us
+        position: BannerPosition.ABOUT_US,
+        sort: 1,
+        active: true,
+      },
+    });
+  }
+
+  console.log('--- Seed: articles ---');
+  const articles: Array<{ slug: string; title: string; content: string }> = [
+    {
+      slug: 'partnership-rules',
+      title: '合作规则',
+      content: `欢迎加入 UniClass 国际课程导师匹配平台。
+
+【一、入驻须知】
+1. 平台仅接收持有真实学历背景的国际课程导师。
+2. 提交的所有信息必须真实可查；任何造假行为将无条件下架。
+3. 学历背景需提供毕业证明 / 在读证明的辅助材料（在客服处提交）。
+
+【二、辅导规则】
+1. 辅导课程体系限于 iGCSE / A-Level / IB / AP 等国际课程。
+2. 课时费、试听价由导师本人定价，平台不抽成。
+3. 课程内容、上课形式、退费政策由导师与学生家长协商一致。
+
+【三、平台服务】
+1. 平台负责导师与学生的初次匹配对接（通过客服）。
+2. 平台不参与课程交易；交易在双方建立信任后线下完成。
+3. 平台对内容真实性进行审核，但对教学质量与最终结果不承担连带责任。
+
+【四、违规处理】
+1. 简历造假 → 永久下架。
+2. 收到学生投诉超过 3 次 → 暂停展示并人工复核。
+3. 在平台外撬单或引导学生加私人微信绕过平台 → 暂停展示。
+
+详情请联系客服 UniClass 小助手。`,
+    },
+    {
+      slug: 'about-us',
+      title: '关于我们',
+      content: `UniClass —— 直连全球优秀独立老师的非机构平台。
+
+我们相信：
+· 优秀的国际课程教育不应只属于大型机构。
+· 顶尖学府的老师应该有更直接的渠道触达学生。
+· 学生与家长应该有自由匹配心仪老师的权利。
+
+我们的导师来自：
+牛津、剑桥、帝国理工、UCL、KCL、LSE、爱丁堡、曼大、布里斯托、华威、伯明翰
+MIT、哈佛、斯坦福、加州伯克利
+香港大学、香港科技大学
+… 以及更多 QS Top 100 学府
+
+我们的承诺：
+· 100% 真实学历审核
+· 0 平台抽成
+· 自由匹配，自由议价
+· 服务由 UniClass 小助手提供，全程在线`,
+    },
+  ];
+  for (const a of articles) {
+    await prisma.articleContent.upsert({
+      where: { slug: a.slug },
+      update: {}, // 已存在则不覆盖（管理员可能在后台改过）
+      create: a,
+    });
+  }
+
   console.log('--- Seed: done ---');
 }
 

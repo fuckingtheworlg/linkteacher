@@ -6,7 +6,9 @@
     "pages/me/profile/index/index",
     "pages/me/profile/edit/edit",
     "pages/me/profile/education/education",
-    "pages/me/profile/subjects/subjects"
+    "pages/me/profile/subjects/subjects",
+    "pages/me/invite/invite",
+    "pages/article/article"
   ],
   "window": {
     "backgroundTextStyle": "light",

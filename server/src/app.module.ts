@@ -13,6 +13,7 @@ import { TeachersModule } from './teachers/teachers.module';
 import { MatchModule } from './match/match.module';
 import { AdminModule } from './admin/admin.module';
 import { UploadModule } from './upload/upload.module';
+import { ArticlesModule } from './articles/articles.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UploadModule } from './upload/upload.module';
     MatchModule,
     AdminModule,
     UploadModule,
+    ArticlesModule,
   ],
   controllers: [HealthController],
   providers: [

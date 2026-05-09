@@ -41,6 +41,7 @@
           <el-select v-model="dialog.form.position">
             <el-option label="首页顶部 (HOME_TOP)" value="HOME_TOP" />
             <el-option label="首页中部 (HOME_MID)" value="HOME_MID" />
+            <el-option label="我的-关于我们 (ABOUT_US)" value="ABOUT_US" />
           </el-select>
         </el-form-item>
         <el-form-item label="标题" prop="title"><el-input v-model="dialog.form.title" /></el-form-item>
@@ -131,7 +132,7 @@ async function onDelete(row: any) {
 }
 
 function positionText(p: string) {
-  return ({ HOME_TOP: '首页顶部', HOME_MID: '首页中部' } as Record<string, string>)[p] || p;
+  return ({ HOME_TOP: '首页顶部', HOME_MID: '首页中部', ABOUT_US: '我的-关于我们' } as Record<string, string>)[p] || p;
 }
 
 onMounted(load);

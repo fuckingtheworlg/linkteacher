@@ -216,6 +216,7 @@ model TeacherSubjectCurriculum {
 enum BannerPosition {
   HOME_TOP   // 列表页顶部 banner（CTB 位）
   HOME_MID   // 备用
+  ABOUT_US   // 「我的」页面「关于我们」卡片
 }
 
 model Banner {
@@ -231,6 +232,20 @@ model Banner {
   updatedAt DateTime        @updatedAt
 
   @@index([position, active, sort])
+}
+
+// =============== 文章 / 静态内容 ===============
+
+model ArticleContent {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique @db.VarChar(64) // partnership-rules / about-us / privacy-policy 等
+  title     String   @db.VarChar(128)
+  content   String   @db.Text                 // 纯文本（按换行渲染）或简单 Markdown
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
 }
 
 // =============== 用户行为 ===============

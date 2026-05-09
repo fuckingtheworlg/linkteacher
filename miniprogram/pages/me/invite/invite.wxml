@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">邀请老师</view>
+    <view class="hero-sub">分享给身边的国际课程老师，让 UniClass 帮 TA 直连学生家长。</view>
+  </view>
+
+  <view class="card">
+    <view class="card-row">
+      <text class="num">1</text>
+      <text class="row-text">点击下方「微信分享」按钮，把小程序发给老师</text>
+    </view>
+    <view class="card-row">
+      <text class="num">2</text>
+      <text class="row-text">老师进入后选择「我的 → 编辑个人资料」填写完整信息</text>
+    </view>
+    <view class="card-row">
+      <text class="num">3</text>
+      <text class="row-text">提交审核，2-5 个工作日内通过即可上架展示</text>
+    </view>
+  </view>
+
+  <button class="primary-btn" open-type="share">微信分享给老师</button>
+
+  <button class="secondary-btn" open-type="contact" session-from="invite_teacher">
+    💬 找客服直接对接
+  </button>
+</view>

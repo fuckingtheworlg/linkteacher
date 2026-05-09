@@ -1,0 +1,13 @@
+<view class="page" wx:if="{{ article }}">
+  <view class="title">{{ article.title }}</view>
+  <view class="body">
+    <block wx:for="{{ paragraphs }}" wx:key="*this">
+      <view class="line" wx:if="{{ item }}">{{ item }}</view>
+      <view class="empty-line" wx:else></view>
+    </block>
+  </view>
+  <view class="footer">最后更新：{{ article.updatedAt }}</view>
+</view>
+
+<view class="loading" wx:elif="{{ loading }}">加载中…</view>
+<view class="loading" wx:else>内容不存在</view>

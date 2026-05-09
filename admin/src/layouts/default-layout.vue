@@ -28,6 +28,10 @@
           <el-icon><Picture /></el-icon>
           <span>Banner</span>
         </el-menu-item>
+        <el-menu-item index="/articles">
+          <el-icon><Document /></el-icon>
+          <span>文章管理</span>
+        </el-menu-item>
         <el-menu-item index="/admins" v-if="auth.isSuperAdmin">
           <el-icon><Setting /></el-icon>
           <span>管理员账号</span>
