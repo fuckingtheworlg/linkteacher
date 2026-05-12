@@ -78,6 +78,7 @@ Page({
   enrichItem(t) {
     const edu = (t.educations && t.educations[0]) || null;
     const major = edu ? edu.major : '';
+    const eduName = edu && edu.university ? edu.university.nameZh : '';
     const subjectsView = (t.subjects || []).map((ts) => {
       const curs = (ts.curriculums || []).map((c) => c.curriculum.name).join(',');
       return {
@@ -87,19 +88,22 @@ Page({
       };
     });
     const headlineList = Array.isArray(t.headlines) ? t.headlines : [];
+    const nickname = (t.user && t.user.nickname) || '老师';
     return {
       id: t.id,
       avatarUrl: (t.user && t.user.avatarUrl) || '',
-      nickname: (t.user && t.user.nickname) || '老师',
+      avatarLetter: nickname.charAt(0).toUpperCase(),
+      nickname,
       genderIcon: genderToText(t.gender),
-      addressLine: [t.country, t.city].filter(Boolean).join(''),
+      addressLine: [t.country, t.city].filter(Boolean).join(' · '),
       isCertified: !!t.isCertified,
       hourlyRate: fmtPrice(t.hourlyRate),
       trialRate: fmtPrice(t.trialRate),
       major,
+      eduLine: [eduName, major].filter(Boolean).join(' · '),
       subjectsView,
       firstHeadline: headlineList[0] || '',
-      headlineSummary: headlineList.slice(0, 3).join('；'),
+      headlineSummary: headlineList.slice(0, 2).join('；'),
     };
   },
 

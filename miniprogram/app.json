@@ -12,17 +12,17 @@
     "pages/article/article"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#1f2937",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "UniClass",
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "backgroundColor": "#f5f7fa"
   },
   "tabBar": {
     "color": "#9ca3af",
-    "selectedColor": "#fbbf24",
+    "selectedColor": "#1f2937",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/teachers/index/index",

@@ -1,84 +1,70 @@
 <view class="page">
-  <!-- 顶部胶囊：UniClass 找独立导师 -->
-  <view class="top-pill">
-    <text class="pill-icon">🔍</text>
-    <text class="pill-text">UniClass 找独立导师</text>
-  </view>
-
   <!-- 用户卡片 -->
-  <view class="user-card">
-    <view class="logo-wrap">
-      <text class="logo-text-1">Uni</text>
-      <text class="logo-text-2">ClasS</text>
+  <view class="card user-card">
+    <view class="avatar-wrap">
+      <image
+        wx:if="{{ user && user.avatarUrl }}"
+        class="avatar"
+        src="{{ user.avatarUrl }}"
+        mode="aspectFill"
+      />
+      <view wx:else class="avatar avatar-placeholder">U</view>
     </view>
     <view class="user-info">
       <view class="nick">{{ (user && user.nickname) || ('user-' + ((user && user.id) || '----')) }}</view>
-      <view class="edit-btn" bindtap="onEditProfile">
-        编辑个人资料 <text class="gear">⚙</text>
+      <view class="role-row">
+        <text class="role-tag" wx:if="{{ teacher }}">导师 · {{ statusText }}</text>
+        <text class="role-tag role-tag-light" wx:else>学生</text>
       </view>
     </view>
+    <view class="edit-link" bindtap="onEditProfile">编辑 ›</view>
   </view>
 
-  <!-- 关于我们 Banner -->
-  <view class="about-card" wx:if="{{ aboutUsBanner }}" bindtap="onAboutTap">
-    <view class="about-row1">
-      <text class="about-title">{{ aboutUsBanner.title }}</text>
-      <text class="about-arrow">›</text>
+  <!-- 关于我们 -->
+  <view class="card about-card" wx:if="{{ aboutUsBanner }}" bindtap="onAboutTap">
+    <view class="about-left">
+      <view class="text-h3">{{ aboutUsBanner.title }}</view>
+      <view class="text-sub text-sm" style="margin-top: 6rpx;">{{ aboutUsBanner.subtitle }}</view>
     </view>
-    <view class="about-divider"></view>
-    <view class="about-row2">
-      <text class="about-sub">{{ aboutUsBanner.subtitle }}</text>
-      <view class="about-btn">关于我们</view>
-    </view>
+    <view class="about-arrow">›</view>
   </view>
 
   <!-- 收藏统计 -->
-  <view class="stat-row">
-    <view class="stat-card">
-      <view class="stat-label">收藏老师</view>
-      <view class="stat-bottom">
-        <text class="stat-num">{{ favoriteTeacherCount }}</text>
-        <view class="stat-btn" catchtap="onFavTeacher">查看</view>
-      </view>
+  <view class="card stat-row">
+    <view class="stat-cell" bindtap="onFavTeacher">
+      <view class="stat-num">{{ favoriteTeacherCount }}</view>
+      <view class="text-sub text-sm">收藏老师</view>
     </view>
     <view class="stat-divider"></view>
-    <view class="stat-card">
-      <view class="stat-label">收藏竞赛</view>
-      <view class="stat-bottom">
-        <text class="stat-num">{{ favoriteCompetitionCount }}</text>
-        <view class="stat-btn" catchtap="onFavCompetition">查看</view>
-      </view>
+    <view class="stat-cell" bindtap="onFavCompetition">
+      <view class="stat-num">{{ favoriteCompetitionCount }}</view>
+      <view class="text-sub text-sm">收藏竞赛</view>
     </view>
   </view>
 
-  <!-- 8 项功能宫格 -->
-  <view class="grid">
+  <!-- 功能宫格 -->
+  <view class="card grid">
     <view class="grid-cell" wx:for="{{ grid }}" wx:key="key" data-key="{{ item.key }}" bindtap="onGridTap">
-      <view class="grid-icon">{{ item.icon }}</view>
+      <view class="grid-icon"></view>
       <view class="grid-label">{{ item.label }}</view>
     </view>
   </view>
 
-  <!-- 驳回原因（仅状态为 REJECTED 时显示，放到底部不打扰主流程） -->
+  <!-- 驳回提醒 -->
   <view class="reject" wx:if="{{ teacher && teacher.status === 'REJECTED' && rejectReason }}">
     <text class="reject-title">⚠ 资料被驳回</text>
     <text class="reject-content">{{ rejectReason }}</text>
   </view>
 
   <!-- 公众号引导 -->
-  <view class="oa-card">
+  <view class="card oa-card">
     <view class="oa-icon">幸</view>
     <view class="oa-info">
-      <view class="oa-title">个幸话（公众号）</view>
-      <view class="oa-sub">原创国际教育资讯平台</view>
+      <view class="text-h3">个幸话</view>
+      <view class="text-sub text-sm">原创国际教育资讯平台</view>
     </view>
-    <view class="oa-btn">去关注 +</view>
+    <view class="oa-btn">关注</view>
   </view>
-  <!--
-    若小程序与公众号同主体，可换成原生组件以触发关注：
-    <official-account></official-account>
-    需要在 app.json 设置 "componentFramework": "glass-easel"，并在公众号后台勾选「关联小程序」。
-  -->
 
-  <view class="version">ver {{ appVersion }}</view>
+  <view class="version text-muted text-xs">v {{ appVersion }}</view>
 </view>

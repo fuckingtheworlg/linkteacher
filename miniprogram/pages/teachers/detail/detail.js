@@ -65,8 +65,11 @@ Page({
         OFFLINE: '已下架',
       };
 
+      const nickname = (t.user && t.user.nickname) || '老师';
       this.setData({
         teacher: t,
+        nickname,
+        avatarLetter: nickname.charAt(0).toUpperCase(),
         headlines,
         languagesText: languages.join('，'),
         tagsList: tags,

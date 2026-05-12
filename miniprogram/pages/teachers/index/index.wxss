@@ -1,50 +1,50 @@
 .page {
-  padding: 24rpx 24rpx 120rpx;
+  padding: 24rpx 24rpx 160rpx;
   background: #f5f7fa;
   min-height: 100vh;
 }
 
 /* 搜索栏 */
-.search-bar { padding: 8rpx 0 16rpx; }
+.search-bar { margin-bottom: 24rpx; }
 .search-input {
   display: flex; align-items: center;
   background: #fff;
-  border-radius: 36rpx;
+  border-radius: 12rpx;
   padding: 0 24rpx;
-  height: 72rpx;
-  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.04);
+  height: 76rpx;
 }
-.search-input .icon { margin-right: 12rpx; color: #6b7280; }
-.search-input input { flex: 1; font-size: 28rpx; }
+.search-input .icon { margin-right: 12rpx; color: #9ca3af; font-size: 28rpx; }
+.search-input input { flex: 1; font-size: 28rpx; color: #1f2937; }
 .search-input .ph { color: #9ca3af; }
 
-/* CTB Banner */
+/* Banner */
 .banner-card {
-  background: #fff;
+  background: #1f2937;
+  color: #fff;
   border-radius: 16rpx;
-  padding: 30rpx 28rpx;
-  margin: 20rpx 0;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
 }
-.banner-sub { font-size: 24rpx; color: #6b7280; letter-spacing: 4rpx; }
-.banner-title { font-size: 36rpx; font-weight: 700; color: #1f2937; margin-top: 6rpx; letter-spacing: 4rpx; }
-.banner-cta { color: #1f2937; font-size: 26rpx; }
+.banner-sub { font-size: 22rpx; color: #d1d5db; letter-spacing: 2rpx; }
+.banner-title { font-size: 30rpx; font-weight: 700; color: #fff; margin-top: 8rpx; }
+.banner-cta { font-size: 24rpx; color: #d1d5db; }
 
-/* 科目标签 */
+/* 科目横向滚动 */
 .subjects {
   white-space: nowrap;
-  margin: 16rpx 0;
+  margin-bottom: 16rpx;
 }
 .subject-tab {
   display: inline-block;
-  padding: 14rpx 28rpx;
-  margin-right: 14rpx;
-  font-size: 28rpx;
+  padding: 12rpx 28rpx;
+  margin-right: 12rpx;
+  font-size: 26rpx;
   color: #6b7280;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
+  background: #fff;
 }
 .subject-tab.active {
   background: #1f2937;
@@ -55,72 +55,82 @@
 /* 二级筛选 */
 .filter-bar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  margin-bottom: 20rpx;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
 }
 .filter-item {
   background: #fff;
-  border-radius: 32rpx;
-  padding: 12rpx 24rpx;
-  font-size: 26rpx;
+  border-radius: 8rpx;
+  padding: 10rpx 24rpx;
+  font-size: 24rpx;
   color: #6b7280;
-  border: 1rpx solid #e5e7eb;
 }
-.filter-item.on { color: #1f2937; border-color: #1f2937; }
+.filter-item.on { color: #1f2937; font-weight: 600; }
 
 .dropdown {
   background: #fff;
-  border-radius: 16rpx;
+  border-radius: 12rpx;
   padding: 8rpx 0;
   margin-bottom: 16rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.06);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
 }
 .dropdown-item {
-  padding: 22rpx 32rpx;
+  padding: 22rpx 28rpx;
   font-size: 28rpx;
   color: #4b5563;
 }
-.dropdown-item.on { color: #fbbf24; font-weight: 600; }
+.dropdown-item.on { color: #1f2937; font-weight: 600; }
 
 /* 老师卡片 */
 .list { display: flex; flex-direction: column; gap: 20rpx; }
-.card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 24rpx;
+.teacher-card {
   display: flex;
-  gap: 20rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+  gap: 24rpx;
+  align-items: stretch;
 }
-.avatar { width: 140rpx; height: 180rpx; border-radius: 12rpx; background: #e5e7eb; flex-shrink: 0; }
-.card-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10rpx; }
+.avatar-wrap { width: 120rpx; flex-shrink: 0; }
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 16rpx;
+  background: #e5e7eb;
+}
+.avatar.avatar-placeholder { font-size: 48rpx; }
+
+.card-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8rpx; }
 .row1 { display: flex; justify-content: space-between; align-items: center; }
-.row1-left { display: flex; align-items: center; gap: 8rpx; flex-wrap: wrap; }
-.name { font-size: 32rpx; font-weight: 600; color: #1f2937; }
-.gender { font-size: 24rpx; color: #f472b6; }
-.addr { color: #6b7280; }
+.row1-left { display: flex; align-items: center; gap: 10rpx; flex-wrap: wrap; }
+.name { font-size: 30rpx; font-weight: 600; color: #1f2937; }
+.gender { font-size: 22rpx; color: #9ca3af; }
 .cert { color: #16a34a; font-size: 22rpx; flex-shrink: 0; }
-.major { color: #4b5563; }
-.tags-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10rpx; }
-.curri-line { color: #6b7280; }
-.price-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12rpx; }
-.price-label { color: #9ca3af; }
-.price { color: #1f2937; font-weight: 600; font-size: 28rpx; }
-.headline { color: #6b7280; line-height: 1.5; }
 
-.empty, .loading, .finished {
-  text-align: center;
-  color: #9ca3af;
-  font-size: 26rpx;
-  padding: 40rpx 0;
+.meta { color: #6b7280; }
+
+.tags-row { display: flex; flex-wrap: wrap; gap: 8rpx; margin-top: 4rpx; }
+.tags-row .tag { background: #f3f4f6; color: #4b5563; padding: 4rpx 14rpx; font-size: 22rpx; border-radius: 6rpx; }
+
+.price-row { display: flex; align-items: baseline; gap: 8rpx; margin-top: 4rpx; }
+.price { color: #1f2937; font-weight: 700; font-size: 30rpx; }
+.price-sep { color: #d1d5db; }
+
+.headline {
+  color: #6b7280;
+  font-size: 24rpx;
+  line-height: 1.5;
+  margin-top: 4rpx;
 }
 
-/* 帮我匹配 悬浮按钮 */
+.loading-tip { text-align: center; padding: 32rpx 0; }
+
+/* 骨架屏 */
+.skeleton-card { display: flex; gap: 24rpx; }
+.skeleton-body { flex: 1; display: flex; flex-direction: column; gap: 12rpx; }
+
+/* 帮我匹配 悬浮按钮（去黄，统一黑灰） */
 .match-fab {
   position: fixed;
   right: 32rpx;
-  bottom: 140rpx;
+  bottom: 64rpx;
   width: 120rpx;
   height: 120rpx;
   border-radius: 60rpx;
@@ -133,7 +143,7 @@
   font-weight: 600;
   text-align: center;
   line-height: 1.2;
-  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.18);
+  box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.18);
   border: none;
   padding: 0;
 }

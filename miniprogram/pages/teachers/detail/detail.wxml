@@ -8,97 +8,117 @@
     </view>
   </view>
 
-  <!-- 头部 -->
-  <view class="header">
+  <!-- 头部卡片 -->
+  <view class="card header-card">
     <view class="header-row">
-      <image class="avatar" src="{{ teacher.user.avatarUrl }}" mode="aspectFill" />
+      <image
+        wx:if="{{ teacher.user.avatarUrl }}"
+        class="avatar"
+        src="{{ teacher.user.avatarUrl }}"
+        mode="aspectFill"
+      />
+      <view wx:else class="avatar avatar-placeholder">{{ avatarLetter }}</view>
+
       <view class="header-info">
         <view class="name-line">
-          <text class="name">{{ teacher.user.nickname }}</text>
+          <text class="text-h2">{{ nickname }}</text>
           <text class="gender" wx:if="{{ teacher.gender === 'FEMALE' }}">♀</text>
-          <text class="gender male" wx:if="{{ teacher.gender === 'MALE' }}">♂</text>
-          <text class="cert" wx:if="{{ teacher.isCertified }}">✓</text>
+          <text class="gender" wx:if="{{ teacher.gender === 'MALE' }}">♂</text>
+          <text class="cert" wx:if="{{ teacher.isCertified }}">✓ 已认证</text>
         </view>
-        <view class="addr-line">
-          <text>📍</text>
-          <text wx:if="{{ teacher.country }}">{{ teacher.country }}</text>
-          <text wx:if="{{ teacher.city }}">{{ teacher.city }}</text>
+        <view class="addr-line text-sub text-sm" wx:if="{{ teacher.country || teacher.city }}">
+          {{ teacher.country }} {{ teacher.city }}
         </view>
-      </view>
-      <view class="fav" bindtap="toggleFav">
-        <text wx:if="{{ favorited }}">★</text>
-        <text wx:else>☆</text>
+        <view class="meta-line" wx:if="{{ tagsList.length || languagesText }}">
+          <text class="tag tag-light" wx:for="{{ tagsList }}" wx:key="*this">{{ item }}</text>
+          <text class="text-sub text-sm" wx:if="{{ languagesText }}">{{ languagesText }}</text>
+        </view>
       </view>
     </view>
 
+    <view class="divider" wx:if="{{ headlines.length }}"></view>
     <view class="headlines" wx:if="{{ headlines.length }}">
-      <view class="headline-item" wx:for="{{ headlines }}" wx:key="*this">* {{ item }}</view>
+      <view class="headline-item text-body" wx:for="{{ headlines }}" wx:key="*this">· {{ item }}</view>
     </view>
+  </view>
 
-    <view class="meta-line" wx:if="{{ tagsList.length || languagesText }}">
-      <text class="meta-tag" wx:for="{{ tagsList }}" wx:key="*this">{{ item }}</text>
-      <text class="meta-text" wx:if="{{ languagesText }}">{{ languagesText }}</text>
+  <!-- 报价卡片 -->
+  <view class="card price-card">
+    <view class="price-cell">
+      <text class="text-sub text-sm">课时费</text>
+      <text class="price-big">¥{{ hourlyRateText }}<text class="price-unit">/h</text></text>
     </view>
-
-    <view class="subjects-pill-row">
-      <view class="pill" wx:for="{{ subjectsView }}" wx:key="code">{{ item.name }}</view>
-      <view class="price-line">
-        <text class="hourly">¥{{ hourlyRateText }}/h</text>
-        <text class="trial">试听半价（¥{{ trialRateText }}/h）</text>
-      </view>
+    <view class="price-divider"></view>
+    <view class="price-cell">
+      <text class="text-sub text-sm">试听价</text>
+      <text class="price-big">¥{{ trialRateText }}<text class="price-unit">/h</text></text>
     </view>
   </view>
 
   <!-- 教育背景 -->
-  <view class="section">
+  <view class="card" wx:if="{{ educationsView.length }}">
     <view class="section-title">教育背景</view>
     <view class="edu-list">
-      <view class="edu-card" wx:for="{{ educationsView }}" wx:for-item="e" wx:key="id">
-        <view class="edu-header">
-          <view class="qs-rank" wx:if="{{ e.qsLabel }}">{{ e.qsLabel }}</view>
-          <view class="degree-tag">{{ e.degreeText }}</view>
+      <view class="edu-row" wx:for="{{ educationsView }}" wx:for-item="e" wx:key="id">
+        <view class="edu-rank" wx:if="{{ e.qsLabel }}">{{ e.qsLabel }}</view>
+        <view class="edu-rank text-muted" wx:else>—</view>
+        <view class="edu-main">
+          <view class="edu-name">{{ e.nameZh }}</view>
+          <view class="edu-name-en text-sub text-sm">{{ e.nameEn }}</view>
+          <view class="edu-major text-sub text-sm">{{ e.degreeText }} · {{ e.major }}</view>
         </view>
-        <image class="edu-logo" src="{{ e.logoUrl }}" mode="aspectFit" />
-        <view class="edu-name-en">{{ e.nameEn }}</view>
-        <view class="edu-name-zh">{{ e.nameZh }}</view>
-        <view class="edu-major">{{ e.major }}</view>
       </view>
     </view>
   </view>
 
   <!-- 辅导内容 -->
-  <view class="section">
-    <view class="subject-blocks">
+  <view class="card" wx:if="{{ subjectsView.length }}">
+    <view class="section-title">辅导内容</view>
+    <view class="subject-list">
       <view class="subject-block" wx:for="{{ subjectsView }}" wx:for-item="s" wx:key="code">
-        <view class="subject-pill">{{ s.name }}</view>
-        <view class="subject-line" wx:if="{{ s.igcseLine }}">• {{ s.igcseLine }}</view>
-        <view class="subject-line" wx:if="{{ s.alevelLine }}">• {{ s.alevelLine }}</view>
+        <view class="subject-row">
+          <text class="tag">{{ s.name }}</text>
+          <view class="subject-curri text-sub">
+            <text wx:if="{{ s.igcseLine }}">{{ s.igcseLine }}</text>
+            <text wx:if="{{ s.alevelLine }}">{{ s.alevelLine }}</text>
+          </view>
+        </view>
       </view>
     </view>
   </view>
 
   <view class="footer-spacer"></view>
 
-  <!-- 底部按钮：预览模式 vs 公共模式 -->
+  <!-- 底部按钮 -->
   <view class="footer-bar">
     <button
       wx:if="{{ isPreview }}"
-      class="contact-btn"
+      class="btn-primary"
       bindtap="goEditProfile"
-    >
-      ✎ 返回编辑资料
-    </button>
+    >返回编辑资料</button>
     <button
       wx:else
-      class="contact-btn"
+      class="btn-primary"
       open-type="contact"
       session-from="teacher_detail_{{ teacherId }}"
       bindtap="onContact"
-    >
-      💬 帮我对接老师
-    </button>
+    >帮我对接老师</button>
   </view>
 </view>
 
-<view class="loading" wx:elif="{{ loading }}">加载中...</view>
-<view class="loading" wx:else>老师不存在</view>
+<view class="loading-screen" wx:elif="{{ loading }}">
+  <view class="card skeleton-card">
+    <view class="skeleton skeleton-circle" style="width: 140rpx; height: 140rpx;"></view>
+    <view style="flex: 1; display: flex; flex-direction: column; gap: 12rpx;">
+      <view class="skeleton skeleton-line" style="width: 40%;"></view>
+      <view class="skeleton skeleton-line skeleton-line-sm" style="width: 80%;"></view>
+      <view class="skeleton skeleton-line skeleton-line-sm" style="width: 60%;"></view>
+    </view>
+  </view>
+</view>
+
+<view class="empty-state" wx:else>
+  <view class="empty-icon">😶</view>
+  <view class="empty-title">老师不存在</view>
+  <view class="empty-sub">该老师可能未上架或已下架</view>
+</view>

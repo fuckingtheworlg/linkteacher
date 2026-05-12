@@ -115,13 +115,10 @@
     <view>注：部分填写信息不会立刻显示，经审核通过后才会生效。信息填写完毕后请耐心等待约 2-5 个工作日的审核流程。</view>
   </view>
 
-  <button class="submit" bindtap="onSubmit" disabled="{{ saving }}">
-    {{ saving ? '提交中...' : '提交审核' }}
-  </button>
-
-  <view class="qr-card">
-    <view class="qr-label">UniClass 小助手</view>
-    <view class="qr-placeholder">— 长按识别二维码 —</view>
-    <view class="qr-tip">长按识别</view>
+  <view class="footer-spacer"></view>
+  <view class="footer-bar">
+    <button class="btn-primary" bindtap="onSubmit" disabled="{{ saving }}">
+      {{ saving ? '提交中...' : '提交审核' }}
+    </button>
   </view>
 </view>
