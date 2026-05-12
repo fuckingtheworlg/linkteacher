@@ -1,7 +1,7 @@
 <view class="page" bindtap="closePanels">
   <view class="search-bar" catchtap="">
     <view class="search-input">
-      <text class="icon">🔍</text>
+      <image class="icon" src="/assets/icons/search.png" mode="aspectFit" />
       <input
         type="text"
         placeholder="搜索老师 / 关键词"

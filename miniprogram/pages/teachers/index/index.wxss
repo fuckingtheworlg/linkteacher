@@ -13,7 +13,12 @@
   padding: 0 24rpx;
   height: 76rpx;
 }
-.search-input .icon { margin-right: 12rpx; color: #9ca3af; font-size: 28rpx; }
+.search-input .icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
 .search-input input { flex: 1; font-size: 28rpx; color: #1f2937; }
 .search-input .ph { color: #9ca3af; }
 
