@@ -66,11 +66,8 @@
   gap: 12rpx;
 }
 .grid-icon {
-  width: 64rpx;
-  height: 64rpx;
-  border: 2rpx solid #1f2937;
-  border-radius: 12rpx;
-  background: transparent;
+  width: 56rpx;
+  height: 56rpx;
 }
 .grid-label { font-size: 24rpx; color: #4b5563; }
 

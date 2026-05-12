@@ -45,7 +45,7 @@
   <!-- 功能宫格 -->
   <view class="card grid">
     <view class="grid-cell" wx:for="{{ grid }}" wx:key="key" data-key="{{ item.key }}" bindtap="onGridTap">
-      <view class="grid-icon"></view>
+      <image class="grid-icon" src="{{ item.icon }}" mode="aspectFit" />
       <view class="grid-label">{{ item.label }}</view>
     </view>
   </view>

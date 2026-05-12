@@ -26,11 +26,15 @@
     "list": [
       {
         "pagePath": "pages/teachers/index/index",
-        "text": "老师"
+        "text": "老师",
+        "iconPath": "assets/tabbar/tab-teacher.png",
+        "selectedIconPath": "assets/tabbar/tab-teacher-active.png"
       },
       {
         "pagePath": "pages/me/index/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "assets/tabbar/tab-me.png",
+        "selectedIconPath": "assets/tabbar/tab-me-active.png"
       }
     ]
   },
