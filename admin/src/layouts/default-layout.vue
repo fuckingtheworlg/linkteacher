@@ -16,6 +16,14 @@
           <el-menu-item index="/teachers/resume-audit">简历审核</el-menu-item>
           <el-menu-item index="/teachers/list">导师管理</el-menu-item>
         </el-sub-menu>
+        <el-menu-item index="/end-users">
+          <el-icon><Avatar /></el-icon>
+          <span>学生用户</span>
+        </el-menu-item>
+        <el-menu-item index="/match-logs">
+          <el-icon><DataLine /></el-icon>
+          <span>匹配日志</span>
+        </el-menu-item>
         <el-sub-menu index="dict">
           <template #title>
             <el-icon><Files /></el-icon>

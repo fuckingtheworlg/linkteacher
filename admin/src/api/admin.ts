@@ -48,7 +48,34 @@ export const teacherApi = {
     http.post<unknown, any>(`/admin/teachers/${id}/resume-audit`, { approve, reason }),
   flags: (id: number, payload: { isCertified?: boolean; sortWeight?: number; status?: TeacherStatus }) =>
     http.post<unknown, any>(`/admin/teachers/${id}/flags`, payload),
+  create: (payload: any) => http.post<unknown, any>('/admin/teachers', payload),
+  update: (id: number, payload: any) => http.patch<unknown, any>(`/admin/teachers/${id}`, payload),
+  remove: (id: number) => http.delete<unknown, { ok: true }>(`/admin/teachers/${id}`),
   stats: () => http.get<unknown, TeacherStats>('/admin/teachers/stats/overview'),
+};
+
+// ============ 学生用户（最终用户，区别于管理员账号 AdminUser） ============
+export type EndUserRole = 'STUDENT' | 'TEACHER';
+
+export const endUserApi = {
+  list: (params: { keyword?: string; role?: EndUserRole; page?: number; pageSize?: number }) =>
+    http.get<unknown, { page: number; pageSize: number; total: number; list: any[] }>(
+      '/admin/end-users',
+      { params },
+    ),
+  update: (id: number, payload: { nickname?: string; role?: EndUserRole; banned?: boolean; bannedReason?: string }) =>
+    http.patch<unknown, any>(`/admin/end-users/${id}`, payload),
+  remove: (id: number) => http.delete<unknown, { ok: true }>(`/admin/end-users/${id}`),
+};
+
+// ============ 匹配日志 ============
+export const matchLogApi = {
+  list: (params: { sessionFrom?: string; since?: string; until?: string; page?: number; pageSize?: number }) =>
+    http.get<unknown, { page: number; pageSize: number; total: number; list: any[]; byEntry: Array<{ sessionFrom: string; count: number }> }>(
+      '/admin/match-logs',
+      { params },
+    ),
+  remove: (id: number) => http.delete<unknown, { ok: true }>(`/admin/match-logs/${id}`),
 };
 
 export interface DictItem {

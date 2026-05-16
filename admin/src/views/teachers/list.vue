@@ -10,6 +10,7 @@
       </el-select>
       <el-input v-model="keyword" placeholder="搜索昵称 / 手机号 / openid" style="width: 280px" clearable @clear="reload" @keyup.enter="reload" />
       <el-button type="primary" @click="reload">查询</el-button>
+      <el-button type="success" @click="openCreate">+ 手动新建</el-button>
       <span class="muted">共 {{ total }} 条</span>
     </div>
 
@@ -21,12 +22,13 @@
         </template>
       </el-table-column>
       <el-table-column label="昵称" prop="user.nickname" min-width="120" />
+      <el-table-column label="真实姓名" prop="realName" min-width="100" />
       <el-table-column label="状态" width="100">
         <template #default="{ row }">
           <el-tag :type="statusTagType(row.status)">{{ statusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="科目" min-width="200">
+      <el-table-column label="科目" min-width="180">
         <template #default="{ row }">
           <el-tag v-for="ts in row.subjects" :key="ts.id" size="small" style="margin-right: 4px">{{ ts.subject?.name }}</el-tag>
         </template>
@@ -39,15 +41,17 @@
           <el-switch :model-value="row.isCertified" @update:model-value="onToggleCertified(row, $event)" />
         </template>
       </el-table-column>
-      <el-table-column label="排序权重" width="120">
+      <el-table-column label="权重" width="120">
         <template #default="{ row }">
           <el-input-number :model-value="row.sortWeight" :min="0" :max="9999" size="small" @change="onChangeWeight(row, $event)" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180" fixed="right">
+      <el-table-column label="操作" width="280" fixed="right">
         <template #default="{ row }">
+          <el-button size="small" @click="openEdit(row)">编辑</el-button>
           <el-button v-if="row.status === 'APPROVED'" size="small" @click="onChangeStatus(row, 'OFFLINE')">下架</el-button>
           <el-button v-if="row.status === 'OFFLINE'" size="small" type="success" @click="onChangeStatus(row, 'APPROVED')">上架</el-button>
+          <el-button size="small" type="danger" @click="onDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,12 +68,19 @@
       />
     </div>
   </el-card>
+
+  <TeacherFormDrawer
+    v-model:visible="drawerVisible"
+    :teacher-id="editingId"
+    @saved="reload"
+  />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { teacherApi, type TeacherStatus } from '@/api/admin';
+import TeacherFormDrawer from './TeacherFormDrawer.vue';
 
 const list = ref<any[]>([]);
 const total = ref(0);
@@ -78,6 +89,9 @@ const pageSize = ref(10);
 const keyword = ref('');
 const status = ref<TeacherStatus | undefined>(undefined);
 const loading = ref(false);
+
+const drawerVisible = ref(false);
+const editingId = ref<number | null>(null);
 
 async function reload() {
   loading.value = true;
@@ -120,11 +134,34 @@ async function onChangeStatus(row: any, st: TeacherStatus) {
   ElMessage.success('已更新状态');
 }
 
+function openCreate() {
+  editingId.value = null;
+  drawerVisible.value = true;
+}
+
+function openEdit(row: any) {
+  editingId.value = row.id;
+  drawerVisible.value = true;
+}
+
+async function onDelete(row: any) {
+  await ElMessageBox.confirm(
+    `确定永久删除「${row.user?.nickname || row.id}」？该操作不可恢复，会同时删除该导师的学历 / 科目 / 收藏 / 匹配日志关联`,
+    '危险操作',
+    { type: 'error', confirmButtonText: '确定删除', cancelButtonText: '取消' },
+  );
+  try {
+    await teacherApi.remove(row.id);
+    ElMessage.success('已删除');
+    reload();
+  } catch { /* interceptor */ }
+}
+
 onMounted(reload);
 </script>
 
 <style scoped>
-.toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+.toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
 .muted { color: #9ca3af; font-size: 12px; }
 .pagination { margin-top: 16px; text-align: right; }
 </style>

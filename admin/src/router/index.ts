@@ -57,6 +57,18 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true, title: '大学库' },
       },
       {
+        path: 'end-users',
+        name: 'end-users',
+        component: () => import('@/views/end-users/index.vue'),
+        meta: { requiresAuth: true, title: '学生用户' },
+      },
+      {
+        path: 'match-logs',
+        name: 'match-logs',
+        component: () => import('@/views/match-logs/index.vue'),
+        meta: { requiresAuth: true, title: '匹配日志' },
+      },
+      {
         path: 'banners',
         name: 'banners',
         component: () => import('@/views/banners/index.vue'),
