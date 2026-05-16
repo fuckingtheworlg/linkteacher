@@ -1,0 +1,69 @@
+<view class="page">
+  <view class="text-h2">身份认证</view>
+  <view class="text-sub" style="margin-top: 8rpx;">
+    身份证仅用于平台审核，不公开展示。请确保与「真实姓名」一致。
+  </view>
+
+  <view class="card section">
+    <view class="row">
+      <view class="row-label">真实姓名</view>
+      <input class="row-input" placeholder="与身份证一致" placeholder-class="ph" value="{{ realName }}" bindinput="onRealNameInput" maxlength="32" />
+    </view>
+  </view>
+
+  <view class="text-sub section-title">身份证图片</view>
+  <view class="id-row">
+    <view class="id-card" bindtap="pickIdCard" data-side="front">
+      <image
+        wx:if="{{ idCardFrontUrl }}"
+        class="id-img"
+        src="{{ idCardFrontUrl }}"
+        mode="aspectFill"
+        catchtap="previewIdCard"
+        data-side="front"
+      />
+      <view wx:else class="id-placeholder">
+        <text class="plus" wx:if="{{ !uploadingFront }}">+</text>
+        <text wx:else>上传中…</text>
+        <text class="id-tip" wx:if="{{ !uploadingFront }}">人像面</text>
+      </view>
+    </view>
+    <view class="id-card" bindtap="pickIdCard" data-side="back">
+      <image
+        wx:if="{{ idCardBackUrl }}"
+        class="id-img"
+        src="{{ idCardBackUrl }}"
+        mode="aspectFill"
+        catchtap="previewIdCard"
+        data-side="back"
+      />
+      <view wx:else class="id-placeholder">
+        <text class="plus" wx:if="{{ !uploadingBack }}">+</text>
+        <text wx:else>上传中…</text>
+        <text class="id-tip" wx:if="{{ !uploadingBack }}">国徽面</text>
+      </view>
+    </view>
+  </view>
+  <view class="text-muted text-xs id-note">
+    * 请保证身份证清晰可辨，四角完整，无反光。
+  </view>
+
+  <view class="text-sub section-title">地址定位</view>
+  <view class="card location-card" bindtap="chooseLocation">
+    <view class="location-info">
+      <view class="text-body" wx:if="{{ addressDetail }}">{{ addressDetail }}</view>
+      <view class="text-muted" wx:else>点击选择地图位置</view>
+      <view class="text-xs text-muted" wx:if="{{ latitude !== null && longitude !== null }}">
+        经纬度：{{ latitude }}, {{ longitude }}
+      </view>
+    </view>
+    <view class="text-muted">›</view>
+  </view>
+
+  <view class="footer-spacer"></view>
+  <view class="footer-bar">
+    <button class="btn-primary" bindtap="onSave" disabled="{{ saving }}">
+      {{ saving ? '保存中...' : '保存' }}
+    </button>
+  </view>
+</view>

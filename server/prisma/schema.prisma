@@ -163,6 +163,16 @@ model Teacher {
   resumeUploadedAt DateTime?
   resumeReviewedAt DateTime?
 
+  // 身份认证（按用户决策：不存身份证号，仅图片由后台人工核验）
+  realName         String?       @db.VarChar(64)
+  idCardFrontUrl   String?       @db.VarChar(512)
+  idCardBackUrl    String?       @db.VarChar(512)
+
+  // 地址定位（用 wx.chooseLocation 选点位）
+  addressDetail    String?       @db.VarChar(255)
+  latitude         Decimal?      @db.Decimal(10, 7)
+  longitude        Decimal?      @db.Decimal(10, 7)
+
   status           TeacherStatus @default(DRAFT)
   rejectReason     String?       @db.VarChar(500)
   isCertified      Boolean       @default(false)     // 是否在列表卡片显示「已认证」

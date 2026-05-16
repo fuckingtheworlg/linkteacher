@@ -53,6 +53,10 @@ Page({
       wx.navigateTo({ url: `/pages/me/profile/education/education?sort=${sort}` });
       return;
     }
+    if (field === 'identity') {
+      wx.navigateTo({ url: '/pages/me/profile/identity/identity' });
+      return;
+    }
     wx.navigateTo({ url: `/pages/me/profile/edit/edit?field=${field}` });
   },
 

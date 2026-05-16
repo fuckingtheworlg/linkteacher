@@ -8,8 +8,18 @@
     "pages/me/profile/education/education",
     "pages/me/profile/subjects/subjects",
     "pages/me/profile/resume/resume",
+    "pages/me/profile/identity/identity",
     "pages/me/invite/invite",
     "pages/article/article"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于导师身份认证时选择您的工作/服务地址"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation",
+    "chooseAddress"
   ],
   "window": {
     "backgroundTextStyle": "dark",

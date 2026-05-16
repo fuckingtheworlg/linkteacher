@@ -55,6 +55,16 @@ export class UpsertTeacherDto {
   @IsOptional() @IsString() @MaxLength(255) resumeFilename?: string;
   @IsOptional() resumeAllowDisplay?: boolean;
 
+  // ===== 身份认证 =====
+  @IsOptional() @IsString() @MaxLength(64) realName?: string;
+  @IsOptional() @IsString() @MaxLength(512) idCardFrontUrl?: string;
+  @IsOptional() @IsString() @MaxLength(512) idCardBackUrl?: string;
+
+  // ===== 地址定位 =====
+  @IsOptional() @IsString() @MaxLength(255) addressDetail?: string;
+  @IsOptional() @IsNumber() latitude?: number;
+  @IsOptional() @IsNumber() longitude?: number;
+
   @IsOptional() @IsArray() @ValidateNested({ each: true }) @Type(() => EducationItem)
   educations?: EducationItem[];
 

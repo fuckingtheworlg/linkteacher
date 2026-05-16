@@ -5,6 +5,23 @@
     <view class="nav-title">编辑资料</view>
   </view>
 
+  <!-- 身份认证 -->
+  <view class="section-title">身份认证<text class="required">*</text></view>
+  <view class="card identity-card" bindtap="goEdit" data-field="identity">
+    <view class="identity-info">
+      <view class="cell-value">
+        <text wx:if="{{ teacher && teacher.realName }}">{{ teacher.realName }}</text>
+        <text wx:else class="text-muted">未填写</text>
+      </view>
+      <view class="text-sub text-sm">
+        <text wx:if="{{ teacher && teacher.idCardFrontUrl && teacher.idCardBackUrl }}">✓ 已上传身份证</text>
+        <text wx:else>未上传身份证</text>
+      </view>
+      <view class="text-sub text-sm" wx:if="{{ teacher && teacher.addressDetail }}">📍 {{ teacher.addressDetail }}</view>
+    </view>
+    <view class="text-muted">›</view>
+  </view>
+
   <!-- 个人卡片 -->
   <view class="section-title">个人卡片<text class="required">*</text></view>
   <view class="card">

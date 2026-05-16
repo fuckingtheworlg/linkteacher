@@ -157,6 +157,14 @@ export class TeachersService {
         resumeUrl: dto.resumeUrl,
         resumeFilename: dto.resumeFilename,
         resumeAllowDisplay: dto.resumeAllowDisplay,
+        // 身份认证
+        realName: dto.realName,
+        idCardFrontUrl: dto.idCardFrontUrl,
+        idCardBackUrl: dto.idCardBackUrl,
+        // 地址定位
+        addressDetail: dto.addressDetail,
+        latitude: dto.latitude,
+        longitude: dto.longitude,
         // 当 resumeUrl 被更新时：
         //   - 如果是上传新简历（非空字符串）→ 置为待审核
         //   - 如果是删除（空字符串）→ 状态回到 EMPTY
@@ -236,8 +244,12 @@ export class TeachersService {
     });
     if (!teacher) throw new BusinessException('请先填写完整资料');
 
-    // 必填校验：报价 + 至少 1 个学历 + 至少 1 个科目 + headlines
+    // 必填校验：身份认证 + 报价 + 至少 1 个学历 + 至少 1 个科目
     const missing: string[] = [];
+    if (!teacher.realName) missing.push('真实姓名');
+    if (!teacher.idCardFrontUrl) missing.push('身份证正面');
+    if (!teacher.idCardBackUrl) missing.push('身份证反面');
+    if (!teacher.addressDetail) missing.push('地址定位');
     if (!teacher.hourlyRate) missing.push('课时费');
     if (!teacher.trialRate) missing.push('试听价');
     if (!teacher.educations || teacher.educations.length === 0) missing.push('至少 1 段学历背景');
