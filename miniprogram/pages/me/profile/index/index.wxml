@@ -26,7 +26,11 @@
   <view class="section-title">个人卡片<text class="required">*</text></view>
   <view class="card">
     <view class="card-row">
-      <image class="avatar" src="{{ (user && user.avatarUrl) || '' }}" mode="aspectFill" bindtap="goEdit" data-field="avatar" />
+      <view class="avatar-wrap" bindtap="onPickAvatar">
+        <image wx:if="{{ user && user.avatarUrl }}" class="avatar" src="{{ user.avatarUrl }}" mode="aspectFill" />
+        <view wx:else class="avatar avatar-placeholder">+</view>
+        <view class="avatar-edit-badge">✎</view>
+      </view>
       <view class="grid">
         <view class="cell" bindtap="goEdit" data-field="nickname">
           <view class="cell-label">昵称 ✎</view>

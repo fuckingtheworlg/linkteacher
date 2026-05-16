@@ -1,14 +1,14 @@
 <view class="page">
   <!-- 用户卡片 -->
   <view class="card user-card">
-    <view class="avatar-wrap">
+    <view class="avatar-wrap" bindtap="onPickAvatar">
       <image
         wx:if="{{ user && user.avatarUrl }}"
         class="avatar"
         src="{{ user.avatarUrl }}"
         mode="aspectFill"
       />
-      <view wx:else class="avatar avatar-placeholder">U</view>
+      <view wx:else class="avatar avatar-placeholder">+</view>
     </view>
     <view class="user-info">
       <view class="nick">{{ (user && user.nickname) || ('user-' + ((user && user.id) || '----')) }}</view>

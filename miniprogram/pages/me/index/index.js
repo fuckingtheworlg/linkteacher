@@ -1,6 +1,7 @@
 const { meApi, bannersApi } = require('../../../utils/api');
 const { ensureLogin } = require('../../../utils/auth');
 const { STORAGE_KEYS } = require('../../../utils/config');
+const { pickAndUploadImage } = require('../../../utils/upload');
 
 const STATUS_TEXT = {
   DRAFT: '草稿',
@@ -67,6 +68,22 @@ Page({
   // ============ 跳转处理 ============
   onEditProfile() {
     wx.navigateTo({ url: '/pages/me/profile/index/index' });
+  },
+
+  async onPickAvatar() {
+    try {
+      const data = await pickAndUploadImage();
+      await meApi.save({ avatarUrl: data.url });
+      const cached = wx.getStorageSync(STORAGE_KEYS.USER) || {};
+      const next = { ...cached, avatarUrl: data.url };
+      wx.setStorageSync(STORAGE_KEYS.USER, next);
+      this.setData({ user: next });
+      wx.showToast({ title: '头像已更新', icon: 'success' });
+    } catch (err) {
+      if (err && err.canceled) return;
+      console.error('[me] avatar upload failed:', err);
+      wx.showToast({ title: (err && err.message) || '上传失败', icon: 'none' });
+    }
   },
 
   onAboutTap() {

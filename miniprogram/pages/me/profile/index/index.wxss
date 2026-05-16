@@ -20,7 +20,27 @@
 
 /* 个人卡片头像 + 网格 */
 .card-row { display: flex; gap: 24rpx; align-items: flex-start; }
+.avatar-wrap { position: relative; width: 130rpx; height: 130rpx; flex-shrink: 0; }
 .avatar { width: 130rpx; height: 130rpx; border-radius: 65rpx; background: #e5e7eb; }
+.avatar.avatar-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  color: #9ca3af; font-size: 60rpx; font-weight: 300;
+}
+.avatar-edit-badge {
+  position: absolute;
+  right: -4rpx;
+  bottom: -4rpx;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 22rpx;
+  background: #1f2937;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  border: 4rpx solid #fff;
+}
 .grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
 
 .cell {

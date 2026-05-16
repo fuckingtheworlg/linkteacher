@@ -8,6 +8,25 @@
   >
     <el-form ref="formRef" :model="form" :rules="rules" label-position="top" v-loading="loading">
       <el-divider content-position="left">基础信息</el-divider>
+      <el-form-item label="头像">
+        <el-upload
+          class="avatar-uploader"
+          :action="uploadUrl"
+          :headers="uploadHeaders"
+          :show-file-list="false"
+          accept="image/png,image/jpeg,image/webp"
+          :before-upload="beforeAvatarUpload"
+          :on-success="onAvatarSuccess"
+          :on-error="onAvatarError"
+        >
+          <img v-if="form.avatarUrl" :src="form.avatarUrl" class="avatar-img" />
+          <div v-else class="avatar-empty">
+            <el-icon><Plus /></el-icon>
+            <span>上传头像</span>
+          </div>
+        </el-upload>
+        <el-input v-model="form.avatarUrl" placeholder="或直接粘贴 URL" style="max-width: 420px; margin-top: 8px" clearable />
+      </el-form-item>
       <el-row :gutter="16">
         <el-col :span="12">
           <el-form-item label="昵称" prop="nickname">
@@ -125,8 +144,9 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
-import { ElMessage, type FormInstance } from 'element-plus';
+import { ElMessage, type FormInstance, type UploadProps } from 'element-plus';
 import { teacherApi, dictApi } from '@/api/admin';
+import { tokenStore } from '@/api/http';
 
 const props = defineProps<{
   visible: boolean;
@@ -148,6 +168,7 @@ const saving = ref(false);
 
 const blankForm = () => ({
   nickname: '',
+  avatarUrl: '',
   mbti: '',
   address: '',
   phone: '',
@@ -201,6 +222,7 @@ async function loadTeacher(id: number) {
     const t = await teacherApi.detail(id);
     Object.assign(form, blankForm(), {
       nickname: t.user?.nickname || '',
+      avatarUrl: t.user?.avatarUrl || '',
       mbti: t.user?.mbti || '',
       address: t.user?.address || '',
       phone: t.user?.phone || '',
@@ -259,6 +281,35 @@ watch(
   },
 );
 
+// ===== 头像上传 =====
+const uploadUrl = '/api/upload/image';
+const uploadHeaders = computed(() => {
+  const t = tokenStore.get();
+  return t ? { Authorization: `Bearer ${t}` } : {};
+});
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (file) => {
+  if (file.size > 5 * 1024 * 1024) {
+    ElMessage.error('图片需小于 5MB');
+    return false;
+  }
+  return true;
+};
+const onAvatarSuccess: UploadProps['onSuccess'] = (resp) => {
+  // 后端返回 { code: 0, data: { url, filename, size } }
+  const data = (resp && resp.code === 0 && resp.data) || resp;
+  if (data && data.url) {
+    form.avatarUrl = data.url;
+    ElMessage.success('头像已上传');
+  } else {
+    ElMessage.error('上传响应异常');
+  }
+};
+const onAvatarError: UploadProps['onError'] = (err) => {
+  console.error('[avatar] upload fail', err);
+  ElMessage.error('上传失败');
+};
+
 function addEducation() {
   educations.value.push({ degree: 'BACHELOR' });
 }
@@ -312,4 +363,28 @@ async function onSubmit() {
 
 <style scoped>
 .sub-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+
+.avatar-uploader :deep(.el-upload) {
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f9fafb;
+  transition: border-color 0.2s;
+}
+.avatar-uploader :deep(.el-upload:hover) { border-color: #1f2937; }
+.avatar-img { width: 96px; height: 96px; object-fit: cover; }
+.avatar-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #9ca3af;
+  font-size: 12px;
+}
 </style>

@@ -1,5 +1,6 @@
 const { meApi } = require('../../../../utils/api');
 const { fmtPrice } = require('../../../../utils/format');
+const { pickAndUploadImage } = require('../../../../utils/upload');
 
 Page({
   data: {
@@ -38,6 +39,19 @@ Page({
   checkCanSubmit(t) {
     if (!t) return false;
     return !!t.hourlyRate && !!t.trialRate && (t.educations || []).length > 0 && (t.subjects || []).length > 0;
+  },
+
+  async onPickAvatar() {
+    try {
+      const data = await pickAndUploadImage();
+      await meApi.save({ avatarUrl: data.url });
+      wx.showToast({ title: '头像已更新', icon: 'success' });
+      this.fetch();
+    } catch (err) {
+      if (err && err.canceled) return;
+      console.error('[profile] avatar upload failed:', err);
+      wx.showToast({ title: (err && err.message) || '上传失败', icon: 'none' });
+    }
   },
 
   goEdit(e) {
