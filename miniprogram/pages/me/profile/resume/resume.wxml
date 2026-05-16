@@ -15,16 +15,10 @@
     <text class="reject-tip">请按上方原因调整后重新上传</text>
   </view>
 
-  <view class="block-title">是否同意展示材料：</view>
-  <view class="radio-row">
-    <view class="radio {{ allowDisplay ? 'on' : '' }}" data-value="true" bindtap="pickAllow">
-      <view class="radio-dot"></view>
-      <text>同意</text>
-    </view>
-    <view class="radio {{ !allowDisplay ? 'on' : '' }}" data-value="false" bindtap="pickAllow">
-      <view class="radio-dot"></view>
-      <text>不同意</text>
-    </view>
+  <view class="block-title">是否同意展示材料</view>
+  <view class="chip-row">
+    <view class="chip {{ allowDisplay ? 'on' : '' }}" data-value="true" bindtap="pickAllow">同意</view>
+    <view class="chip {{ !allowDisplay ? 'on' : '' }}" data-value="false" bindtap="pickAllow">不同意</view>
   </view>
 
   <view class="upload-area">

@@ -36,7 +36,11 @@
     </view>
   </view>
 
-  <button class="save" bindtap="onSave" disabled="{{ saving }}">{{ saving ? '保存中...' : '保存' }}</button>
+  <view class="footer-bar">
+    <button class="btn-primary" bindtap="onSave" disabled="{{ saving }}">
+      {{ saving ? '保存中...' : '保存' }}
+    </button>
+  </view>
 
   <view class="picker-mask" wx:if="{{ showUniversityPicker }}" bindtap="closeUniversityPicker">
     <view class="picker" catchtap="">

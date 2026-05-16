@@ -27,31 +27,22 @@
 .reject-content { color: #7f1d1d; font-size: 24rpx; line-height: 1.5; }
 .reject-tip { color: #b91c1c; font-size: 22rpx; margin-top: 4rpx; }
 
-.block-title { color: #1f2937; font-size: 28rpx; margin-top: 40rpx; }
-.radio-row { display: flex; gap: 80rpx; margin-top: 24rpx; }
-.radio { display: flex; align-items: center; gap: 12rpx; font-size: 28rpx; color: #1f2937; }
-.radio-dot {
-  width: 36rpx;
-  height: 36rpx;
-  border-radius: 18rpx;
-  border: 2rpx solid #d1d5db;
+.block-title { color: #6b7280; font-size: 26rpx; margin-top: 40rpx; font-weight: 600; }
+.chip-row { display: flex; gap: 16rpx; margin-top: 20rpx; }
+.chip {
+  padding: 16rpx 40rpx;
   background: #fff;
-  position: relative;
+  border: 2rpx solid #f3f4f6;
+  color: #4b5563;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  transition: all 0.15s;
 }
-.radio.on .radio-dot {
-  background: #16a34a;
-  border-color: #16a34a;
-}
-.radio.on .radio-dot::after {
-  content: '';
-  position: absolute;
-  left: 10rpx;
-  top: 4rpx;
-  width: 10rpx;
-  height: 18rpx;
-  border-right: 4rpx solid #fff;
-  border-bottom: 4rpx solid #fff;
-  transform: rotate(45deg);
+.chip.on {
+  background: #1f2937;
+  border-color: #1f2937;
+  color: #fff;
+  font-weight: 600;
 }
 
 .upload-area { margin: 64rpx 0 32rpx; display: flex; justify-content: center; }

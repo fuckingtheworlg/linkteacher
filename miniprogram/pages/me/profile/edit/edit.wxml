@@ -55,7 +55,9 @@
     多个值用换行或英文逗号分隔
   </view>
 
-  <button class="save" bindtap="onSave" disabled="{{ saving }}">
-    {{ saving ? '保存中...' : '保存' }}
-  </button>
+  <view class="footer-bar">
+    <button class="btn-primary" bindtap="onSave" disabled="{{ saving }}">
+      {{ saving ? '保存中...' : '保存' }}
+    </button>
+  </view>
 </view>

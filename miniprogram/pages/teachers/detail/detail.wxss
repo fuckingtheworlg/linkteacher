@@ -17,16 +17,19 @@
 .preview-sub { font-size: 22rpx; opacity: 0.7; margin-top: 2rpx; }
 
 /* 头部卡片 */
-.card { margin-bottom: 20rpx; }
+.card { margin-bottom: 16rpx; }
 .header-card .header-row { display: flex; gap: 24rpx; align-items: center; }
 .avatar {
   width: 140rpx;
   height: 140rpx;
   border-radius: 16rpx;
-  background: #e5e7eb;
+  background: #f3f4f6;
   flex-shrink: 0;
 }
-.avatar.avatar-placeholder { font-size: 56rpx; }
+.avatar.avatar-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 56rpx; color: #9ca3af; font-weight: 300;
+}
 
 .header-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8rpx; }
 .name-line { display: flex; align-items: center; gap: 12rpx; flex-wrap: wrap; }

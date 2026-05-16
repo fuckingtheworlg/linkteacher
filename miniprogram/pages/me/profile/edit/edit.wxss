@@ -1,8 +1,10 @@
-.page { padding: 24rpx; min-height: 100vh; background: #f5f7fa; }
-.title { font-size: 32rpx; font-weight: 700; color: #1f2937; margin-bottom: 24rpx; }
+.page { padding: 24rpx 24rpx 200rpx; min-height: 100vh; background: #f5f7fa; }
+.title { font-size: 36rpx; font-weight: 700; color: #1f2937; margin-bottom: 8rpx; }
+.sub { color: #9ca3af; font-size: 24rpx; margin-bottom: 24rpx; }
 
 .input, .textarea {
   background: #fff;
+  border: 2rpx solid #f3f4f6;
   border-radius: 12rpx;
   padding: 24rpx;
   font-size: 28rpx;
@@ -10,7 +12,8 @@
   width: 100%;
   box-sizing: border-box;
 }
-.textarea { min-height: 280rpx; }
+.input:focus, .textarea:focus { border-color: #1f2937; }
+.textarea { min-height: 320rpx; }
 .ph { color: #9ca3af; }
 
 .mbti-grid {
@@ -20,26 +23,19 @@
 }
 .mbti-cell {
   background: #fff;
+  border: 2rpx solid #f3f4f6;
   border-radius: 12rpx;
   padding: 28rpx 0;
   text-align: center;
   font-size: 28rpx;
-  color: #1f2937;
-  border: 2rpx solid transparent;
+  color: #4b5563;
+  transition: all 0.15s;
 }
-.mbti-cell.on { border-color: #1f2937; color: #1f2937; font-weight: 700; }
-
-.hint { color: #9ca3af; font-size: 24rpx; margin-top: 16rpx; }
-
-.save {
-  margin-top: 60rpx;
+.mbti-cell.on {
+  border-color: #1f2937;
   background: #1f2937;
   color: #fff;
-  border-radius: 12rpx;
-  height: 88rpx;
-  line-height: 88rpx;
-  font-size: 30rpx;
-  font-weight: 600;
+  font-weight: 700;
 }
-.save[disabled] { background: #9ca3af; color: #fff; }
-.save::after { border: none; }
+
+.hint { color: #9ca3af; font-size: 24rpx; margin-top: 16rpx; line-height: 1.6; }

@@ -87,20 +87,24 @@
 .dropdown-item.on { color: #1f2937; font-weight: 600; }
 
 /* 老师卡片 */
-.list { display: flex; flex-direction: column; gap: 20rpx; }
+.list { display: flex; flex-direction: column; gap: 16rpx; }
 .teacher-card {
   display: flex;
   gap: 24rpx;
   align-items: stretch;
+  padding: 24rpx;
 }
 .avatar-wrap { width: 120rpx; flex-shrink: 0; }
 .avatar {
   width: 120rpx;
   height: 120rpx;
   border-radius: 16rpx;
-  background: #e5e7eb;
+  background: #f3f4f6;
 }
-.avatar.avatar-placeholder { font-size: 48rpx; }
+.avatar.avatar-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48rpx; color: #9ca3af; font-weight: 300;
+}
 
 .card-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8rpx; }
 .row1 { display: flex; justify-content: space-between; align-items: center; }

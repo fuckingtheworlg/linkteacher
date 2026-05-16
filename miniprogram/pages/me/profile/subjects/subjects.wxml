@@ -26,5 +26,9 @@
   <view class="block-title">补充说明（选填）</view>
   <textarea class="textarea" placeholder="例：可针对 PAT / Physics Bowl 等专项辅导" placeholder-class="ph" maxlength="255" value="{{ note }}" bindinput="onNoteInput" />
 
-  <button class="save" bindtap="onSave" disabled="{{ saving }}">{{ saving ? '保存中...' : '保存' }}</button>
+  <view class="footer-bar">
+    <button class="btn-primary" bindtap="onSave" disabled="{{ saving }}">
+      {{ saving ? '保存中...' : '保存' }}
+    </button>
+  </view>
 </view>

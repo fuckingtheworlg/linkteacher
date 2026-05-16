@@ -9,6 +9,7 @@
         mode="aspectFill"
       />
       <view wx:else class="avatar avatar-placeholder">+</view>
+      <view class="avatar-edit-badge">✎</view>
     </view>
     <view class="user-info">
       <view class="nick">{{ (user && user.nickname) || ('user-' + ((user && user.id) || '----')) }}</view>
