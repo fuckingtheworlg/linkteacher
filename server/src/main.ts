@@ -31,11 +31,11 @@ async function bootstrap() {
   app.use('/uploads', express.static(join(process.cwd(), 'uploads')));
 
   await app.listen(port, '0.0.0.0');
-  Logger.log(`UniClass API is running on http://localhost:${port}/api`, 'Bootstrap');
+  Logger.log(`LinkTeacher API is running on http://localhost:${port}/api`, 'Bootstrap');
 }
 
 bootstrap().catch((err) => {
   // eslint-disable-next-line no-console
-  console.error('Failed to start UniClass API', err);
+  console.error('Failed to start LinkTeacher API', err);
   process.exit(1);
 });

@@ -2,7 +2,7 @@
   "name": "@uniclass/admin",
   "version": "0.1.0",
   "private": true,
-  "description": "UniClass 管理后台（Vue3 + Vite + Element Plus）",
+  "description": "LinkTeacher 管理后台（Vue3 + Vite + Element Plus）",
   "type": "module",
   "scripts": {
     "dev": "vite",

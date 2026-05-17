@@ -57,15 +57,24 @@
     <text class="reject-content">{{ rejectReason }}</text>
   </view>
 
-  <!-- 公众号引导 -->
-  <view class="card oa-card">
-    <view class="oa-icon">幸</view>
-    <view class="oa-info">
-      <view class="text-h3">个幸话</view>
-      <view class="text-sub text-sm">原创国际教育资讯平台</view>
+  <!-- 公众号引导：根据后台 SystemConfig 渲染 -->
+  <block wx:if="{{ oa }}">
+    <!-- 同主体：使用原生 official-account 组件，用户可一键关注 -->
+    <view class="card oa-card oa-card-native" wx:if="{{ oa.sameSubject }}">
+      <official-account></official-account>
     </view>
-    <view class="oa-btn">关注</view>
-  </view>
+
+    <!-- 非同主体：展示二维码引导（点击放大长按识别） -->
+    <view class="card oa-card" wx:else bindtap="previewOaQrcode">
+      <view class="oa-icon">{{ oa.name && oa.name.charAt(0) || '+' }}</view>
+      <view class="oa-info">
+        <view class="text-h3">{{ oa.name || '公众号' }}</view>
+        <view class="text-sub text-sm">{{ oa.desc || '点击查看二维码' }}</view>
+      </view>
+      <image wx:if="{{ oa.qrcodeUrl }}" class="oa-qr" src="{{ oa.qrcodeUrl }}" mode="aspectFit" />
+      <view wx:else class="oa-btn">关注</view>
+    </view>
+  </block>
 
   <view class="version text-muted text-xs">v {{ appVersion }}</view>
 </view>

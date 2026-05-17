@@ -149,6 +149,9 @@ Page({
     this.setData({ showSortPanel: false, showCurriculumPanel: false });
   },
 
+  // 空函数 — 给 wxml 的 catchtap 用，仅用于阻止事件冒泡到 page 的 closePanels
+  noop() {},
+
   goDetail(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/teachers/detail/detail?id=${id}` });
@@ -156,5 +159,20 @@ Page({
 
   onMatchContact() {
     matchApi.log('home_match_button').catch((err) => console.warn('match log fail', err));
+  },
+
+  onBannerTap(e) {
+    const link = e.currentTarget.dataset.link;
+    if (!link) return;
+    // 以 http(s) 开头 → 复制链接（小程序不允许直接打开外部 URL）
+    // 否则视为 article slug → 跳转通用文章页
+    if (/^https?:\/\//i.test(link)) {
+      wx.setClipboardData({
+        data: link,
+        success: () => wx.showToast({ title: '链接已复制', icon: 'success' }),
+      });
+    } else {
+      wx.navigateTo({ url: `/pages/article/article?slug=${encodeURIComponent(link)}` });
+    }
   },
 });

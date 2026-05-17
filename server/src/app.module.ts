@@ -14,6 +14,7 @@ import { MatchModule } from './match/match.module';
 import { AdminModule } from './admin/admin.module';
 import { UploadModule } from './upload/upload.module';
 import { ArticlesModule } from './articles/articles.module';
+import { SystemConfigModule } from './system-config/system-config.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ArticlesModule } from './articles/articles.module';
     AdminModule,
     UploadModule,
     ArticlesModule,
+    SystemConfigModule,
   ],
   controllers: [HealthController],
   providers: [

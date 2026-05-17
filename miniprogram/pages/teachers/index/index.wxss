@@ -135,25 +135,28 @@
 .skeleton-card { display: flex; gap: 24rpx; }
 .skeleton-body { flex: 1; display: flex; flex-direction: column; gap: 12rpx; }
 
-/* 帮我匹配 悬浮按钮（去黄，统一黑灰） */
+/* 帮我匹配 悬浮按钮（正圆形） */
 .match-fab {
   position: fixed;
   right: 32rpx;
   bottom: 64rpx;
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 60rpx;
+  width: 140rpx;
+  height: 140rpx;
+  min-width: 140rpx;
+  max-width: 140rpx;
+  border-radius: 50%;
   background: #1f2937;
   color: #fff;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 26rpx;
   font-weight: 600;
-  text-align: center;
-  line-height: 1.2;
-  box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.25);
   border: none;
   padding: 0;
+  line-height: 1.2;
 }
 .match-fab::after { border: none; }
+.fab-line { color: #fff; font-size: 26rpx; line-height: 1.2; }

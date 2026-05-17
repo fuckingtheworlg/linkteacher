@@ -68,6 +68,21 @@ export const endUserApi = {
   remove: (id: number) => http.delete<unknown, { ok: true }>(`/admin/end-users/${id}`),
 };
 
+// ============ 系统配置 ============
+export interface SystemConfigRow {
+  id: number;
+  key: string;
+  value: string;
+  desc?: string;
+  updatedAt: string;
+}
+
+export const systemConfigApi = {
+  get: (key: string) => http.get<unknown, SystemConfigRow | null>(`/admin/configs/${key}`),
+  upsert: (key: string, value: string, desc?: string) =>
+    http.put<unknown, SystemConfigRow>(`/admin/configs/${key}`, { value, desc }),
+};
+
 // ============ 匹配日志 ============
 export const matchLogApi = {
   list: (params: { sessionFrom?: string; since?: string; until?: string; page?: number; pageSize?: number }) =>

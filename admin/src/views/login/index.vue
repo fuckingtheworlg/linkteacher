@@ -1,7 +1,7 @@
 <template>
   <div class="login-page">
     <el-card class="login-card">
-      <h2 class="title">UniClass 管理后台</h2>
+      <h2 class="title">LinkTeacher 管理后台</h2>
       <p class="subtitle">请使用管理员账号登录</p>
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" @submit.prevent="onSubmit">
         <el-form-item label="账号" prop="username">

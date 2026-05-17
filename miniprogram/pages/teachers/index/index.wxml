@@ -1,5 +1,5 @@
 <view class="page" bindtap="closePanels">
-  <view class="search-bar" catchtap="">
+  <view class="search-bar" catchtap="noop">
     <view class="search-input">
       <image class="icon" src="/assets/icons/search.png" mode="aspectFit" />
       <input
@@ -15,7 +15,7 @@
   </view>
 
   <block wx:for="{{ banners }}" wx:key="id" wx:for-item="b">
-    <view class="banner-card" catchtap="">
+    <view class="banner-card" data-link="{{ b.link }}" catchtap="onBannerTap">
       <view class="banner-text">
         <view class="banner-sub">{{ b.subtitle }}</view>
         <view class="banner-title">{{ b.title }}</view>
@@ -24,7 +24,7 @@
     </view>
   </block>
 
-  <scroll-view class="subjects" scroll-x enable-flex catchtap="">
+  <scroll-view class="subjects" scroll-x enable-flex catchtap="noop">
     <view
       class="subject-tab {{ activeSubjectId === 0 ? 'active' : '' }}"
       data-id="0"
@@ -39,33 +39,33 @@
     >{{ item.name }}</view>
   </scroll-view>
 
-  <view class="filter-bar" catchtap="">
-    <view class="filter-item {{ activeCurriculumId !== 0 ? 'on' : '' }}" bindtap="toggleCurriculumPanel">
+  <view class="filter-bar" catchtap="noop">
+    <view class="filter-item {{ activeCurriculumId !== 0 ? 'on' : '' }}" catchtap="toggleCurriculumPanel">
       课程体系 ▾
     </view>
-    <view class="filter-item {{ sort !== 'smart' ? 'on' : '' }}" bindtap="toggleSortPanel">智能排序 ▾</view>
+    <view class="filter-item {{ sort !== 'smart' ? 'on' : '' }}" catchtap="toggleSortPanel">智能排序 ▾</view>
   </view>
 
-  <view wx:if="{{ showCurriculumPanel }}" class="dropdown" catchtap="">
+  <view wx:if="{{ showCurriculumPanel }}" class="dropdown" catchtap="noop">
     <view
       class="dropdown-item {{ activeCurriculumId === 0 ? 'on' : '' }}"
       data-id="0"
-      bindtap="onCurriculumPick"
+      catchtap="onCurriculumPick"
     >全部体系</view>
     <view
       wx:for="{{ curriculums }}"
       wx:key="id"
       class="dropdown-item {{ activeCurriculumId === item.id ? 'on' : '' }}"
       data-id="{{ item.id }}"
-      bindtap="onCurriculumPick"
+      catchtap="onCurriculumPick"
     >{{ item.name }}</view>
   </view>
 
-  <view wx:if="{{ showSortPanel }}" class="dropdown" catchtap="">
-    <view class="dropdown-item {{ sort === 'smart' ? 'on' : '' }}" data-value="smart" bindtap="onSortPick">智能推荐</view>
-    <view class="dropdown-item {{ sort === 'rate-asc' ? 'on' : '' }}" data-value="rate-asc" bindtap="onSortPick">课时费由低到高</view>
-    <view class="dropdown-item {{ sort === 'rate-desc' ? 'on' : '' }}" data-value="rate-desc" bindtap="onSortPick">课时费由高到低</view>
-    <view class="dropdown-item {{ sort === 'newest' ? 'on' : '' }}" data-value="newest" bindtap="onSortPick">最新上架</view>
+  <view wx:if="{{ showSortPanel }}" class="dropdown" catchtap="noop">
+    <view class="dropdown-item {{ sort === 'smart' ? 'on' : '' }}" data-value="smart" catchtap="onSortPick">智能推荐</view>
+    <view class="dropdown-item {{ sort === 'rate-asc' ? 'on' : '' }}" data-value="rate-asc" catchtap="onSortPick">课时费由低到高</view>
+    <view class="dropdown-item {{ sort === 'rate-desc' ? 'on' : '' }}" data-value="rate-desc" catchtap="onSortPick">课时费由高到低</view>
+    <view class="dropdown-item {{ sort === 'newest' ? 'on' : '' }}" data-value="newest" catchtap="onSortPick">最新上架</view>
   </view>
 
   <!-- 列表 -->
@@ -138,11 +138,14 @@
     <view class="text-muted text-sm loading-tip" wx:if="{{ finished && list.length > 0 }}">— 已显示全部 —</view>
   </view>
 
-  <!-- 帮我匹配 悬浮按钮 -->
+  <!-- 帮我匹配 悬浮按钮（圆形） -->
   <button
     class="match-fab"
     open-type="contact"
     session-from="home_match_button"
     bindtap="onMatchContact"
-  >帮我匹配</button>
+  >
+    <text class="fab-line">帮我</text>
+    <text class="fab-line">匹配</text>
+  </button>
 </view>

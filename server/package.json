@@ -2,7 +2,7 @@
   "name": "@uniclass/server",
   "version": "0.1.0",
   "private": true,
-  "description": "UniClass 后端 API（NestJS + Prisma + MySQL）",
+  "description": "LinkTeacher 后端 API（NestJS + Prisma + MySQL）",
   "scripts": {
     "build": "nest build",
     "start": "node dist/main.js",

@@ -1,4 +1,4 @@
-// UniClass Prisma schema
+// LinkTeacher Prisma schema
 // 设计目标：覆盖 plan 中所有核心实体，约束在 MVP 范围（不含支付/IM/视频）
 
 generator client {
@@ -274,6 +274,17 @@ model ArticleContent {
   updatedAt DateTime @updatedAt
 
   @@index([active])
+}
+
+// 通用 key-value 系统配置（公众号、客服微信、外部跳转 URL 等）
+// value 统一存 JSON 字符串，由调用方解析
+model SystemConfig {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique @db.VarChar(64)
+  value     String   @db.Text
+  desc      String?  @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // =============== 用户行为 ===============

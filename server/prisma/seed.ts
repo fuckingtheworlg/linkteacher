@@ -141,7 +141,7 @@ async function main() {
     {
       slug: 'partnership-rules',
       title: '合作规则',
-      content: `欢迎加入 UniClass 国际课程导师匹配平台。
+      content: `欢迎加入 LinkTeacher 国际课程导师匹配平台。
 
 【一、入驻须知】
 1. 平台仅接收持有真实学历背景的国际课程导师。
@@ -163,12 +163,12 @@ async function main() {
 2. 收到学生投诉超过 3 次 → 暂停展示并人工复核。
 3. 在平台外撬单或引导学生加私人微信绕过平台 → 暂停展示。
 
-详情请联系客服 UniClass 小助手。`,
+详情请联系客服 LinkTeacher 小助手。`,
     },
     {
       slug: 'about-us',
       title: '关于我们',
-      content: `UniClass —— 直连全球优秀独立老师的非机构平台。
+      content: `LinkTeacher —— 直连全球优秀独立老师的非机构平台。
 
 我们相信：
 · 优秀的国际课程教育不应只属于大型机构。
@@ -185,7 +185,7 @@ MIT、哈佛、斯坦福、加州伯克利
 · 100% 真实学历审核
 · 0 平台抽成
 · 自由匹配，自由议价
-· 服务由 UniClass 小助手提供，全程在线`,
+· 服务由 LinkTeacher 小助手提供，全程在线`,
     },
   ];
   for (const a of articles) {
@@ -195,6 +195,24 @@ MIT、哈佛、斯坦福、加州伯克利
       create: a,
     });
   }
+
+  console.log('--- Seed: official-account default config ---');
+  await prisma.systemConfig.upsert({
+    where: { key: 'official-account' },
+    update: {},
+    create: {
+      key: 'official-account',
+      desc: '小程序「我的」页公众号引导卡配置',
+      value: JSON.stringify({
+        name: '个幸话',
+        desc: '原创国际教育资讯平台',
+        qrcodeUrl: '',
+        sameSubject: false,
+        mpAppId: '',
+        active: true,
+      }),
+    },
+  });
 
   console.log('--- Seed: done ---');
 }

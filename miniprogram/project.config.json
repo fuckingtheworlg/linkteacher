@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "./",
   "projectname": "uniclass",
-  "description": "UniClass 国际课程导师匹配平台",
+  "description": "LinkTeacher 国际课程导师匹配平台",
   "appid": "wx6ed01a56fff50469",
   "setting": {
     "urlCheck": false,

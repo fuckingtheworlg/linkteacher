@@ -1,4 +1,4 @@
-const { meApi, bannersApi } = require('../../../utils/api');
+const { meApi, bannersApi, configApi } = require('../../../utils/api');
 const { ensureLogin } = require('../../../utils/auth');
 const { STORAGE_KEYS } = require('../../../utils/config');
 const { pickAndUploadImage } = require('../../../utils/upload');
@@ -23,6 +23,7 @@ Page({
     favoriteTeacherCount: 0,
     favoriteCompetitionCount: 0,
     appVersion: APP_VERSION,
+    oa: null,    // 公众号配置（来自后台 SystemConfig key=official-account）
     grid: [
       { key: 'partnership', label: '合作规则', icon: '/assets/grid/grid-partnership.png' },
       { key: 'mypage',      label: '我的页面', icon: '/assets/grid/grid-mypage.png' },
@@ -62,6 +63,26 @@ Page({
       this.setData({ aboutUsBanner: list && list[0] ? list[0] : null });
     } catch (err) {
       console.warn('[me] fetch about-us banner failed:', err);
+    }
+
+    try {
+      const cfg = await configApi.get('official-account');
+      if (cfg && cfg.exists && cfg.value) {
+        const parsed = JSON.parse(cfg.value);
+        if (parsed.active !== false) {
+          this.setData({ oa: parsed });
+        } else {
+          this.setData({ oa: null });
+        }
+      }
+    } catch (err) {
+      console.warn('[me] fetch oa config failed:', err);
+    }
+  },
+
+  previewOaQrcode() {
+    if (this.data.oa && this.data.oa.qrcodeUrl) {
+      wx.previewImage({ urls: [this.data.oa.qrcodeUrl] });
     }
   },
 
@@ -143,13 +164,13 @@ Page({
   // 微信"分享给朋友"按钮触发，作为「邀请老师」的简化实现
   onShareAppMessage() {
     return {
-      title: 'UniClass 直连全球优秀独立老师，了解一下？',
+      title: 'LinkTeacher 直连全球优秀独立老师，了解一下？',
       path: '/pages/teachers/index/index',
     };
   },
   onShareTimeline() {
     return {
-      title: 'UniClass 直连全球优秀独立老师',
+      title: 'LinkTeacher 直连全球优秀独立老师',
     };
   },
 });

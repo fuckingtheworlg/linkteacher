@@ -40,4 +40,8 @@ const articlesApi = {
   bySlug: (slug) => unwrap(get(`/articles/${slug}`)),
 };
 
-module.exports = { teachersApi, dictApi, bannersApi, matchApi, meApi, articlesApi };
+const configApi = {
+  get: (key) => unwrap(get(`/configs/${key}`)),
+};
+
+module.exports = { teachersApi, dictApi, bannersApi, matchApi, meApi, articlesApi, configApi };

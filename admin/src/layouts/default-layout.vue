@@ -1,7 +1,7 @@
 <template>
   <el-container class="layout-root">
     <el-aside width="220px" class="layout-aside">
-      <div class="logo">UniClass</div>
+      <div class="logo">LinkTeacher</div>
       <el-menu :default-active="route.path" :default-openeds="['dict']" router class="menu" background-color="#1f2937" text-color="#cbd5e1" active-text-color="#ffffff">
         <el-menu-item index="/dashboard">
           <el-icon><Odometer /></el-icon>
@@ -40,6 +40,10 @@
         <el-menu-item index="/articles">
           <el-icon><Document /></el-icon>
           <span>文章管理</span>
+        </el-menu-item>
+        <el-menu-item index="/settings/official-account">
+          <el-icon><ChatLineRound /></el-icon>
+          <span>公众号设置</span>
         </el-menu-item>
         <el-menu-item index="/admins" v-if="auth.isSuperAdmin">
           <el-icon><Setting /></el-icon>

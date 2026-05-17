@@ -1,7 +1,7 @@
 <view class="page">
   <view class="hero">
     <view class="hero-title">邀请老师</view>
-    <view class="hero-sub">分享给身边的国际课程老师，让 UniClass 帮 TA 直连学生家长。</view>
+    <view class="hero-sub">分享给身边的国际课程老师，让 LinkTeacher 帮 TA 直连学生家长。</view>
   </view>
 
   <view class="card">

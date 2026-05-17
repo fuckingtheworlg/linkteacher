@@ -81,6 +81,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true, title: '文章管理' },
       },
       {
+        path: 'settings/official-account',
+        name: 'settings-official-account',
+        component: () => import('@/views/settings/official-account.vue'),
+        meta: { requiresAuth: true, title: '公众号设置' },
+      },
+      {
         path: 'admins',
         name: 'admins',
         component: () => import('@/views/admins/index.vue'),
@@ -109,7 +115,7 @@ router.beforeEach((to, _from, next) => {
     next();
   }
   if (to.meta.title) {
-    document.title = `${to.meta.title as string} - UniClass 管理后台`;
+    document.title = `${to.meta.title as string} - LinkTeacher 管理后台`;
   }
 });
 
