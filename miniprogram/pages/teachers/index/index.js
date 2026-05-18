@@ -163,7 +163,11 @@ Page({
 
   onBannerTap(e) {
     const link = e.currentTarget.dataset.link;
-    if (!link) return;
+    if (!link) {
+      // 后台未配置 link：明确提示，避免静默无反应
+      wx.showToast({ title: '该入口暂未配置目标', icon: 'none' });
+      return;
+    }
     // 以 http(s) 开头 → 复制链接（小程序不允许直接打开外部 URL）
     // 否则视为 article slug → 跳转通用文章页
     if (/^https?:\/\//i.test(link)) {
@@ -172,7 +176,13 @@ Page({
         success: () => wx.showToast({ title: '链接已复制', icon: 'success' }),
       });
     } else {
-      wx.navigateTo({ url: `/pages/article/article?slug=${encodeURIComponent(link)}` });
+      wx.navigateTo({
+        url: `/pages/article/article?slug=${encodeURIComponent(link)}`,
+        fail: (err) => {
+          console.error('[banner] navigate fail:', err);
+          wx.showToast({ title: '跳转失败', icon: 'none' });
+        },
+      });
     }
   },
 });

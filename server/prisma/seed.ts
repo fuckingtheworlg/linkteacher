@@ -101,21 +101,29 @@ async function main() {
   console.log(`   admin account: ${username} / ${defaultPassword} (must change on first login)`);
 
   console.log('--- Seed: home banner (CTB) ---');
+  // 用 upsert 让既有记录的 link 字段也能被更新（早期 seed 留下 link='' 的需要修正）
   const existingBanner = await prisma.banner.findFirst({
     where: { position: BannerPosition.HOME_TOP, title: '国际竞赛 COMPETITIONS' },
   });
-  if (!existingBanner) {
-    await prisma.banner.create({
-      data: {
-        title: '国际竞赛 COMPETITIONS',
-        subtitle: 'CTB 查看列表',
-        imageUrl: '',
-        link: '',
-        position: BannerPosition.HOME_TOP,
-        sort: 1,
-        active: true,
-      },
-    });
+  const ctbBannerData = {
+    title: '国际竞赛 COMPETITIONS',
+    subtitle: 'CTB 查看列表',
+    imageUrl: '',
+    link: 'competitions', // slug 跳转到下方 competitions 文章
+    position: BannerPosition.HOME_TOP,
+    sort: 1,
+    active: true,
+  };
+  if (existingBanner) {
+    // 若旧记录 link 为空，补上跳转目标；其它字段保持运营在后台改过的值
+    if (!existingBanner.link) {
+      await prisma.banner.update({
+        where: { id: existingBanner.id },
+        data: { link: 'competitions' },
+      });
+    }
+  } else {
+    await prisma.banner.create({ data: ctbBannerData });
   }
 
   console.log('--- Seed: about-us banner ---');
@@ -186,6 +194,54 @@ MIT、哈佛、斯坦福、加州伯克利
 · 0 平台抽成
 · 自由匹配，自由议价
 · 服务由 LinkTeacher 小助手提供，全程在线`,
+    },
+    {
+      slug: 'competitions',
+      title: '国际竞赛 · 资源汇总',
+      content: `LinkTeacher 长期跟踪以下含金量较高的国际竞赛，帮助同学们规划课外履历、冲刺名校：
+
+【数学】
+· AMC 8 / 10 / 12（美国数学邀请赛系列）—— 申请美本 STEM 必备
+· AIME（美国数学邀请赛）—— AMC 高分晋级赛
+· HMMT（哈佛-MIT 数学竞赛）
+· Math League（北美数学联赛）
+· UKMT BMO（英国数学奥赛）—— 牛剑数学专业青睐
+· Kangaroo（袋鼠数学竞赛）
+
+【物理】
+· Physics Bowl（美国物理碗）
+· BPhO（英国物理奥赛）
+· PhysicsBrawl（在线团队赛）
+· PUPC（普林斯顿物理竞赛）
+
+【化学】
+· UKChO（英国化学奥赛）
+· CCO（加拿大化学奥赛）
+· USNCO（美国化学奥赛）
+
+【生物】
+· USABO（美国生物奥赛）
+· BBO（英国生物奥赛）
+· Brain Bee（脑科学大赛）
+
+【计算机】
+· USACO（美国计算机奥赛）
+· Codeforces / LeetCode 周赛
+· British Informatics Olympiad
+
+【经济商科】
+· NEC（全美经济学挑战赛）
+· IEO（国际经济学奥赛）
+· FBLA（美国未来商业领袖大赛）
+
+【综合科研 / 写作】
+· CTB（China Thinks Big · 中国大智汇创新研究挑战）
+· John Locke 论文竞赛
+· Marshall Society 经济论文
+· Newnham 论文（剑桥纽纳姆学院）
+· ISEF / 丘成桐中学科学奖
+
+需要哪一项的报名指导、备考资源或一对一辅导？请点击右下角「帮我匹配」联系客服小助手。`,
     },
   ];
   for (const a of articles) {
