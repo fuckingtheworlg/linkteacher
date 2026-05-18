@@ -10,6 +10,12 @@
 
     <el-table :data="list" v-loading="loading" border row-key="id" stripe>
       <el-table-column label="ID" prop="id" width="60" />
+      <el-table-column label="校徽" width="70">
+        <template #default="{ row }">
+          <el-image v-if="row.logoUrl" :src="row.logoUrl" :preview-src-list="[row.logoUrl]" fit="contain" style="width: 40px; height: 40px; background: #f9fafb; border-radius: 4px" />
+          <span v-else class="muted">-</span>
+        </template>
+      </el-table-column>
       <el-table-column label="中文名" prop="nameZh" min-width="160" />
       <el-table-column label="英文名" prop="nameEn" min-width="240" />
       <el-table-column label="国家 / 城市" min-width="160">
@@ -54,7 +60,30 @@
         <el-form-item label="城市"><el-input v-model="dialog.form.city" /></el-form-item>
         <el-form-item label="QS 排名"><el-input-number v-model="dialog.form.qsRank" :min="1" /></el-form-item>
         <el-form-item label="QS 年份"><el-input-number v-model="dialog.form.qsYear" :min="2010" :max="2099" /></el-form-item>
-        <el-form-item label="Logo URL"><el-input v-model="dialog.form.logoUrl" /></el-form-item>
+        <el-form-item label="校徽">
+          <div class="logo-upload">
+            <el-upload
+              class="logo-uploader"
+              :action="uploadUrl"
+              :headers="uploadHeaders"
+              :show-file-list="false"
+              accept="image/png,image/jpeg,image/webp,image/svg+xml"
+              :before-upload="beforeLogoUpload"
+              :on-success="onLogoSuccess"
+              :on-error="onLogoError"
+            >
+              <img v-if="dialog.form.logoUrl" :src="dialog.form.logoUrl" class="logo-img" />
+              <div v-else class="logo-empty">
+                <el-icon><Plus /></el-icon>
+                <span>上传校徽</span>
+              </div>
+            </el-upload>
+            <div class="logo-side">
+              <el-input v-model="dialog.form.logoUrl" placeholder="或直接粘贴图片 URL" clearable />
+              <p class="muted">推荐方形 PNG，背景透明 / 白底；≤ 2MB</p>
+            </div>
+          </div>
+        </el-form-item>
         <el-form-item label="排序权重"><el-input-number v-model="dialog.form.sortWeight" /></el-form-item>
         <el-form-item label="启用"><el-switch v-model="dialog.form.active" /></el-form-item>
       </el-form>
@@ -67,9 +96,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
-import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus';
+import { computed, onMounted, reactive, ref } from 'vue';
+import { ElMessage, ElMessageBox, type FormInstance, type UploadProps } from 'element-plus';
 import { dictApi } from '@/api/admin';
+import { tokenStore } from '@/api/http';
 
 const list = ref<any[]>([]);
 const total = ref(0);
@@ -149,6 +179,33 @@ async function onDelete(row: any) {
   } catch { /* interceptor */ }
 }
 
+// ===== 校徽上传 =====
+const uploadUrl = '/api/upload/image';
+const uploadHeaders = computed(() => {
+  const t = tokenStore.get();
+  return t ? { Authorization: `Bearer ${t}` } : {};
+});
+const beforeLogoUpload: UploadProps['beforeUpload'] = (file) => {
+  if (file.size > 2 * 1024 * 1024) {
+    ElMessage.error('校徽需小于 2MB');
+    return false;
+  }
+  return true;
+};
+const onLogoSuccess: UploadProps['onSuccess'] = (resp) => {
+  const data = (resp && resp.code === 0 && resp.data) || resp;
+  if (data && data.url) {
+    dialog.form.logoUrl = data.url;
+    ElMessage.success('校徽已上传');
+  } else {
+    ElMessage.error('上传响应异常');
+  }
+};
+const onLogoError: UploadProps['onError'] = (err) => {
+  console.error('[logo] upload fail', err);
+  ElMessage.error('上传失败');
+};
+
 onMounted(reload);
 </script>
 
@@ -156,4 +213,31 @@ onMounted(reload);
 .toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
 .muted { color: #9ca3af; font-size: 12px; }
 .pagination { margin-top: 16px; text-align: right; }
+
+.logo-upload { display: flex; gap: 16px; align-items: flex-start; }
+.logo-uploader :deep(.el-upload) {
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f9fafb;
+  transition: border-color 0.2s;
+}
+.logo-uploader :deep(.el-upload:hover) { border-color: #1f2937; }
+.logo-img { width: 96px; height: 96px; object-fit: contain; background: #fff; }
+.logo-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+.logo-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.logo-side .muted { margin: 0; }
 </style>
