@@ -97,6 +97,24 @@
     </view>
   </view>
 
+  <!-- 指导经验 -->
+  <view class="card" wx:if="{{ teacher.mentorExperience }}">
+    <view class="section-title">指导经验</view>
+    <view class="long-text text-body">{{ teacher.mentorExperience }}</view>
+  </view>
+
+  <!-- 工作履历 -->
+  <view class="card" wx:if="{{ teacher.workHistory }}">
+    <view class="section-title">工作履历</view>
+    <view class="long-text text-body">{{ teacher.workHistory }}</view>
+  </view>
+
+  <!-- 个人荣誉 -->
+  <view class="card" wx:if="{{ teacher.honors }}">
+    <view class="section-title">个人荣誉</view>
+    <view class="long-text text-body">{{ teacher.honors }}</view>
+  </view>
+
   <view class="footer-spacer"></view>
 
   <!-- 底部按钮 -->

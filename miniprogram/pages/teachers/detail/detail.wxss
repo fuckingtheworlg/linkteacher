@@ -98,6 +98,14 @@
 .edu-verify-REJECTED { background: #dc2626; color: #fff; }
 .edu-verify-PENDING  { background: #f59e0b; color: #fff; }
 
+/* 长文本卡片：指导经验 / 工作履历 / 个人荣誉 */
+.long-text {
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.7;
+  color: #1f2937;
+}
+
 /* 辅导内容 */
 .subject-list { display: flex; flex-direction: column; gap: 16rpx; }
 .subject-row { display: flex; align-items: flex-start; gap: 16rpx; }
