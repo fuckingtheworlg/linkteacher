@@ -37,13 +37,32 @@
 
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
 
-/* 大学 picker */
-.picker-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: flex-end; }
-.picker { width: 100%; background: #fff; border-radius: 24rpx 24rpx 0 0; max-height: 80vh; padding: 24rpx; display: flex; flex-direction: column; }
-.picker-header { padding-bottom: 16rpx; }
+/* 大学 picker
+ * 注意：iOS 小程序 input/textarea 是 native 层会穿透 wxss 弹层；
+ *       wxml 已用 wx:if 把表单字段不渲染，这里 z-index 仅作保险。
+ */
+.picker-mask {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 9999;
+}
+.picker {
+  width: 100%;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  height: 80vh;
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.picker-header { padding-bottom: 16rpx; flex-shrink: 0; }
 .picker-search { background: #f3f4f6; border-radius: 32rpx; padding: 16rpx 28rpx; font-size: 28rpx; }
-.picker-list { flex: 1; min-height: 60vh; }
+.picker-list { flex: 1; min-height: 0; }
 .picker-item { display: flex; justify-content: space-between; align-items: center; padding: 24rpx 12rpx; border-bottom: 1rpx solid #f3f4f6; }
 .u-zh { font-size: 30rpx; color: #1f2937; font-weight: 600; }
 .u-en { display: block; font-size: 24rpx; color: #6b7280; margin-top: 4rpx; }
-.u-rank { color: #fbbf24; font-size: 26rpx; font-weight: 600; }
+.u-rank { color: #1f2937; font-size: 24rpx; font-weight: 700; background: #fef3c7; padding: 4rpx 12rpx; border-radius: 6rpx; }
