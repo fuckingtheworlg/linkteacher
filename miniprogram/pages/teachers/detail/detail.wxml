@@ -60,10 +60,15 @@
     <view class="section-title">教育背景</view>
     <view class="edu-list">
       <view class="edu-row" wx:for="{{ educationsView }}" wx:for-item="e" wx:key="id">
-        <view class="edu-rank" wx:if="{{ e.qsLabel }}">{{ e.qsLabel }}</view>
-        <view class="edu-rank text-muted" wx:else>—</view>
+        <view class="edu-logo-wrap">
+          <image wx:if="{{ e.logoUrl }}" class="edu-logo-img" src="{{ e.logoUrl }}" mode="aspectFit" />
+          <view wx:else class="edu-logo-placeholder">{{ e.logoLetter }}</view>
+        </view>
         <view class="edu-main">
-          <view class="edu-name">{{ e.nameZh }}</view>
+          <view class="edu-rank-line">
+            <text class="edu-name">{{ e.nameZh }}</text>
+            <text class="edu-rank-tag" wx:if="{{ e.qsLabel }}">{{ e.qsLabel }}</text>
+          </view>
           <view class="edu-name-en text-sub text-sm">{{ e.nameEn }}</view>
           <view class="edu-major text-sub text-sm">{{ e.degreeText }} · {{ e.major }}</view>
         </view>

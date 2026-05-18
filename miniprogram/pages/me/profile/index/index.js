@@ -83,10 +83,34 @@ Page({
 
   async onSubmit() {
     if (this.data.saving) return;
-    if (!this.data.canSubmit) {
-      wx.showToast({ title: '请先完整填写所有必填项', icon: 'none' });
+    // 提交前本地预校验：列出所有缺失项 + 提供「去填写」快速跳转
+    const t = this.data.teacher;
+    const missing = [];
+    if (!t || !t.realName) missing.push({ label: '真实姓名', target: 'identity' });
+    if (!t || !t.idCardFrontUrl) missing.push({ label: '身份证正面', target: 'identity' });
+    if (!t || !t.idCardBackUrl) missing.push({ label: '身份证反面', target: 'identity' });
+    if (!t || !t.addressDetail) missing.push({ label: '地址定位', target: 'identity' });
+    if (!t || !t.hourlyRate) missing.push({ label: '课时费', target: 'hourlyRate' });
+    if (!t || !t.trialRate) missing.push({ label: '试听价', target: 'trialRate' });
+    if (!t || !t.educations || t.educations.length === 0) missing.push({ label: '至少 1 段学历背景', target: 'education-1' });
+    if (!t || !t.subjects || t.subjects.length === 0) missing.push({ label: '至少 1 个辅导科目', target: 'subjects-1' });
+
+    if (missing.length > 0) {
+      const labels = missing.map((m) => m.label).join('、');
+      // 跳到第一个缺失项
+      const first = missing[0];
+      wx.showModal({
+        title: '资料不完整',
+        content: `还需要填写：${labels}\n\n要先去填「${first.label}」吗？`,
+        confirmText: '前往填写',
+        cancelText: '我再看看',
+        success: (res) => {
+          if (res.confirm) this.goEdit({ currentTarget: { dataset: { field: first.target } } });
+        },
+      });
       return;
     }
+
     this.setData({ saving: true });
     try {
       await meApi.submit();

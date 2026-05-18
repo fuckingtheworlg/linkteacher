@@ -49,19 +49,38 @@
 
 /* 教育背景 */
 .edu-list { display: flex; flex-direction: column; gap: 24rpx; }
-.edu-row { display: flex; gap: 20rpx; align-items: flex-start; }
-.edu-rank {
-  width: 140rpx;
+.edu-row { display: flex; gap: 20rpx; align-items: center; }
+
+.edu-logo-wrap {
+  width: 88rpx;
+  height: 88rpx;
   flex-shrink: 0;
-  font-size: 26rpx;
-  font-weight: 700;
-  color: #1f2937;
-  line-height: 1.4;
+  border-radius: 12rpx;
+  background: #f3f4f6;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.edu-logo-img { width: 88rpx; height: 88rpx; }
+.edu-logo-placeholder {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #6b7280;
+}
+
 .edu-main { flex: 1; min-width: 0; }
+.edu-rank-line { display: flex; align-items: center; gap: 12rpx; flex-wrap: wrap; }
 .edu-name { font-size: 28rpx; font-weight: 600; color: #1f2937; }
+.edu-rank-tag {
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 22rpx;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+}
 .edu-name-en { margin-top: 2rpx; }
-.edu-major { margin-top: 6rpx; }
+.edu-major { margin-top: 4rpx; }
 
 /* 辅导内容 */
 .subject-list { display: flex; flex-direction: column; gap: 16rpx; }

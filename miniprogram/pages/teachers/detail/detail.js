@@ -36,15 +36,21 @@ Page({
       const languages = Array.isArray(t.languages) ? t.languages : [];
       const tags = Array.isArray(t.tags) ? t.tags : [];
 
-      const educationsView = (t.educations || []).map((e) => ({
-        id: e.id,
-        qsLabel: e.university && e.university.qsRank ? `${e.university.qsYear || 2025}QS  #${e.university.qsRank}` : '',
-        nameEn: e.university ? e.university.nameEn : '',
-        nameZh: e.university ? e.university.nameZh : '',
-        major: e.major,
-        degreeText: this.degreeText(e.degree),
-        logoUrl: e.university && e.university.logoUrl,
-      }));
+      const educationsView = (t.educations || []).map((e) => {
+        const nameZh = e.university ? e.university.nameZh : '';
+        const nameEn = e.university ? e.university.nameEn : '';
+        return {
+          id: e.id,
+          qsLabel: e.university && e.university.qsRank ? `${e.university.qsYear || 2025}QS  #${e.university.qsRank}` : '',
+          nameEn,
+          nameZh,
+          major: e.major,
+          degreeText: this.degreeText(e.degree),
+          logoUrl: (e.university && e.university.logoUrl) || '',
+          // logo 缺失时用学校英文首字母作占位（如 'Stanford' → 'S'）
+          logoLetter: (nameEn || nameZh).charAt(0).toUpperCase(),
+        };
+      });
 
       const subjectsView = (t.subjects || []).map((ts) => ({
         name: ts.subject.name,
