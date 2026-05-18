@@ -117,13 +117,48 @@
 
         <h4 class="mt">教育背景</h4>
         <el-table :data="drawer.teacher.educations || []" size="small" border>
-          <el-table-column label="学校" prop="university.nameZh" />
-          <el-table-column label="学位" prop="degree" width="100" />
-          <el-table-column label="专业" prop="major" />
-          <el-table-column label="时间" width="160">
+          <el-table-column label="学校" prop="university.nameZh" min-width="140" />
+          <el-table-column label="学位" prop="degree" width="80" />
+          <el-table-column label="专业" prop="major" min-width="160" />
+          <el-table-column label="时间" width="120">
             <template #default="{ row }">{{ row.startYear || '?' }} - {{ row.endYear || '?' }}</template>
           </el-table-column>
+          <el-table-column label="认证" width="100">
+            <template #default="{ row }">
+              <el-tag :type="eduTagType(row.verifiedStatus)" size="small">
+                {{ eduStatusText(row.verifiedStatus) }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="200">
+            <template #default="{ row }">
+              <el-button
+                v-if="row.verifiedStatus !== 'VERIFIED'"
+                size="small"
+                type="success"
+                link
+                @click="onEduVerify(row, true)"
+              >通过</el-button>
+              <el-button
+                v-if="row.verifiedStatus !== 'REJECTED'"
+                size="small"
+                type="danger"
+                link
+                @click="onEduReject(row)"
+              >驳回</el-button>
+              <el-button
+                v-if="row.verifiedStatus !== 'PENDING'"
+                size="small"
+                type="info"
+                link
+                @click="onEduReset(row)"
+              >重置</el-button>
+            </template>
+          </el-table-column>
         </el-table>
+        <div v-if="hasEduRejected" class="resume-reject" style="margin-top: 8px">
+          已驳回学历的原因见每条 row hover；老师再次保存学历后状态会自动重置回「待审核」。
+        </div>
 
         <h4 class="mt">辅导内容</h4>
         <el-table :data="drawer.teacher.subjects || []" size="small" border>
@@ -209,9 +244,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { teacherApi } from '@/api/admin';
+import { teacherApi, educationApi } from '@/api/admin';
 
 const list = ref<any[]>([]);
 const total = ref(0);
@@ -253,6 +288,44 @@ async function openAudit(row: any) {
     drawer.resumeReason = '';
     drawer.visible = true;
   } catch { /* interceptor */ }
+}
+
+// ===== 学历认证 =====
+const hasEduRejected = computed(() =>
+  (drawer.teacher?.educations || []).some((e: any) => e.verifiedStatus === 'REJECTED'),
+);
+
+function eduStatusText(s?: string) {
+  return ({ PENDING: '待审核', VERIFIED: '已通过', REJECTED: '已驳回' } as Record<string, string>)[s || ''] || '-';
+}
+function eduTagType(s?: string) {
+  return ({ PENDING: 'warning', VERIFIED: 'success', REJECTED: 'danger' } as Record<string, any>)[s || 'PENDING'];
+}
+
+async function onEduVerify(row: any, _approve: boolean) {
+  const updated = await educationApi.verify(row.id, true);
+  Object.assign(row, updated);
+  ElMessage.success('学历已通过');
+}
+
+async function onEduReject(row: any) {
+  const { value } = await ElMessageBox.prompt('请输入驳回原因', '驳回学历', {
+    type: 'warning',
+    confirmButtonText: '确认驳回',
+    inputType: 'textarea',
+    inputValidator: (v) => (v && v.trim()) ? true : '原因不能为空',
+  }).catch(() => ({ value: null }));
+  if (!value) return;
+  const updated = await educationApi.verify(row.id, false, value);
+  Object.assign(row, updated);
+  ElMessage.success('已驳回');
+}
+
+async function onEduReset(row: any) {
+  await ElMessageBox.confirm('确定重置该学历认证状态？', '提示', { type: 'warning' });
+  const updated = await educationApi.reset(row.id);
+  Object.assign(row, updated);
+  ElMessage.success('已重置为待审核');
 }
 
 function resumeStatusText(s?: string) {

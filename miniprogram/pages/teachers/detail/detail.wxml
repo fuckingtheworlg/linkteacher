@@ -72,6 +72,11 @@
           <view class="edu-name-en text-sub text-sm">{{ e.nameEn }}</view>
           <view class="edu-major text-sub text-sm">{{ e.degreeText }} · {{ e.major }}</view>
         </view>
+        <view class="edu-verify edu-verify-{{ e.verifiedStatus }}">
+          <text wx:if="{{ e.verifiedStatus === 'VERIFIED' }}">✓</text>
+          <text wx:elif="{{ e.verifiedStatus === 'REJECTED' }}">✕</text>
+          <text wx:else>!</text>
+        </view>
       </view>
     </view>
   </view>

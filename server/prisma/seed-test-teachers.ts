@@ -129,7 +129,7 @@ async function main() {
       await prisma.teacherSubject.deleteMany({ where: { teacherId: teacher.id } });
     }
 
-    // 创建 1 段学历
+    // 创建 1 段学历（APPROVED 老师的学历预设为 VERIFIED）
     const u = universities[i % universities.length];
     await prisma.teacherEducation.create({
       data: {
@@ -140,6 +140,8 @@ async function main() {
         startYear: 2018 + (i % 4),
         endYear: 2022 + (i % 4),
         sort: 0,
+        verifiedStatus: status === 'APPROVED' ? 'VERIFIED' : 'PENDING',
+        verifiedAt: status === 'APPROVED' ? new Date() : null,
       },
     });
 

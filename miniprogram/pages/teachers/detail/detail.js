@@ -49,6 +49,8 @@ Page({
           logoUrl: (e.university && e.university.logoUrl) || '',
           // logo 缺失时用学校英文首字母作占位（如 'Stanford' → 'S'）
           logoLetter: (nameEn || nameZh).charAt(0).toUpperCase(),
+          // 学历认证状态：VERIFIED 显绿勾 / REJECTED 显红叉 / PENDING 显橙叹号
+          verifiedStatus: e.verifiedStatus || 'PENDING',
         };
       });
 

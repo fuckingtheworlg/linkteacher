@@ -126,6 +126,12 @@ enum DegreeType {
   OTHER
 }
 
+enum EducationVerifiedStatus {
+  PENDING     // 待审核
+  VERIFIED    // 已通过（详情页显示 ✓）
+  REJECTED    // 已驳回（详情页显示 ⚠）
+}
+
 enum ResumeStatus {
   EMPTY            // 未上传
   PENDING_REVIEW   // 已上传，待审核
@@ -206,6 +212,11 @@ model TeacherEducation {
   startYear    Int?
   endYear      Int?
   sort         Int        @default(0)  // 学历背景1 / 学历背景2 排序
+
+  // 学历认证（独立于 Teacher.status 的子流程）
+  verifiedStatus     EducationVerifiedStatus @default(PENDING)
+  verifiedAt         DateTime?
+  verifyRejectReason String?                  @db.VarChar(500)
 
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt

@@ -187,7 +187,9 @@ export class TeachersService {
         update: updateData,
       });
 
-      // 3. 如果传了 educations，整组覆盖（草稿场景下用户每次提交一份完整版本）
+      // 3. 如果传了 educations，整组覆盖（每次保存学历都会清空 + 重建）
+      //    新创建的 TeacherEducation 默认 verifiedStatus = PENDING，
+      //    即老师修改任何学历字段都会自动需要重新审核，避免造假
       if (dto.educations) {
         await tx.teacherEducation.deleteMany({ where: { teacherId: teacher.id } });
         if (dto.educations.length > 0) {
@@ -200,6 +202,7 @@ export class TeachersService {
               startYear: e.startYear,
               endYear: e.endYear,
               sort: e.sort ?? idx,
+              // verifiedStatus 走默认值 PENDING
             })),
           });
         }

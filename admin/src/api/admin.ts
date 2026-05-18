@@ -68,6 +68,15 @@ export const endUserApi = {
   remove: (id: number) => http.delete<unknown, { ok: true }>(`/admin/end-users/${id}`),
 };
 
+// ============ 学历认证 ============
+export type EducationVerifiedStatus = 'PENDING' | 'VERIFIED' | 'REJECTED';
+
+export const educationApi = {
+  verify: (id: number, approve: boolean, reason?: string) =>
+    http.post<unknown, any>(`/admin/educations/${id}/verify`, { approve, reason }),
+  reset: (id: number) => http.post<unknown, any>(`/admin/educations/${id}/reset`, {}),
+};
+
 // ============ 系统配置 ============
 export interface SystemConfigRow {
   id: number;

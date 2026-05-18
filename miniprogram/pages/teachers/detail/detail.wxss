@@ -82,6 +82,22 @@
 .edu-name-en { margin-top: 2rpx; }
 .edu-major { margin-top: 4rpx; }
 
+/* 学历认证小圆标 */
+.edu-verify {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.edu-verify-VERIFIED { background: #16a34a; color: #fff; }
+.edu-verify-REJECTED { background: #dc2626; color: #fff; }
+.edu-verify-PENDING  { background: #f59e0b; color: #fff; }
+
 /* 辅导内容 */
 .subject-list { display: flex; flex-direction: column; gap: 16rpx; }
 .subject-row { display: flex; align-items: flex-start; gap: 16rpx; }
