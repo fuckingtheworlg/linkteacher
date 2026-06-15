@@ -121,13 +121,8 @@ Page({
     wx.previewImage({ urls: [url] });
   },
 
-  // 选择地址定位（chooseLocation 接口需要在公众平台「接口设置」申请审核）
+  // 选择地址定位（强制走 wx.chooseLocation，不允许手动输入）
   chooseLocation() {
-    // 检测是否支持 chooseLocation
-    if (typeof wx.chooseLocation !== 'function') {
-      this.fallbackInputAddress();
-      return;
-    }
     wx.chooseLocation({
       success: (res) => {
         const detail = res.address ? `${res.address}${res.name ? ' · ' + res.name : ''}` : res.name;
@@ -138,24 +133,22 @@ Page({
         });
       },
       fail: (err) => {
-        if (err.errMsg && err.errMsg.indexOf('cancel') >= 0) return;
-        console.warn('[identity] chooseLocation fail, fallback to manual input:', err);
-        // 未审批 chooseLocation 接口 / 用户拒绝授权 → 降级为手动输入
-        this.fallbackInputAddress();
-      },
-    });
-  },
-
-  fallbackInputAddress() {
-    wx.showModal({
-      title: '请填写详细地址',
-      content: '当前小程序未启用地图定位功能，请直接输入您的工作 / 服务地址（精确到街道）',
-      editable: true,
-      placeholderText: this.data.addressDetail || '例：英国伦敦市某街道某号',
-      success: (res) => {
-        if (res.confirm && res.content) {
-          this.setData({ addressDetail: res.content.trim() });
+        if (err.errMsg && err.errMsg.indexOf('cancel') >= 0) return; // 用户主动取消，静默
+        console.error('[identity] chooseLocation fail:', err);
+        const msg = (err.errMsg || '').toLowerCase();
+        // 用户拒绝授权位置权限 → 引导去设置开启
+        if (msg.indexOf('auth') >= 0 || msg.indexOf('permission') >= 0 || msg.indexOf('deny') >= 0) {
+          wx.showModal({
+            title: '需要位置权限',
+            content: '请在「我的小程序设置」中打开位置权限后重试',
+            confirmText: '去设置',
+            success: (r) => {
+              if (r.confirm) wx.openSetting();
+            },
+          });
+          return;
         }
+        wx.showToast({ title: '定位失败，请稍后重试', icon: 'none' });
       },
     });
   },

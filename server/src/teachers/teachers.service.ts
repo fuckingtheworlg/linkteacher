@@ -252,7 +252,11 @@ export class TeachersService {
     if (!teacher.realName) missing.push('真实姓名');
     if (!teacher.idCardFrontUrl) missing.push('身份证正面');
     if (!teacher.idCardBackUrl) missing.push('身份证反面');
-    if (!teacher.addressDetail) missing.push('地址定位');
+    // 地址必须通过 wx.chooseLocation 选取（同时存 addressDetail + lat + lng），
+    // 防止前端绕过强制输入 addressDetail 但无定位
+    if (!teacher.addressDetail || teacher.latitude == null || teacher.longitude == null) {
+      missing.push('地址定位（请通过地图选点）');
+    }
     if (!teacher.hourlyRate) missing.push('课时费');
     if (!teacher.trialRate) missing.push('试听价');
     if (!teacher.educations || teacher.educations.length === 0) missing.push('至少 1 段学历背景');
