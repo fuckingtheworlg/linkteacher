@@ -46,7 +46,12 @@ http.interceptors.response.use(
 
     if (status === 401) {
       tokenStore.clear();
-      if (location.hash && !location.hash.startsWith('#/login')) {
+      const onLoginPage = location.hash && location.hash.startsWith('#/login');
+      if (onLoginPage) {
+        // 登录页 401 = 账号或密码错误（或类似登录失败），直接展示后端 message
+        ElMessage.error(typeof message === 'string' ? message : '账号或密码错误');
+      } else {
+        // 非登录页 401 = token 失效，跳登录
         ElMessage.error('登录已过期，请重新登录');
         location.hash = `#/login?redirect=${encodeURIComponent(location.hash.slice(1))}`;
       }
