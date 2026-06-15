@@ -1,4 +1,5 @@
 const { meApi, dictApi } = require('../../../../utils/api');
+const { appShare, timelineShare } = require('../../../../utils/share');
 
 Page({
   data: {
@@ -11,6 +12,9 @@ Page({
     note: '',
     saving: false,
   },
+
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 
   async onLoad(options) {
     const slot = options.slot || 'subjects-1';

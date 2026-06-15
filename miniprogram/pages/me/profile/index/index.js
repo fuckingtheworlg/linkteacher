@@ -1,6 +1,7 @@
 const { meApi } = require('../../../../utils/api');
 const { fmtPrice } = require('../../../../utils/format');
 const { pickAndUploadImage } = require('../../../../utils/upload');
+const { appShare, timelineShare } = require('../../../../utils/share');
 
 Page({
   data: {
@@ -40,6 +41,9 @@ Page({
     if (!t) return false;
     return !!t.hourlyRate && !!t.trialRate && (t.educations || []).length > 0 && (t.subjects || []).length > 0;
   },
+
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 
   async onPickAvatar() {
     try {

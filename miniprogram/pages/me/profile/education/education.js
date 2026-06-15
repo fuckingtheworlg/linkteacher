@@ -1,4 +1,5 @@
 const { meApi, dictApi } = require('../../../../utils/api');
+const { appShare, timelineShare } = require('../../../../utils/share');
 
 const DEGREE_OPTIONS = [
   { code: 'BACHELOR', name: '本科' },
@@ -22,6 +23,9 @@ Page({
     saving: false,
     showUniversityPicker: false,
   },
+
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 
   async onLoad(options) {
     const sort = parseInt(options.sort || '0', 10);

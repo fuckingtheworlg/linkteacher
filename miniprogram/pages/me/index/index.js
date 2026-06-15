@@ -2,6 +2,7 @@ const { meApi, bannersApi, configApi } = require('../../../utils/api');
 const { ensureLogin } = require('../../../utils/auth');
 const { STORAGE_KEYS } = require('../../../utils/config');
 const { pickAndUploadImage } = require('../../../utils/upload');
+const { appShare, timelineShare } = require('../../../utils/share');
 
 const STATUS_TEXT = {
   DRAFT: '草稿',
@@ -161,16 +162,6 @@ Page({
     }
   },
 
-  // 微信"分享给朋友"按钮触发，作为「邀请老师」的简化实现
-  onShareAppMessage() {
-    return {
-      title: 'LinkTeacher 直连全球优秀独立老师，了解一下？',
-      path: '/pages/teachers/index/index',
-    };
-  },
-  onShareTimeline() {
-    return {
-      title: 'LinkTeacher 直连全球优秀独立老师',
-    };
-  },
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 });

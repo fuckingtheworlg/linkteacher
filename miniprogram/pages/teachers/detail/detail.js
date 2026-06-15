@@ -1,5 +1,6 @@
 const { teachersApi, matchApi, meApi } = require('../../../utils/api');
 const { fmtPrice, genderToText } = require('../../../utils/format');
+const { appShare, timelineShare } = require('../../../utils/share');
 
 Page({
   data: {
@@ -126,6 +127,23 @@ Page({
 
   goEditProfile() {
     wx.redirectTo({ url: '/pages/me/profile/index/index' });
+  },
+
+  onShareAppMessage() {
+    const t = this.data.teacher;
+    if (t && t.id && !this.data.isPreview) {
+      const name = (t.user && t.user.nickname) || '一位老师';
+      return appShare(`向你推荐：${name} - LinkTeacher`, `/pages/teachers/detail/detail?id=${t.id}`);
+    }
+    return appShare();
+  },
+  onShareTimeline() {
+    const t = this.data.teacher;
+    if (t && t.id && !this.data.isPreview) {
+      const name = (t.user && t.user.nickname) || '一位老师';
+      return timelineShare(`向你推荐：${name} - LinkTeacher`);
+    }
+    return timelineShare();
   },
 
   genderText() {

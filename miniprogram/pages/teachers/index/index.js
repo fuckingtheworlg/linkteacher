@@ -1,5 +1,6 @@
 const { teachersApi, dictApi, bannersApi, matchApi } = require('../../../utils/api');
 const { fmtPrice, genderToText } = require('../../../utils/format');
+const { appShare, timelineShare } = require('../../../utils/share');
 
 Page({
   data: {
@@ -160,6 +161,9 @@ Page({
   onMatchContact() {
     matchApi.log('home_match_button').catch((err) => console.warn('match log fail', err));
   },
+
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 
   onBannerTap(e) {
     const link = e.currentTarget.dataset.link;

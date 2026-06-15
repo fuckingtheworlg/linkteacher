@@ -1,4 +1,5 @@
 const { meApi } = require('../../../../utils/api');
+const { appShare, timelineShare } = require('../../../../utils/share');
 
 const FIELD_META = {
   nickname:        { title: '昵称', type: 'input',    placeholder: '请输入昵称', max: 32, target: 'nickname' },
@@ -32,6 +33,9 @@ Page({
     valueArr: [],
     saving: false,
   },
+
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 
   async onLoad(options) {
     const field = options.field;

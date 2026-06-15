@@ -1,5 +1,6 @@
 const { meApi } = require('../../../../utils/api');
 const { API_BASE, STORAGE_KEYS } = require('../../../../utils/config');
+const { appShare, timelineShare } = require('../../../../utils/share');
 
 Page({
   data: {
@@ -14,6 +15,9 @@ Page({
     uploadingFront: false,
     uploadingBack: false,
   },
+
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 
   async onLoad() {
     try {

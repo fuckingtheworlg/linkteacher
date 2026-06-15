@@ -1,4 +1,5 @@
 const { articlesApi } = require('../../utils/api');
+const { appShare, timelineShare } = require('../../utils/share');
 
 Page({
   data: {
@@ -6,6 +7,20 @@ Page({
     article: null,
     loading: true,
     paragraphs: [],   // 拆分后的段落数组（小程序 wxml 不支持复杂渲染）
+  },
+
+  onShareAppMessage() {
+    const a = this.data.article;
+    const slug = this.data.slug;
+    if (a && slug) {
+      return appShare(`${a.title} - LinkTeacher`, `/pages/article/article?slug=${slug}`);
+    }
+    return appShare();
+  },
+  onShareTimeline() {
+    const a = this.data.article;
+    if (a) return timelineShare(`${a.title} - LinkTeacher`);
+    return timelineShare();
   },
 
   async onLoad(options) {

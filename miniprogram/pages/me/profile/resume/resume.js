@@ -1,5 +1,6 @@
 const { meApi } = require('../../../../utils/api');
 const { API_BASE, STORAGE_KEYS } = require('../../../../utils/config');
+const { appShare, timelineShare } = require('../../../../utils/share');
 
 const STATUS_TEXT = {
   EMPTY: '',
@@ -21,6 +22,9 @@ Page({
     statusText: '',
     allowDisplay: false,   // 「是否同意展示」单选；默认不同意（与截图一致）
   },
+
+  onShareAppMessage() { return appShare(); },
+  onShareTimeline() { return timelineShare(); },
 
   async onLoad() {
     try {

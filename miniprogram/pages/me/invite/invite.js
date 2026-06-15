@@ -1,13 +1,13 @@
+const { appShare, timelineShare } = require('../../../utils/share');
+
 Page({
   data: {},
 
   onShareAppMessage() {
-    return {
-      title: 'LinkTeacher 正在邀请你 — 直连全球优秀独立老师',
-      path: '/pages/teachers/index/index',
-    };
+    // 邀请老师页保留专属文案
+    return appShare('LinkTeacher 正在邀请你 — 直连全球优秀独立老师');
   },
   onShareTimeline() {
-    return { title: 'LinkTeacher 直连全球优秀独立老师' };
+    return timelineShare();
   },
 });
