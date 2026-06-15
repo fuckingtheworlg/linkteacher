@@ -121,22 +121,36 @@ Page({
     wx.previewImage({ urls: [url] });
   },
 
-  // 选择地址定位（强制走 wx.chooseLocation，不允许手动输入）
+  // 地址定位入口：优先 wx.getLocation 直接拿当前位置，失败 fallback 到地图选点
   chooseLocation() {
-    wx.chooseLocation({
+    this.tryAutoLocation();
+  },
+
+  // 自动定位：直接调 GPS，不弹地图
+  tryAutoLocation() {
+    if (typeof wx.getLocation !== 'function') {
+      this.openMapPicker(); // 接口不支持就 fallback
+      return;
+    }
+    wx.showLoading({ title: '定位中…', mask: true });
+    wx.getLocation({
+      type: 'gcj02',
       success: (res) => {
-        const detail = res.address ? `${res.address}${res.name ? ' · ' + res.name : ''}` : res.name;
+        wx.hideLoading();
+        const lat = Number(res.latitude.toFixed(6));
+        const lng = Number(res.longitude.toFixed(6));
         this.setData({
-          addressDetail: detail,
-          latitude: res.latitude,
-          longitude: res.longitude,
+          addressDetail: `当前位置（${lat}, ${lng}）`,
+          latitude: lat,
+          longitude: lng,
         });
+        wx.showToast({ title: '已自动定位', icon: 'success' });
       },
       fail: (err) => {
-        if (err.errMsg && err.errMsg.indexOf('cancel') >= 0) return; // 用户主动取消，静默
-        console.error('[identity] chooseLocation fail:', err);
+        wx.hideLoading();
         const msg = (err.errMsg || '').toLowerCase();
-        // 用户拒绝授权位置权限 → 引导去设置开启
+        if (msg.indexOf('cancel') >= 0) return;
+        // 权限被拒 → 引导去设置
         if (msg.indexOf('auth') >= 0 || msg.indexOf('permission') >= 0 || msg.indexOf('deny') >= 0) {
           wx.showModal({
             title: '需要位置权限',
@@ -148,6 +162,31 @@ Page({
           });
           return;
         }
+        // getLocation 未审核 / 其它失败 → fallback 到地图选点
+        console.warn('[identity] getLocation fail, fallback to chooseLocation:', err);
+        this.openMapPicker();
+      },
+    });
+  },
+
+  // 地图选点（fallback）：getLocation 不可用时让用户在地图上选
+  openMapPicker() {
+    if (typeof wx.chooseLocation !== 'function') {
+      wx.showToast({ title: '定位接口不可用，请联系管理员', icon: 'none' });
+      return;
+    }
+    wx.chooseLocation({
+      success: (res) => {
+        const detail = res.address ? `${res.address}${res.name ? ' · ' + res.name : ''}` : res.name;
+        this.setData({
+          addressDetail: detail,
+          latitude: res.latitude,
+          longitude: res.longitude,
+        });
+      },
+      fail: (err) => {
+        if (err.errMsg && err.errMsg.indexOf('cancel') >= 0) return;
+        console.error('[identity] chooseLocation fail:', err);
         wx.showToast({ title: '定位失败，请稍后重试', icon: 'none' });
       },
     });
