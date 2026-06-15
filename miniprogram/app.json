@@ -17,10 +17,6 @@
       "desc": "用于导师身份认证时选择您的工作/服务地址"
     }
   },
-  "requiredPrivateInfos": [
-    "chooseLocation",
-    "chooseAddress"
-  ],
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#ffffff",

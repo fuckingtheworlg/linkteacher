@@ -117,11 +117,15 @@ Page({
     wx.previewImage({ urls: [url] });
   },
 
-  // 选择地址定位
+  // 选择地址定位（chooseLocation 接口需要在公众平台「接口设置」申请审核）
   chooseLocation() {
+    // 检测是否支持 chooseLocation
+    if (typeof wx.chooseLocation !== 'function') {
+      this.fallbackInputAddress();
+      return;
+    }
     wx.chooseLocation({
       success: (res) => {
-        // res = { name, address, latitude, longitude }
         const detail = res.address ? `${res.address}${res.name ? ' · ' + res.name : ''}` : res.name;
         this.setData({
           addressDetail: detail,
@@ -131,13 +135,23 @@ Page({
       },
       fail: (err) => {
         if (err.errMsg && err.errMsg.indexOf('cancel') >= 0) return;
-        console.error('[identity] chooseLocation fail:', err);
-        // 微信开发者工具未授权 / 未在 mp 后台开通隐私接口时会失败
-        wx.showModal({
-          title: '无法获取位置',
-          content: '请在微信开发者工具的「详情 → 本地设置」勾选位置权限；正式上线前需要在小程序后台「开通 chooseLocation 隐私接口」。',
-          showCancel: false,
-        });
+        console.warn('[identity] chooseLocation fail, fallback to manual input:', err);
+        // 未审批 chooseLocation 接口 / 用户拒绝授权 → 降级为手动输入
+        this.fallbackInputAddress();
+      },
+    });
+  },
+
+  fallbackInputAddress() {
+    wx.showModal({
+      title: '请填写详细地址',
+      content: '当前小程序未启用地图定位功能，请直接输入您的工作 / 服务地址（精确到街道）',
+      editable: true,
+      placeholderText: this.data.addressDetail || '例：英国伦敦市某街道某号',
+      success: (res) => {
+        if (res.confirm && res.content) {
+          this.setData({ addressDetail: res.content.trim() });
+        }
       },
     });
   },
