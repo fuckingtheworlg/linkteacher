@@ -14,14 +14,16 @@
   <view class="text-sub section-title">身份证图片</view>
   <view class="id-row">
     <view class="id-card" bindtap="pickIdCard" data-side="front">
-      <image
-        wx:if="{{ idCardFrontUrl }}"
-        class="id-img"
-        src="{{ idCardFrontUrl }}"
-        mode="aspectFill"
-        catchtap="previewIdCard"
-        data-side="front"
-      />
+      <block wx:if="{{ idCardFrontUrl }}">
+        <image
+          class="id-img"
+          src="{{ idCardFrontUrl }}"
+          mode="aspectFill"
+          catchtap="previewIdCard"
+          data-side="front"
+        />
+        <view class="id-reupload" catchtap="pickIdCard" data-side="front">重新上传</view>
+      </block>
       <view wx:else class="id-placeholder">
         <text class="plus" wx:if="{{ !uploadingFront }}">+</text>
         <text wx:else>上传中…</text>
@@ -29,14 +31,16 @@
       </view>
     </view>
     <view class="id-card" bindtap="pickIdCard" data-side="back">
-      <image
-        wx:if="{{ idCardBackUrl }}"
-        class="id-img"
-        src="{{ idCardBackUrl }}"
-        mode="aspectFill"
-        catchtap="previewIdCard"
-        data-side="back"
-      />
+      <block wx:if="{{ idCardBackUrl }}">
+        <image
+          class="id-img"
+          src="{{ idCardBackUrl }}"
+          mode="aspectFill"
+          catchtap="previewIdCard"
+          data-side="back"
+        />
+        <view class="id-reupload" catchtap="pickIdCard" data-side="back">重新上传</view>
+      </block>
       <view wx:else class="id-placeholder">
         <text class="plus" wx:if="{{ !uploadingBack }}">+</text>
         <text wx:else>上传中…</text>
@@ -46,6 +50,9 @@
   </view>
   <view class="text-muted text-xs id-note">
     * 请保证身份证清晰可辨，四角完整，无反光。
+  </view>
+  <view class="text-muted text-xs id-note">
+    * 点图片可预览；点右下角「重新上传」可更换。
   </view>
 
   <view class="text-sub section-title">地址定位</view>
