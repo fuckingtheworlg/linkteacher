@@ -121,58 +121,11 @@ Page({
     wx.previewImage({ urls: [url] });
   },
 
-  // 地址定位入口：优先 wx.getLocation 直接拿当前位置，失败 fallback 到地图选点
+  // 地址定位：用 wx.chooseLocation 打开地图选点（getLocation 微信审核不通过，
+  // 「导师选工作地址」不属于其开放范围；chooseLocation 已过审，是唯一合规方案）
   chooseLocation() {
-    this.tryAutoLocation();
-  },
-
-  // 自动定位：直接调 GPS，不弹地图
-  tryAutoLocation() {
-    if (typeof wx.getLocation !== 'function') {
-      this.openMapPicker(); // 接口不支持就 fallback
-      return;
-    }
-    wx.showLoading({ title: '定位中…', mask: true });
-    wx.getLocation({
-      type: 'gcj02',
-      success: (res) => {
-        wx.hideLoading();
-        const lat = Number(res.latitude.toFixed(6));
-        const lng = Number(res.longitude.toFixed(6));
-        this.setData({
-          addressDetail: `当前位置（${lat}, ${lng}）`,
-          latitude: lat,
-          longitude: lng,
-        });
-        wx.showToast({ title: '已自动定位', icon: 'success' });
-      },
-      fail: (err) => {
-        wx.hideLoading();
-        const msg = (err.errMsg || '').toLowerCase();
-        if (msg.indexOf('cancel') >= 0) return;
-        // 权限被拒 → 引导去设置
-        if (msg.indexOf('auth') >= 0 || msg.indexOf('permission') >= 0 || msg.indexOf('deny') >= 0) {
-          wx.showModal({
-            title: '需要位置权限',
-            content: '请在「我的小程序设置」中打开位置权限后重试',
-            confirmText: '去设置',
-            success: (r) => {
-              if (r.confirm) wx.openSetting();
-            },
-          });
-          return;
-        }
-        // getLocation 未审核 / 其它失败 → fallback 到地图选点
-        console.warn('[identity] getLocation fail, fallback to chooseLocation:', err);
-        this.openMapPicker();
-      },
-    });
-  },
-
-  // 地图选点（fallback）：getLocation 不可用时让用户在地图上选
-  openMapPicker() {
     if (typeof wx.chooseLocation !== 'function') {
-      wx.showToast({ title: '定位接口不可用，请联系管理员', icon: 'none' });
+      wx.showToast({ title: '当前微信版本不支持定位', icon: 'none' });
       return;
     }
     wx.chooseLocation({
@@ -185,8 +138,21 @@ Page({
         });
       },
       fail: (err) => {
-        if (err.errMsg && err.errMsg.indexOf('cancel') >= 0) return;
+        if (err.errMsg && err.errMsg.indexOf('cancel') >= 0) return; // 用户取消，静默
         console.error('[identity] chooseLocation fail:', err);
+        const msg = (err.errMsg || '').toLowerCase();
+        // 权限被拒 → 引导去设置
+        if (msg.indexOf('auth') >= 0 || msg.indexOf('permission') >= 0 || msg.indexOf('deny') >= 0) {
+          wx.showModal({
+            title: '需要位置权限',
+            content: '请在「我的小程序设置」中打开位置权限后重试',
+            confirmText: '去设置',
+            success: (r) => {
+              if (r.confirm) wx.openSetting();
+            },
+          });
+          return;
+        }
         wx.showToast({ title: '定位失败，请稍后重试', icon: 'none' });
       },
     });
