@@ -221,16 +221,29 @@ export class TeachersService {
           });
           await tx.teacherSubject.deleteMany({ where: { teacherId: teacher.id } });
         }
+        // 按 subjectId 去重合并（同一科目多次出现则合并课程体系），
+        // 避免触发 TeacherSubject 的 [teacherId, subjectId] 唯一约束
+        const mergedBySubject = new Map<number, { note?: string; curriculumIds: Set<number> }>();
         for (const s of dto.subjects) {
+          const exist = mergedBySubject.get(s.subjectId);
+          if (exist) {
+            (s.curriculumIds || []).forEach((cid) => exist.curriculumIds.add(cid));
+            if (!exist.note && s.note) exist.note = s.note;
+          } else {
+            mergedBySubject.set(s.subjectId, {
+              note: s.note,
+              curriculumIds: new Set(s.curriculumIds || []),
+            });
+          }
+        }
+        for (const [subjectId, info] of mergedBySubject) {
           const ts = await tx.teacherSubject.create({
-            data: { teacherId: teacher.id, subjectId: s.subjectId, note: s.note },
+            data: { teacherId: teacher.id, subjectId, note: info.note },
           });
-          if (s.curriculumIds.length > 0) {
+          const cids = [...info.curriculumIds];
+          if (cids.length > 0) {
             await tx.teacherSubjectCurriculum.createMany({
-              data: s.curriculumIds.map((cid) => ({
-                teacherSubjectId: ts.id,
-                curriculumId: cid,
-              })),
+              data: cids.map((cid) => ({ teacherSubjectId: ts.id, curriculumId: cid })),
             });
           }
         }

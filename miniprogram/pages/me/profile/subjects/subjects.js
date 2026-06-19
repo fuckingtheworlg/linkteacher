@@ -77,16 +77,23 @@ Page({
       return;
     }
 
-    const newItem = {
-      subjectId: this.data.selectedSubjectId,
-      curriculumIds: this.data.selectedCurriculumIds,
-      note: this.data.note,
-    };
     const others = (this._otherSubjects || []).map((s) => ({
       subjectId: s.subjectId,
       curriculumIds: (s.curriculums || []).map((c) => c.curriculumId),
       note: s.note || '',
     }));
+
+    // 同一科目不能在两栏重复选
+    if (others.some((s) => s.subjectId === this.data.selectedSubjectId)) {
+      wx.showToast({ title: '该科目已在另一栏选择，请选不同科目', icon: 'none' });
+      return;
+    }
+
+    const newItem = {
+      subjectId: this.data.selectedSubjectId,
+      curriculumIds: this.data.selectedCurriculumIds,
+      note: this.data.note,
+    };
     const subjects = this.data.slotIndex === 0 ? [newItem, ...others] : [...others, newItem];
 
     this.setData({ saving: true });
