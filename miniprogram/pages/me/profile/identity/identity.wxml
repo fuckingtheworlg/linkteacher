@@ -1,7 +1,7 @@
 <view class="page">
   <view class="text-h2">身份认证</view>
   <view class="text-sub" style="margin-top: 8rpx;">
-    身份证仅用于平台审核，不公开展示。请确保与「真实姓名」一致。
+    身份证仅用于平台实名审核，不对外公开展示。请确保与「真实姓名」一致。
   </view>
 
   <view class="card section">
@@ -65,6 +65,19 @@
       </view>
     </view>
     <view class="text-muted">›</view>
+  </view>
+
+  <view class="agree-row">
+    <view class="agree-check {{ agreed ? 'on' : '' }}" bindtap="toggleAgree">
+      <text wx:if="{{ agreed }}">✓</text>
+    </view>
+    <view class="agree-text">
+      我已阅读并同意
+      <text class="agree-link" catchtap="openAgreement" data-slug="user-agreement">《用户服务协议》</text>
+      和
+      <text class="agree-link" catchtap="openAgreement" data-slug="privacy-policy">《隐私政策》</text>
+      ，同意平台收集并用于实名审核
+    </view>
   </view>
 
   <view class="footer-spacer"></view>

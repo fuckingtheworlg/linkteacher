@@ -14,15 +14,26 @@ Page({
     longitude: null,
     uploadingFront: false,
     uploadingBack: false,
+    agreed: false,
   },
 
   onShareAppMessage() { return appShare(); },
   onShareTimeline() { return timelineShare(); },
 
+  toggleAgree() {
+    this.setData({ agreed: !this.data.agreed });
+  },
+  openAgreement(e) {
+    const slug = e.currentTarget.dataset.slug;
+    wx.navigateTo({ url: `/pages/article/article?slug=${slug}` });
+  },
+
   async onLoad() {
     try {
       const teacher = await meApi.get();
       const user = (teacher && teacher.user) || {};
+      // 老用户已填过身份信息 → 默认视为已同意，无需重复勾选
+      const hadInfo = !!(teacher && (teacher.realName || teacher.idCardFrontUrl));
       this.setData({
         loading: false,
         realName: (teacher && teacher.realName) || '',
@@ -31,6 +42,7 @@ Page({
         addressDetail: (teacher && teacher.addressDetail) || user.address || '',
         latitude: teacher && teacher.latitude !== null ? Number(teacher.latitude) : null,
         longitude: teacher && teacher.longitude !== null ? Number(teacher.longitude) : null,
+        agreed: hadInfo,
       });
     } catch (err) {
       console.warn('[identity] preload failed (可忽略):', err);
@@ -162,6 +174,10 @@ Page({
     if (this.data.saving) return;
     if (!this.data.realName) {
       wx.showToast({ title: '请填写真实姓名', icon: 'none' });
+      return;
+    }
+    if (!this.data.agreed) {
+      wx.showToast({ title: '请先阅读并勾选同意协议', icon: 'none' });
       return;
     }
     this.setData({ saving: true });

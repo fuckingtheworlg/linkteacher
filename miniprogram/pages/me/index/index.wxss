@@ -136,4 +136,8 @@
   flex-shrink: 0;
 }
 
-.version { text-align: center; margin-top: 32rpx; }
+.agreements { text-align: center; margin-top: 32rpx; display: flex; justify-content: center; align-items: center; gap: 12rpx; }
+.agree-entry { color: #6b7280; font-size: 24rpx; }
+.agree-sep { color: #d1d5db; font-size: 24rpx; }
+
+.version { text-align: center; margin-top: 12rpx; }

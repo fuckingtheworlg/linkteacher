@@ -76,5 +76,11 @@
     </view>
   </block>
 
+  <view class="agreements">
+    <text class="agree-entry" bindtap="openAgreement" data-slug="user-agreement">用户服务协议</text>
+    <text class="agree-sep">·</text>
+    <text class="agree-entry" bindtap="openAgreement" data-slug="privacy-policy">隐私政策</text>
+  </view>
+
   <view class="version text-muted text-xs">v {{ appVersion }}</view>
 </view>

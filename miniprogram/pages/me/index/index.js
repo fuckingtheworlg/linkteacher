@@ -112,6 +112,11 @@ Page({
     wx.navigateTo({ url: '/pages/article/article?slug=about-us' });
   },
 
+  openAgreement(e) {
+    const slug = e.currentTarget.dataset.slug;
+    wx.navigateTo({ url: `/pages/article/article?slug=${slug}` });
+  },
+
   onFavTeacher() {
     wx.showToast({ title: '收藏功能即将上线', icon: 'none' });
   },
