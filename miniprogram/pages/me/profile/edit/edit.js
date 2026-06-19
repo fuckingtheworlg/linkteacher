@@ -5,11 +5,11 @@ const FIELD_META = {
   nickname:        { title: '昵称', type: 'input',    placeholder: '请输入昵称', max: 32, target: 'nickname' },
   mbti:            { title: 'MBTI', type: 'mbti',     placeholder: '请选择 MBTI', target: 'mbti' },
   address:         { title: '地址', type: 'input',    placeholder: '例：英国 伯明翰市', max: 64, target: 'address' },
-  trialRate:       { title: '试听价 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'trialRate' },
-  hourlyRate:      { title: '课时费 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'hourlyRate' },
-  minHours:        { title: '起报小时数', type: 'integer', placeholder: '默认 1', target: 'minHours' },
+  trialRate:       { title: '试听价 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'trialRate', maxValue: 99999, maxlen: 6 },
+  hourlyRate:      { title: '课时费 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'hourlyRate', maxValue: 99999, maxlen: 6 },
+  minHours:        { title: '起报小时数', type: 'integer', placeholder: '默认 1', target: 'minHours', maxValue: 24, maxlen: 2 },
   languages:       { title: '授课语言', type: 'tags', placeholder: '中文 / 英文 / 中英双语', target: 'languages' },
-  teachingYears:   { title: '教龄（年）', type: 'integer', placeholder: '请输入数字', target: 'teachingYears' },
+  teachingYears:   { title: '教龄（年）', type: 'integer', placeholder: '请输入数字', target: 'teachingYears', maxValue: 80, maxlen: 2 },
   mentorExperience:{ title: '指导经验', type: 'textarea', placeholder: '请填写指导经验描述', max: 500, target: 'mentorExperience' },
   tags:            { title: '我的标签', type: 'tags',  placeholder: '示例：05后老师 / INTJ', target: 'tags' },
   workHistory:     { title: '工作履历', type: 'textarea', placeholder: '请填写工作履历', max: 800, target: 'workHistory' },
@@ -100,11 +100,19 @@ Page({
         wx.showToast({ title: '请输入有效金额', icon: 'none' });
         return;
       }
+      if (meta.maxValue != null && n > meta.maxValue) {
+        wx.showToast({ title: `不能超过 ${meta.maxValue}`, icon: 'none' });
+        return;
+      }
       payload[meta.target] = Math.round(n * 100) / 100;
     } else if (meta.type === 'integer') {
       const n = parseInt(valueText, 10);
       if (Number.isNaN(n) || n < 0) {
         wx.showToast({ title: '请输入正整数', icon: 'none' });
+        return;
+      }
+      if (meta.maxValue != null && n > meta.maxValue) {
+        wx.showToast({ title: `不能超过 ${meta.maxValue}`, icon: 'none' });
         return;
       }
       payload[meta.target] = n;

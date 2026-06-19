@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Max,
   MaxLength,
   Min,
   ValidateNested,
@@ -36,14 +37,14 @@ export class UpsertTeacherDto {
   @IsOptional() @IsArray() languages?: string[];
   @IsOptional() @IsArray() tags?: string[];
 
-  @IsOptional() @IsInt() @Min(0) teachingYears?: number;
+  @IsOptional() @IsInt() @Min(0) @Max(80) teachingYears?: number;
   @IsOptional() @IsString() mentorExperience?: string;
   @IsOptional() @IsString() workHistory?: string;
   @IsOptional() @IsString() honors?: string;
 
-  @IsOptional() @IsNumber({ maxDecimalPlaces: 2 }) hourlyRate?: number;
-  @IsOptional() @IsNumber({ maxDecimalPlaces: 2 }) trialRate?: number;
-  @IsOptional() @IsInt() @Min(1) minHours?: number;
+  @IsOptional() @IsNumber({ maxDecimalPlaces: 2 }) @Min(0) @Max(99999) hourlyRate?: number;
+  @IsOptional() @IsNumber({ maxDecimalPlaces: 2 }) @Min(0) @Max(99999) trialRate?: number;
+  @IsOptional() @IsInt() @Min(1) @Max(24) minHours?: number;
 
   @IsOptional() @IsString() @MaxLength(8) mbti?: string;
   @IsOptional() @IsString() @MaxLength(255) address?: string;

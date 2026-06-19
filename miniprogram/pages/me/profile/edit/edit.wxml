@@ -18,6 +18,7 @@
     value="{{ valueText }}"
     placeholder="{{ meta.placeholder }}"
     placeholder-class="ph"
+    maxlength="{{ meta.maxlen || 8 }}"
     bindinput="onInput"
   />
 
@@ -28,6 +29,7 @@
     value="{{ valueText }}"
     placeholder="{{ meta.placeholder }}"
     placeholder-class="ph"
+    maxlength="{{ meta.maxlen || 4 }}"
     bindinput="onInput"
   />
 
