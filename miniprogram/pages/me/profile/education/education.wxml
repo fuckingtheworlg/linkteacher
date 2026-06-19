@@ -1,77 +1,44 @@
 <view class="page">
   <view class="title">学历背景{{ sort + 1 }}</view>
 
-  <!--
-    iOS 小程序 input/textarea 是 native 层，会穿透 wxss 弹层。
-    picker 打开时整组表单 wx:if 不渲染，避免穿透。
-    值绑定在 data 上不会丢失。
-  -->
-  <block wx:if="{{ !showUniversityPicker }}">
-    <view class="field" bindtap="openUniversityPicker">
-      <view class="label">大学</view>
-      <view class="value {{ universityName ? '' : 'is-empty' }}">{{ universityName || '点击选择' }}</view>
-      <text class="arrow">›</text>
-    </view>
+  <view class="field" bindtap="openUniversityPicker">
+    <view class="label">大学</view>
+    <view class="value {{ universityName ? '' : 'is-empty' }}">{{ universityName || '点击选择' }}</view>
+    <text class="arrow">›</text>
+  </view>
 
+  <view class="field-block">
+    <view class="label">学位</view>
+    <view class="degree-row">
+      <view
+        class="degree-cell {{ degree === item.code ? 'on' : '' }}"
+        wx:for="{{ degreeOptions }}"
+        wx:key="code"
+        data-code="{{ item.code }}"
+        bindtap="pickDegree"
+      >{{ item.name }}</view>
+    </view>
+  </view>
+
+  <view class="field-block">
+    <view class="label">专业</view>
+    <input class="input" value="{{ major }}" placeholder="例：生物医学" placeholder-class="ph" bindinput="onMajorInput" />
+  </view>
+
+  <view class="row-2">
     <view class="field-block">
-      <view class="label">学位</view>
-      <view class="degree-row">
-        <view
-          class="degree-cell {{ degree === item.code ? 'on' : '' }}"
-          wx:for="{{ degreeOptions }}"
-          wx:key="code"
-          data-code="{{ item.code }}"
-          bindtap="pickDegree"
-        >{{ item.name }}</view>
-      </view>
+      <view class="label">入学年份</view>
+      <input class="input" type="number" value="{{ startYear }}" placeholder="2021" placeholder-class="ph" bindinput="onStartInput" />
     </view>
-
     <view class="field-block">
-      <view class="label">专业</view>
-      <input class="input" value="{{ major }}" placeholder="例：生物医学" placeholder-class="ph" bindinput="onMajorInput" />
+      <view class="label">毕业年份</view>
+      <input class="input" type="number" value="{{ endYear }}" placeholder="2025" placeholder-class="ph" bindinput="onEndInput" />
     </view>
+  </view>
 
-    <view class="row-2">
-      <view class="field-block">
-        <view class="label">入学年份</view>
-        <input class="input" type="number" value="{{ startYear }}" placeholder="2021" placeholder-class="ph" bindinput="onStartInput" />
-      </view>
-      <view class="field-block">
-        <view class="label">毕业年份</view>
-        <input class="input" type="number" value="{{ endYear }}" placeholder="2025" placeholder-class="ph" bindinput="onEndInput" />
-      </view>
-    </view>
-
-    <view class="footer-bar">
-      <button class="btn-primary" bindtap="onSave" disabled="{{ saving }}">
-        {{ saving ? '保存中...' : '保存' }}
-      </button>
-    </view>
-  </block>
-
-  <view class="picker-mask" wx:if="{{ showUniversityPicker }}" bindtap="closeUniversityPicker">
-    <view class="picker" catchtap="">
-      <view class="picker-header">
-        <input class="picker-search" placeholder="搜索学校（中文/英文），找不到可手动输入" placeholder-class="ph" value="{{ universityKeyword }}" bindinput="onUniversitySearch" />
-      </view>
-      <view class="picker-custom" wx:if="{{ universityKeyword }}" bindtap="useCustomUniversity">
-        找不到？使用「<text class="picker-custom-name">{{ universityKeyword }}</text>」作为校名 ›
-      </view>
-      <scroll-view scroll-y class="picker-list">
-        <view
-          class="picker-item"
-          wx:for="{{ universities }}"
-          wx:key="id"
-          data-id="{{ item.id }}"
-          bindtap="pickUniversity"
-        >
-          <view>
-            <text class="u-zh">{{ item.nameZh }}</text>
-            <text class="u-en">{{ item.nameEn }}</text>
-          </view>
-          <text class="u-rank" wx:if="{{ item.qsRank }}">QS#{{ item.qsRank }}</text>
-        </view>
-      </scroll-view>
-    </view>
+  <view class="footer-bar">
+    <button class="btn-primary" bindtap="onSave" disabled="{{ saving }}">
+      {{ saving ? '保存中...' : '保存' }}
+    </button>
   </view>
 </view>

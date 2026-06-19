@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="search-wrap">
+    <input
+      class="search"
+      placeholder="搜索学校（中文/英文）"
+      placeholder-class="ph"
+      value="{{ keyword }}"
+      bindinput="onSearchInput"
+      confirm-type="search"
+      focus
+    />
+  </view>
+
+  <view class="custom-tip" wx:if="{{ keyword }}" bindtap="useCustomUniversity">
+    找不到？使用「<text class="custom-name">{{ keyword }}</text>」作为校名 ›
+  </view>
+
+  <scroll-view scroll-y class="list">
+    <view
+      class="item"
+      wx:for="{{ universities }}"
+      wx:key="id"
+      data-id="{{ item.id }}"
+      bindtap="pickUniversity"
+    >
+      <view class="item-main">
+        <text class="u-zh">{{ item.nameZh }}</text>
+        <text class="u-en">{{ item.nameEn }}</text>
+      </view>
+      <text class="u-rank" wx:if="{{ item.qsRank }}">QS#{{ item.qsRank }}</text>
+    </view>
+
+    <view class="empty" wx:if="{{ !loading && universities.length === 0 }}">
+      没有匹配的学校，可点上方「使用校名」手动填写
+    </view>
+  </scroll-view>
+</view>

@@ -1,4 +1,4 @@
-const { meApi, dictApi } = require('../../../../utils/api');
+const { meApi } = require('../../../../utils/api');
 const { appShare, timelineShare } = require('../../../../utils/share');
 
 const DEGREE_OPTIONS = [
@@ -12,8 +12,6 @@ Page({
   data: {
     sort: 0,
     degreeOptions: DEGREE_OPTIONS,
-    universities: [],
-    universityKeyword: '',
     universityId: 0,
     universityName: '',
     customUniversityName: '',   // 手动填写的校名（与 universityId 二选一）
@@ -22,7 +20,6 @@ Page({
     startYear: '',
     endYear: '',
     saving: false,
-    showUniversityPicker: false,
   },
 
   onShareAppMessage() { return appShare(); },
@@ -54,56 +51,27 @@ Page({
     }
   },
 
-  async openUniversityPicker() {
-    if (this.data.universities.length === 0) {
-      try {
-        const list = await dictApi.universities({});
-        this.setData({ universities: list });
-      } catch (err) {
-        wx.showToast({ title: err.message || '加载大学失败', icon: 'none' });
-        return;
-      }
-    }
-    this.setData({ showUniversityPicker: true });
-  },
-  closeUniversityPicker() {
-    this.setData({ showUniversityPicker: false });
-  },
-  async onUniversitySearch(e) {
-    const k = e.detail.value;
-    this.setData({ universityKeyword: k });
-    try {
-      const list = await dictApi.universities({ keyword: k });
-      this.setData({ universities: list });
-    } catch (err) {
-      console.warn('search universities fail', err);
-    }
-  },
-  pickUniversity(e) {
-    const id = Number(e.currentTarget.dataset.id);
-    const u = this.data.universities.find((x) => x.id === id);
-    if (u) {
-      this.setData({
-        universityId: u.id,
-        universityName: `${u.nameZh}（${u.nameEn}）`,
-        customUniversityName: '', // 选了库里的就清掉手填
-        showUniversityPicker: false,
-      });
-    }
-  },
-
-  // 手动输入校名：用搜索框里已输入的关键词作为校名
-  useCustomUniversity() {
-    const name = (this.data.universityKeyword || '').trim();
-    if (!name) {
-      wx.showToast({ title: '请先在上方输入校名', icon: 'none' });
-      return;
-    }
-    this.setData({
-      universityId: 0,
-      universityName: name,
-      customUniversityName: name,
-      showUniversityPicker: false,
+  // 打开独立的「选择学校」页（独立页面无遮罩层，彻底规避 native input 穿透）
+  openUniversityPicker() {
+    wx.navigateTo({
+      url: '/pages/me/profile/university-picker/university-picker',
+      events: {
+        selectUniversity: (data) => {
+          if (data.universityId) {
+            this.setData({
+              universityId: data.universityId,
+              universityName: data.universityName,
+              customUniversityName: '',
+            });
+          } else {
+            this.setData({
+              universityId: 0,
+              universityName: data.universityName,
+              customUniversityName: data.customUniversityName,
+            });
+          }
+        },
+      },
     });
   },
 

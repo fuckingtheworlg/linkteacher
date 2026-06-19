@@ -1,0 +1,36 @@
+.page { display: flex; flex-direction: column; height: 100vh; background: #f5f7fa; }
+
+.search-wrap { padding: 24rpx; background: #fff; flex-shrink: 0; }
+.search {
+  background: #f3f4f6;
+  border-radius: 32rpx;
+  padding: 18rpx 28rpx;
+  font-size: 28rpx;
+}
+.ph { color: #9ca3af; }
+
+.custom-tip {
+  flex-shrink: 0;
+  padding: 24rpx;
+  font-size: 26rpx;
+  color: #1f2937;
+  background: #fff;
+  border-top: 1rpx solid #f3f4f6;
+}
+.custom-name { color: #2563eb; font-weight: 600; }
+
+.list { flex: 1; min-height: 0; }
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 24rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+.item-main { display: flex; flex-direction: column; gap: 4rpx; min-width: 0; }
+.u-zh { font-size: 30rpx; color: #1f2937; font-weight: 600; }
+.u-en { font-size: 24rpx; color: #6b7280; }
+.u-rank { color: #1f2937; font-size: 24rpx; font-weight: 700; background: #fef3c7; padding: 4rpx 12rpx; border-radius: 6rpx; flex-shrink: 0; }
+
+.empty { text-align: center; color: #9ca3af; font-size: 26rpx; padding: 80rpx 32rpx; }

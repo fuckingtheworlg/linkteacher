@@ -36,6 +36,7 @@
 .ph { color: #9ca3af; }
 
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
+.value.is-empty { color: #9ca3af; }
 
 /* 大学 picker
  * 注意：iOS 小程序 input/textarea 是 native 层会穿透 wxss 弹层；
