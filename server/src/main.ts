@@ -9,6 +9,11 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log', 'debug'],
   });
 
+  // 关闭 Express 默认 ETag：否则 GET 接口第二次会返回 304（空 body），
+  // 小程序 wx.request 拿到空数据导致「保存后文字不显示」
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('etag', false);
+
   const port = parseInt(process.env.PORT || '3000', 10);
   const corsOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
     .split(',')

@@ -6,14 +6,23 @@
   background: #fff;
   border: 2rpx solid #f3f4f6;
   border-radius: 12rpx;
-  padding: 24rpx;
   font-size: 28rpx;
   color: #1f2937;
   width: 100%;
   box-sizing: border-box;
 }
+/* 单行输入：显式高度 + 行高，避免 type=number 文字被截一半 */
+.input {
+  height: 96rpx;
+  line-height: 96rpx;
+  padding: 0 24rpx;
+}
+.textarea {
+  min-height: 320rpx;
+  padding: 24rpx;
+  line-height: 1.6;
+}
 .input:focus, .textarea:focus { border-color: #1f2937; }
-.textarea { min-height: 320rpx; }
 .ph { color: #9ca3af; }
 
 .mbti-grid {

@@ -67,19 +67,25 @@ Page({
         valueText = String(v);
       }
     }
+    // _val 保存「当前最新输入值」，避免每次输入 setData 回写 value 打断中文输入法
+    this._val = valueText;
     this.setData({ field, meta, valueText, valueArr });
   },
 
+  // 输入时只更新内部变量，不 setData（input 为非受控，中文输入法不被打断）
   onInput(e) {
-    this.setData({ valueText: e.detail.value });
+    this._val = e.detail.value;
   },
   onMbtiPick(e) {
-    this.setData({ valueText: e.currentTarget.dataset.value });
+    const v = e.currentTarget.dataset.value;
+    this._val = v;
+    this.setData({ valueText: v }); // mbti 是点选高亮，需要 setData
   },
 
   async onSave() {
     if (this.data.saving) return;
-    const { meta, valueText } = this.data;
+    const { meta } = this.data;
+    const valueText = this._val != null ? this._val : this.data.valueText;
     let payload = {};
 
     if (meta.type === 'tags' || meta.type === 'lines') {
