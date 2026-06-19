@@ -73,7 +73,10 @@ async function request(options) {
 
 module.exports = {
   request,
-  get: (url, query, opts = {}) => request({ url, method: 'GET', query, ...opts }),
+  // GET 统一加 _t 时间戳防缓存：杜绝开发者工具 / wx / 代理层返回旧数据或 304 空响应
+  // 后端 ValidationPipe whitelist 会忽略多余的 _t 参数，不影响业务
+  get: (url, query, opts = {}) =>
+    request({ url, method: 'GET', query: { ...(query || {}), _t: Date.now() }, ...opts }),
   post: (url, data, opts = {}) => request({ url, method: 'POST', data, ...opts }),
   put: (url, data, opts = {}) => request({ url, method: 'PUT', data, ...opts }),
   del: (url, query, opts = {}) => request({ url, method: 'DELETE', query, ...opts }),
