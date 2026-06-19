@@ -15,6 +15,7 @@
     "prisma:seed": "ts-node --transpile-only prisma/seed.ts",
     "prisma:seed-test-teachers": "ts-node --transpile-only prisma/seed-test-teachers.ts",
     "prisma:seed-universities": "ts-node --transpile-only prisma/seed-universities-top100.ts",
+    "prisma:migrate-curriculums": "ts-node --transpile-only prisma/migrate-curriculums.ts",
     "lint": "eslint \"src/**/*.ts\" --fix"
   },
   "prisma": {

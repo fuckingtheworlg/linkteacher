@@ -89,8 +89,7 @@
         <view class="subject-row">
           <text class="tag">{{ s.name }}</text>
           <view class="subject-curri text-sub">
-            <text wx:if="{{ s.igcseLine }}">{{ s.igcseLine }}</text>
-            <text wx:if="{{ s.alevelLine }}">{{ s.alevelLine }}</text>
+            <text wx:if="{{ s.curriculumNames }}">{{ s.curriculumNames }}</text>
           </view>
         </view>
       </view>

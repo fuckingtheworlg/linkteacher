@@ -67,19 +67,20 @@ Page({
         valueText = String(v);
       }
     }
-    // _val 保存「当前最新输入值」，避免每次输入 setData 回写 value 打断中文输入法
     this._val = valueText;
     this.setData({ field, meta, valueText, valueArr });
   },
 
-  // 输入时只更新内部变量，不 setData（input 为非受控，中文输入法不被打断）
+  // 受控输入：setData 回写保证输入框稳定回显（数字/英文无 IME 问题）
+  // textarea 多行中文也正常；同时存 _val 供保存使用
   onInput(e) {
     this._val = e.detail.value;
+    this.setData({ valueText: e.detail.value });
   },
   onMbtiPick(e) {
     const v = e.currentTarget.dataset.value;
     this._val = v;
-    this.setData({ valueText: v }); // mbti 是点选高亮，需要 setData
+    this.setData({ valueText: v });
   },
 
   async onSave() {

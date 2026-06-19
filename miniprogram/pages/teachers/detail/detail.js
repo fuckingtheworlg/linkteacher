@@ -58,12 +58,8 @@ Page({
       const subjectsView = (t.subjects || []).map((ts) => ({
         name: ts.subject.name,
         code: ts.subject.code,
-        items: (ts.curriculums || []).map((c) => ({
-          name: c.curriculum.name,
-        })),
-        // 详情页里把 ALevel 的多个体系合并展示：「ALevel: 爱德思,CAIE,AQA」
-        alevelLine: this.buildAlevelLine(ts.curriculums || []),
-        igcseLine: this.buildIgcseLine(ts.curriculums || []),
+        // 课程体系已合并为 iGCSE / A-Level / IB / AP / 竞赛，直接列出名称
+        curriculumNames: (ts.curriculums || []).map((c) => c.curriculum.name).join('、'),
       }));
 
       const STATUS_TEXT = {
@@ -101,19 +97,6 @@ Page({
 
   degreeText(d) {
     return ({ BACHELOR: '本科', MASTER: '硕士', PHD: '博士' })[d] || '其他';
-  },
-
-  buildAlevelLine(curs) {
-    const aLevels = curs.filter((c) => c.curriculum.code.startsWith('alevel-'));
-    if (!aLevels.length) return '';
-    const variants = aLevels
-      .map((c) => c.curriculum.name.replace('ALevel-', ''))
-      .filter((s) => s !== 'ALevel');
-    return `ALevel: ${variants.join(',')}`;
-  },
-  buildIgcseLine(curs) {
-    const has = curs.some((c) => c.curriculum.code === 'igcse');
-    return has ? 'iGCSE' : '';
   },
 
   toggleFav() {

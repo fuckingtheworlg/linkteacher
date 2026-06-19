@@ -19,12 +19,10 @@ const SUBJECTS: Array<{ code: string; name: string; sort: number }> = [
 
 const CURRICULUMS: Array<{ code: string; name: string; sort: number }> = [
   { code: 'igcse', name: 'iGCSE', sort: 10 },
-  { code: 'alevel-caie', name: 'ALevel-CAIE', sort: 20 },
-  { code: 'alevel-edexcel', name: 'ALevel-爱德思', sort: 30 },
-  { code: 'alevel-aqa', name: 'ALevel-AQA', sort: 40 },
-  { code: 'ib-hl', name: 'IB-HL', sort: 50 },
-  { code: 'ib-sl', name: 'IB-SL', sort: 60 },
-  { code: 'ap', name: 'AP', sort: 70 },
+  { code: 'alevel', name: 'A-Level', sort: 20 },
+  { code: 'ib', name: 'IB', sort: 30 },
+  { code: 'ap', name: 'AP', sort: 40 },
+  { code: 'competition', name: '竞赛', sort: 50 },
 ];
 
 // 英国 + 美国 + 中国港澳 部分高频名校（QS 2025 / 2024 公开数据，便于后台维护时检索）
