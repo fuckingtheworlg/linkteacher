@@ -14,7 +14,9 @@ import { Type } from 'class-transformer';
 import { DegreeType, Gender } from '@prisma/client';
 
 class EducationItem {
-  @IsInt() universityId!: number;
+  // universityId 与 customUniversityName 二选一
+  @IsOptional() @IsInt() universityId?: number;
+  @IsOptional() @IsString() @MaxLength(128) customUniversityName?: string;
   @IsEnum(DegreeType) degree!: DegreeType;
   @IsString() @MaxLength(128) major!: string;
   @IsOptional() @IsInt() startYear?: number;

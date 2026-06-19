@@ -204,8 +204,10 @@ model TeacherEducation {
   id           Int        @id @default(autoincrement())
   teacherId    Int
   teacher      Teacher    @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  universityId Int
-  university   University @relation(fields: [universityId], references: [id])
+  // 二选一：从大学库选（universityId）或手动填写校名（customUniversityName）
+  universityId Int?
+  university   University? @relation(fields: [universityId], references: [id])
+  customUniversityName String? @db.VarChar(128)
 
   degree       DegreeType
   major        String     @db.VarChar(128)

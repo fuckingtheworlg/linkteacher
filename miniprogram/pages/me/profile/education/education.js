@@ -16,6 +16,7 @@ Page({
     universityKeyword: '',
     universityId: 0,
     universityName: '',
+    customUniversityName: '',   // 手动填写的校名（与 universityId 二选一）
     degree: 'BACHELOR',
     major: '',
     startYear: '',
@@ -37,8 +38,9 @@ Page({
       const current = list[sort];
       if (current) {
         this.setData({
-          universityId: current.universityId,
-          universityName: current.university && current.university.nameZh,
+          universityId: current.universityId || 0,
+          universityName: (current.university && current.university.nameZh) || '',
+          customUniversityName: current.customUniversityName || '',
           degree: current.degree,
           major: current.major,
           startYear: current.startYear || '',
@@ -84,9 +86,25 @@ Page({
       this.setData({
         universityId: u.id,
         universityName: `${u.nameZh}（${u.nameEn}）`,
+        customUniversityName: '', // 选了库里的就清掉手填
         showUniversityPicker: false,
       });
     }
+  },
+
+  // 手动输入校名：用搜索框里已输入的关键词作为校名
+  useCustomUniversity() {
+    const name = (this.data.universityKeyword || '').trim();
+    if (!name) {
+      wx.showToast({ title: '请先在上方输入校名', icon: 'none' });
+      return;
+    }
+    this.setData({
+      universityId: 0,
+      universityName: name,
+      customUniversityName: name,
+      showUniversityPicker: false,
+    });
   },
 
   pickDegree(e) {
@@ -99,8 +117,8 @@ Page({
 
   async onSave() {
     if (this.data.saving) return;
-    if (!this.data.universityId) {
-      wx.showToast({ title: '请选择大学', icon: 'none' });
+    if (!this.data.universityId && !this.data.customUniversityName) {
+      wx.showToast({ title: '请选择或手动输入学校', icon: 'none' });
       return;
     }
     if (!this.data.major) {
@@ -108,7 +126,8 @@ Page({
       return;
     }
     const newItem = {
-      universityId: this.data.universityId,
+      universityId: this.data.universityId || undefined,
+      customUniversityName: this.data.universityId ? undefined : this.data.customUniversityName,
       degree: this.data.degree,
       major: this.data.major,
       startYear: this.data.startYear ? Number(this.data.startYear) : undefined,
@@ -116,7 +135,8 @@ Page({
       sort: this.data.sort,
     };
     const others = (this._otherEducations || []).map((e) => ({
-      universityId: e.universityId,
+      universityId: e.universityId || undefined,
+      customUniversityName: e.universityId ? undefined : (e.customUniversityName || undefined),
       degree: e.degree,
       major: e.major,
       startYear: e.startYear,

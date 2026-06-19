@@ -196,7 +196,8 @@ export class TeachersService {
           await tx.teacherEducation.createMany({
             data: dto.educations.map((e, idx) => ({
               teacherId: teacher.id,
-              universityId: e.universityId,
+              universityId: e.universityId ?? null,
+              customUniversityName: e.universityId ? null : e.customUniversityName,
               degree: e.degree,
               major: e.major,
               startYear: e.startYear,

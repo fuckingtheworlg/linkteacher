@@ -61,6 +61,14 @@
 }
 .picker-header { padding-bottom: 16rpx; flex-shrink: 0; }
 .picker-search { background: #f3f4f6; border-radius: 32rpx; padding: 16rpx 28rpx; font-size: 28rpx; }
+.picker-custom {
+  flex-shrink: 0;
+  padding: 20rpx 12rpx;
+  font-size: 26rpx;
+  color: #1f2937;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+.picker-custom-name { color: #2563eb; font-weight: 600; }
 .picker-list { flex: 1; min-height: 0; }
 .picker-item { display: flex; justify-content: space-between; align-items: center; padding: 24rpx 12rpx; border-bottom: 1rpx solid #f3f4f6; }
 .u-zh { font-size: 30rpx; color: #1f2937; font-weight: 600; }

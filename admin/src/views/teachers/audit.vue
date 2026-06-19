@@ -117,7 +117,12 @@
 
         <h4 class="mt">教育背景</h4>
         <el-table :data="drawer.teacher.educations || []" size="small" border>
-          <el-table-column label="学校" prop="university.nameZh" min-width="140" />
+          <el-table-column label="学校" min-width="140">
+            <template #default="{ row }">
+              {{ row.university?.nameZh || row.customUniversityName || '-' }}
+              <el-tag v-if="!row.university && row.customUniversityName" size="small" type="warning" style="margin-left:4px">手填</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="学位" prop="degree" width="80" />
           <el-table-column label="专业" prop="major" min-width="160" />
           <el-table-column label="时间" width="120">

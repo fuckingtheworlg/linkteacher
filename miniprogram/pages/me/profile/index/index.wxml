@@ -79,7 +79,7 @@
         <view class="cell-label">学历背景1 ✎</view>
         <view class="cell-value">
           <text wx:if="{{ teacher && teacher.educations && teacher.educations[0] }}">
-            {{ teacher.educations[0].university.nameZh }} · {{ teacher.educations[0].major }}
+            {{ teacher.educations[0].schoolName }} · {{ teacher.educations[0].major }}
           </text>
           <text wx:else>暂无</text>
         </view>
@@ -88,7 +88,7 @@
         <view class="cell-label">学历背景2 ✎</view>
         <view class="cell-value">
           <text wx:if="{{ teacher && teacher.educations && teacher.educations[1] }}">
-            {{ teacher.educations[1].university.nameZh }} · {{ teacher.educations[1].major }}
+            {{ teacher.educations[1].schoolName }} · {{ teacher.educations[1].major }}
           </text>
           <text wx:else>暂无</text>
         </view>

@@ -38,7 +38,7 @@ Page({
       const tags = Array.isArray(t.tags) ? t.tags : [];
 
       const educationsView = (t.educations || []).map((e) => {
-        const nameZh = e.university ? e.university.nameZh : '';
+        const nameZh = (e.university ? e.university.nameZh : '') || e.customUniversityName || '';
         const nameEn = e.university ? e.university.nameEn : '';
         return {
           id: e.id,

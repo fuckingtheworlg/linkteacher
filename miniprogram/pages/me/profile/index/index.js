@@ -21,6 +21,12 @@ Page({
     try {
       const teacher = await meApi.get();
       const user = (teacher && teacher.user) || null;
+      // 给每条学历补一个统一显示用的 schoolName（库里选的取 nameZh，手填的取 customUniversityName）
+      if (teacher && teacher.educations) {
+        teacher.educations.forEach((e) => {
+          e.schoolName = (e.university && e.university.nameZh) || e.customUniversityName || '';
+        });
+      }
       this.setData({
         teacher,
         user,
