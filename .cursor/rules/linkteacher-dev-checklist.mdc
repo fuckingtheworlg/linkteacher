@@ -1,0 +1,41 @@
+---
+description: LinkTeacher 项目开发避坑清单（小程序 + NestJS + Vue 后台）
+alwaysApply: true
+---
+
+# LinkTeacher 开发避坑清单
+
+实战踩坑提炼，写每个功能前对照检查。
+
+## 1. 会失败的操作必须前端友好提示（后端做最终防线）
+
+不要只靠数据库约束兜底，否则用户看到 500 红屏。
+
+- 重复：同科目两栏、重复标签 → 保存前校验并 toast
+- 必填空：列出缺了什么，如「还需填：地址定位、试听价」
+- 越界：教龄/金额/小时数加 max（前端 maxValue + 后端 `@Max`）
+- 后端同时做防御（去重合并 / `@Min/@Max` / 唯一性预查）
+
+## 2. 用平台能力前先查「限制与开放范围」
+
+微信小程序坑点（已踩）：
+
+- `wx.getLocation` 有开放范围限制，"选地址"类场景会被拒；`chooseLocation` 才合规，且需单独申请隐私接口审核
+- `<input>/<textarea>` 是 native 层，**会穿透 wxss 弹层** → 选择类交互用独立页面（navigateTo + eventChannel），不要做页内遮罩弹层
+- 受控 input 用 setData 回写保证回显；数字框尤其要受控
+
+## 3. 改 schema / 枚举要处理存量数据
+
+只改 `seed.ts` 只管新装。线上已有数据必须写**幂等迁移脚本**：合并外键引用 → 去重 → 删旧。例：`prisma/migrate-curriculums.ts`。
+
+## 4. 「时隐时现」的显示问题先怀疑缓存
+
+ETag 304 空响应曾导致「保存后有时不显示」。后端已 `etag:false`，前端 GET 带 `_t=Date.now()`。新接口沿用此约定。
+
+## 5. 排查 bug 先看证据，不要猜
+
+读 nginx/pm2 日志、查数据库实际值、grep 代码确认字符串来源，再下结论。例：某次"404"查实根本不来自本后端。
+
+## 部署约定
+
+改后端/schema → ECS 跑 `bash deploy/deploy.sh`（schema 变更）或 `quick`（仅代码）；纯小程序前端改动不需重启 ECS，只需 `git pull` + 开发者工具清缓存编译。
