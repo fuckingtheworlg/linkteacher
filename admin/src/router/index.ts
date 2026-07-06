@@ -87,6 +87,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true, title: '公众号设置' },
       },
       {
+        path: 'settings/customer-service',
+        name: 'settings-customer-service',
+        component: () => import('@/views/settings/customer-service.vue'),
+        meta: { requiresAuth: true, title: '客服设置' },
+      },
+      {
         path: 'admins',
         name: 'admins',
         component: () => import('@/views/admins/index.vue'),

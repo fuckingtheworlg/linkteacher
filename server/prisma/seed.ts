@@ -320,6 +320,22 @@ MIT、哈佛、斯坦福、加州伯克利
     },
   });
 
+  console.log('--- Seed: customer-service default config ---');
+  await prisma.systemConfig.upsert({
+    where: { key: 'customer-service' },
+    update: {}, // 已存在不覆盖，保留后台填的 corpId
+    create: {
+      key: 'customer-service',
+      desc: '企业微信客服配置（帮我匹配/对接老师/联系客服 入口）',
+      value: JSON.stringify({
+        // 企业微信客服链接（work.weixin.qq.com/kfid/xxx）
+        url: 'https://work.weixin.qq.com/kfid/kfc41a763174690a212',
+        // 企业微信 corpId，wx.openCustomerServiceChat 必填，请在后台补齐
+        corpId: '',
+      }),
+    },
+  });
+
   console.log('--- Seed: done ---');
 }
 
