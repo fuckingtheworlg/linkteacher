@@ -45,10 +45,6 @@
           <el-icon><ChatLineRound /></el-icon>
           <span>公众号设置</span>
         </el-menu-item>
-        <el-menu-item index="/settings/customer-service">
-          <el-icon><Service /></el-icon>
-          <span>客服设置</span>
-        </el-menu-item>
         <el-menu-item index="/admins" v-if="auth.isSuperAdmin">
           <el-icon><Setting /></el-icon>
           <span>管理员账号</span>
