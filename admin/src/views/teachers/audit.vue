@@ -178,9 +178,10 @@
           <el-table-column label="备注" prop="note" />
         </el-table>
 
-        <h4 class="mt">主页要点 / 工作履历 / 个人荣誉</h4>
+        <h4 class="mt">我的简介 / 指导经验与成果 / 授课风格 / 个人荣誉</h4>
         <pre class="long-text">{{ formatHeadlines(drawer.teacher.headlines) }}</pre>
-        <pre class="long-text" v-if="drawer.teacher.workHistory">工作履历：{{ drawer.teacher.workHistory }}</pre>
+        <pre class="long-text" v-if="drawer.teacher.mentorExperience">指导经验与成果：{{ drawer.teacher.mentorExperience }}</pre>
+        <pre class="long-text" v-if="drawer.teacher.workHistory">授课风格：{{ drawer.teacher.workHistory }}</pre>
         <pre class="long-text" v-if="drawer.teacher.honors">个人荣誉：{{ drawer.teacher.honors }}</pre>
 
         <h4 class="mt">简历（PDF）</h4>
@@ -399,8 +400,8 @@ function formatJsonArr(arr: unknown) {
   return arr.join('，');
 }
 function formatHeadlines(arr: unknown) {
-  if (!Array.isArray(arr) || !arr.length) return '主页要点：（暂无）';
-  return '主页要点：\n' + arr.map((s) => '· ' + s).join('\n');
+  if (!Array.isArray(arr) || !arr.length) return '我的简介：（暂无）';
+  return '我的简介：\n' + arr.map((s) => '· ' + s).join('\n');
 }
 function formatDate(s?: string) {
   if (!s) return '-';

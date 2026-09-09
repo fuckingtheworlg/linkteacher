@@ -8,13 +8,13 @@ const FIELD_META = {
   trialRate:       { title: '试听价 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'trialRate', maxValue: 99999, maxlen: 6 },
   hourlyRate:      { title: '课时费 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'hourlyRate', maxValue: 99999, maxlen: 6 },
   minHours:        { title: '起报小时数', type: 'integer', placeholder: '默认 1', target: 'minHours', maxValue: 24, maxlen: 2 },
-  languages:       { title: '授课语言', type: 'tags', placeholder: '中文 / 英文 / 中英双语', target: 'languages' },
+  languages:       { title: '授课语言', type: 'tags', placeholder: '中英双语授课 / 纯英授课（可多选，每行一个）', target: 'languages' },
   teachingYears:   { title: '教龄（年）', type: 'integer', placeholder: '请输入数字', target: 'teachingYears', maxValue: 80, maxlen: 2 },
-  mentorExperience:{ title: '指导经验', type: 'textarea', placeholder: '请填写指导经验描述', max: 500, target: 'mentorExperience' },
-  tags:            { title: '我的标签', type: 'tags',  placeholder: '示例：05后老师 / INTJ', target: 'tags' },
-  workHistory:     { title: '工作履历', type: 'textarea', placeholder: '请填写工作履历', max: 800, target: 'workHistory' },
+  mentorExperience:{ title: '指导经验与成果', type: 'textarea', placeholder: '请填写指导经验与成果', max: 500, target: 'mentorExperience' },
+  tags:            { title: '我的标签', type: 'tags',  placeholder: '代际标签单选，例：05后老师 / 在校学生', target: 'tags', single: true },
+  workHistory:     { title: '授课风格', type: 'textarea', placeholder: '请填写授课风格', max: 800, target: 'workHistory' },
   honors:          { title: '个人荣誉', type: 'textarea', placeholder: '请填写个人荣誉', max: 800, target: 'honors' },
-  headlines:       { title: '主页要点', type: 'lines', placeholder: '每行一条，例：放榜前被伯明翰大学录取', target: 'headlines' },
+  headlines:       { title: '我的简介', type: 'lines', placeholder: '每行一条，最多3条，每条≤20字', target: 'headlines', maxLines: 3, maxLen: 20 },
 };
 
 const MBTI_OPTIONS = [
@@ -90,10 +90,26 @@ Page({
     let payload = {};
 
     if (meta.type === 'tags' || meta.type === 'lines') {
-      const arr = valueText
+      let arr = valueText
         .split(/[\n,，]/)
         .map((s) => s.trim())
         .filter(Boolean);
+      if (meta.single && arr.length > 1) {
+        wx.showToast({ title: '标签只能选一个', icon: 'none' });
+        return;
+      }
+      if (meta.maxLines != null && arr.length > meta.maxLines) {
+        wx.showToast({ title: `最多 ${meta.maxLines} 条`, icon: 'none' });
+        return;
+      }
+      if (meta.maxLen != null) {
+        const over = arr.find((s) => s.length > meta.maxLen);
+        if (over) {
+          wx.showToast({ title: `每条不超过 ${meta.maxLen} 字`, icon: 'none' });
+          return;
+        }
+      }
+      if (meta.single) arr = arr.slice(0, 1);
       payload[meta.target] = arr;
     } else if (meta.type === 'number') {
       const n = Number(valueText);

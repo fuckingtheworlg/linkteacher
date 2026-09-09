@@ -19,13 +19,15 @@
           :on-success="onAvatarSuccess"
           :on-error="onAvatarError"
         >
-          <img v-if="form.avatarUrl" :src="form.avatarUrl" class="avatar-img" />
-          <div v-else class="avatar-empty">
-            <el-icon><Plus /></el-icon>
-            <span>上传头像</span>
-          </div>
+          <img :src="displayAvatarUrl" class="avatar-img" />
         </el-upload>
-        <el-input v-model="form.avatarUrl" placeholder="或直接粘贴 URL" style="max-width: 420px; margin-top: 8px" clearable />
+        <el-input
+          v-model="form.avatarUrl"
+          placeholder="或直接粘贴 URL（清空后按性别显示默认头像）"
+          style="max-width: 420px; margin-top: 8px"
+          clearable
+        />
+        <p class="avatar-hint">未上传时：男/女用默认头像，未知性别用 Logo；默认图仅预览，不会写入数据库。</p>
       </el-form-item>
       <el-row :gutter="16">
         <el-col :span="12">
@@ -91,17 +93,31 @@
 
       <el-divider content-position="left">展示信息</el-divider>
       <el-form-item label="教龄（年）"><el-input-number v-model="form.teachingYears" :min="0" /></el-form-item>
-      <el-form-item label="授课语言（用回车分隔多个）">
-        <el-input v-model="languagesText" type="textarea" :rows="2" placeholder="每行一个，如：中文 / 英文" />
+      <el-form-item label="授课语言（可多选）">
+        <el-checkbox-group v-model="languagesSelected">
+          <el-checkbox v-for="opt in LANGUAGE_OPTIONS" :key="opt" :value="opt">
+            {{ opt }}
+          </el-checkbox>
+        </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="标签（用回车分隔多个）">
-        <el-input v-model="tagsText" type="textarea" :rows="2" placeholder="每行一个，如：INTJ / 05后老师" />
+      <el-form-item label="标签（单选）">
+        <el-radio-group v-model="tagSelected">
+          <el-radio v-for="opt in TAG_OPTIONS" :key="opt" :value="opt" border class="tag-radio">
+            {{ opt }}
+          </el-radio>
+        </el-radio-group>
+        <el-button v-if="tagSelected" link type="info" size="small" @click="tagSelected = ''">清除</el-button>
       </el-form-item>
-      <el-form-item label="主页要点（每行一条）">
-        <el-input v-model="headlinesText" type="textarea" :rows="3" placeholder="每行一条要点" />
+      <el-form-item label="我的简介（最多 3 条，每条 ≤20 字）">
+        <el-input
+          v-model="headlinesText"
+          type="textarea"
+          :rows="3"
+          placeholder="每行一条，最多 3 条，每条不超过 20 字"
+        />
       </el-form-item>
-      <el-form-item label="指导经验"><el-input v-model="form.mentorExperience" type="textarea" :rows="2" /></el-form-item>
-      <el-form-item label="工作履历"><el-input v-model="form.workHistory" type="textarea" :rows="2" /></el-form-item>
+      <el-form-item label="指导经验与成果"><el-input v-model="form.mentorExperience" type="textarea" :rows="2" /></el-form-item>
+      <el-form-item label="授课风格"><el-input v-model="form.workHistory" type="textarea" :rows="2" /></el-form-item>
       <el-form-item label="个人荣誉"><el-input v-model="form.honors" type="textarea" :rows="2" /></el-form-item>
 
       <el-divider content-position="left">教育背景（覆盖式保存）</el-divider>
@@ -148,6 +164,19 @@ import { ElMessage, type FormInstance, type UploadProps } from 'element-plus';
 import { teacherApi, dictApi } from '@/api/admin';
 import { tokenStore } from '@/api/http';
 
+const LANGUAGE_OPTIONS = ['中英双语授课', '纯英授课'] as const;
+const TAG_OPTIONS = [
+  '70后老师',
+  '75后老师',
+  '80后老师',
+  '85后老师',
+  '90后老师',
+  '95后老师',
+  '00后老师',
+  '05后老师',
+  '在校学生',
+] as const;
+
 const props = defineProps<{
   visible: boolean;
   teacherId: number | null;
@@ -191,8 +220,8 @@ const blankForm = () => ({
   longitude: undefined as number | undefined,
 });
 const form = reactive<ReturnType<typeof blankForm>>(blankForm());
-const languagesText = ref('');
-const tagsText = ref('');
+const languagesSelected = ref<string[]>([]);
+const tagSelected = ref('');
 const headlinesText = ref('');
 const educations = ref<Array<{ universityId?: number; degree?: string; major?: string; startYear?: number; endYear?: number }>>([]);
 const subjects = ref<Array<{ subjectId?: number; curriculumIds: number[] }>>([]);
@@ -204,6 +233,37 @@ const rules = {
 const universities = ref<any[]>([]);
 const subjectList = ref<any[]>([]);
 const curriculums = ref<any[]>([]);
+
+const displayAvatarUrl = computed(() => {
+  const url = (form.avatarUrl || '').trim();
+  if (url) return url;
+  if (form.gender === 'MALE') return '/default-avatars/male.jpg';
+  if (form.gender === 'FEMALE') return '/default-avatars/female.jpg';
+  return '/default-avatars/logo.jpg';
+});
+
+/** 兼容旧自由文本：尽量映射到固定选项 */
+function normalizeLanguages(raw: unknown): string[] {
+  const arr = Array.isArray(raw) ? raw.map(String) : [];
+  const selected = new Set<string>();
+  for (const s of arr) {
+    if ((LANGUAGE_OPTIONS as readonly string[]).includes(s)) {
+      selected.add(s);
+      continue;
+    }
+    if (/双语|中英|中文.*英文|英文.*中文/.test(s)) selected.add('中英双语授课');
+    else if (/纯英|英文|English/i.test(s)) selected.add('纯英授课');
+  }
+  return [...selected];
+}
+
+function normalizeTag(raw: unknown): string {
+  const arr = Array.isArray(raw) ? raw.map(String) : [];
+  for (const s of arr) {
+    if ((TAG_OPTIONS as readonly string[]).includes(s)) return s;
+  }
+  return '';
+}
 
 async function loadDict() {
   const [uniRes, subj, curri] = await Promise.all([
@@ -244,8 +304,8 @@ async function loadTeacher(id: number) {
       latitude: t.latitude !== null && t.latitude !== undefined ? Number(t.latitude) : undefined,
       longitude: t.longitude !== null && t.longitude !== undefined ? Number(t.longitude) : undefined,
     });
-    languagesText.value = (Array.isArray(t.languages) ? t.languages : []).join('\n');
-    tagsText.value = (Array.isArray(t.tags) ? t.tags : []).join('\n');
+    languagesSelected.value = normalizeLanguages(t.languages);
+    tagSelected.value = normalizeTag(t.tags);
     headlinesText.value = (Array.isArray(t.headlines) ? t.headlines : []).join('\n');
     educations.value = (t.educations || []).map((e: any) => ({
       universityId: e.universityId,
@@ -272,8 +332,8 @@ watch(
       await loadTeacher(props.teacherId);
     } else {
       Object.assign(form, blankForm());
-      languagesText.value = '';
-      tagsText.value = '';
+      languagesSelected.value = [];
+      tagSelected.value = '';
       headlinesText.value = '';
       educations.value = [];
       subjects.value = [];
@@ -296,7 +356,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (file) => {
   return true;
 };
 const onAvatarSuccess: UploadProps['onSuccess'] = (resp) => {
-  // 后端返回 { code: 0, data: { url, filename, size } }
   const data = (resp && resp.code === 0 && resp.data) || resp;
   if (data && data.url) {
     form.avatarUrl = data.url;
@@ -325,13 +384,23 @@ async function onSubmit() {
   if (!formRef.value) return;
   await formRef.value.validate(async (valid) => {
     if (!valid) return;
+    const headlines = splitLines(headlinesText.value);
+    if (headlines.length > 3) {
+      ElMessage.warning('我的简介最多 3 条');
+      return;
+    }
+    const over = headlines.find((s) => s.length > 20);
+    if (over) {
+      ElMessage.warning('每条简介不超过 20 字');
+      return;
+    }
     saving.value = true;
     try {
       const payload = {
         ...form,
-        languages: splitLines(languagesText.value),
-        tags: splitLines(tagsText.value),
-        headlines: splitLines(headlinesText.value),
+        languages: [...languagesSelected.value],
+        tags: tagSelected.value ? [tagSelected.value] : [],
+        headlines,
         educations: educations.value
           .filter((e) => e.universityId && e.major)
           .map((e) => ({
@@ -379,12 +448,9 @@ async function onSubmit() {
 }
 .avatar-uploader :deep(.el-upload:hover) { border-color: #1f2937; }
 .avatar-img { width: 96px; height: 96px; object-fit: cover; }
-.avatar-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: #9ca3af;
-  font-size: 12px;
+.avatar-hint { margin: 6px 0 0; font-size: 12px; color: #9ca3af; line-height: 1.4; }
+
+.tag-radio {
+  margin: 0 8px 8px 0 !important;
 }
 </style>

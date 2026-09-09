@@ -102,7 +102,7 @@
         <view class="cell-value">{{ teacher && teacher.teachingYears ? (teacher.teachingYears + '年') : '0年' }}</view>
       </view>
       <view class="cell wide" bindtap="goEdit" data-field="mentorExperience">
-        <view class="cell-label">指导经验 ✎</view>
+        <view class="cell-label">指导经验与成果 ✎</view>
         <view class="cell-value">{{ teacher && teacher.mentorExperience ? teacher.mentorExperience : '未填写' }}</view>
       </view>
       <view class="cell wide" bindtap="goEdit" data-field="tags">
@@ -117,7 +117,7 @@
   <view class="card">
     <view class="kv">
       <view class="cell" bindtap="goEdit" data-field="workHistory">
-        <view class="cell-label">工作履历 ✎</view>
+        <view class="cell-label">授课风格 ✎</view>
         <view class="cell-value strong">{{ teacher && teacher.workHistory ? '已填写' : '未填写' }}</view>
       </view>
       <view class="cell" bindtap="goEdit" data-field="honors">

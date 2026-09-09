@@ -96,15 +96,15 @@
     </view>
   </view>
 
-  <!-- 指导经验 -->
+  <!-- 指导经验与成果 -->
   <view class="card" wx:if="{{ teacher.mentorExperience }}">
-    <view class="section-title">指导经验</view>
+    <view class="section-title">指导经验与成果</view>
     <view class="long-text text-body">{{ teacher.mentorExperience }}</view>
   </view>
 
-  <!-- 工作履历 -->
+  <!-- 授课风格 -->
   <view class="card" wx:if="{{ teacher.workHistory }}">
-    <view class="section-title">工作履历</view>
+    <view class="section-title">授课风格</view>
     <view class="long-text text-body">{{ teacher.workHistory }}</view>
   </view>
 
