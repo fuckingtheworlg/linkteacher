@@ -43,8 +43,8 @@
 /* 报价卡片 */
 .price-card { display: flex; align-items: stretch; padding: 24rpx 0; }
 .price-cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6rpx; }
-.price-big { color: #1f2937; font-size: 40rpx; font-weight: 700; }
-.price-unit { color: #6b7280; font-size: 22rpx; font-weight: 400; margin-left: 4rpx; }
+.price-big { color: #dc2626; font-size: 40rpx; font-weight: 700; }
+.price-unit { color: #dc2626; font-size: 22rpx; font-weight: 400; margin-left: 4rpx; opacity: 0.85; }
 .price-divider { width: 2rpx; background: #f3f4f6; margin: 0 16rpx; }
 
 /* 教育背景 */

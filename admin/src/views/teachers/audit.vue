@@ -10,7 +10,7 @@
       <el-table :data="list" v-loading="loading" border stripe row-key="id">
         <el-table-column label="头像" width="80">
           <template #default="{ row }">
-            <el-avatar :size="40" :src="row.user?.avatarUrl" />
+            <el-avatar :size="40" :src="resolveAvatarUrl(row.user?.avatarUrl, row.gender)" />
           </template>
         </el-table-column>
         <el-table-column label="昵称" prop="user.nickname" min-width="120" />
@@ -26,7 +26,14 @@
         </el-table-column>
         <el-table-column label="科目" min-width="220">
           <template #default="{ row }">
-            <el-tag v-for="ts in row.subjects" :key="ts.id" size="small" style="margin-right:6px">{{ ts.subject?.name }}</el-tag>
+            <el-tag
+              v-for="ts in row.subjects"
+              :key="ts.id"
+              size="small"
+              effect="dark"
+              color="#1f2937"
+              style="margin-right:6px; border: none"
+            >{{ ts.subject?.name }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="课时费" width="100">
@@ -167,7 +174,11 @@
 
         <h4 class="mt">辅导内容</h4>
         <el-table :data="drawer.teacher.subjects || []" size="small" border>
-          <el-table-column label="科目" prop="subject.name" />
+          <el-table-column label="科目" min-width="100">
+            <template #default="{ row }">
+              <el-tag size="small" effect="dark" color="#1f2937" style="border: none">{{ row.subject?.name }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="课程体系">
             <template #default="{ row }">
               <el-tag v-for="c in row.curriculums" :key="c.id" size="small" style="margin:2px">
@@ -178,10 +189,9 @@
           <el-table-column label="备注" prop="note" />
         </el-table>
 
-        <h4 class="mt">我的简介 / 指导经验与成果 / 授课风格 / 个人荣誉</h4>
+        <h4 class="mt">我的简介 / 指导经验与成果 / 个人荣誉</h4>
         <pre class="long-text">{{ formatHeadlines(drawer.teacher.headlines) }}</pre>
         <pre class="long-text" v-if="drawer.teacher.mentorExperience">指导经验与成果：{{ drawer.teacher.mentorExperience }}</pre>
-        <pre class="long-text" v-if="drawer.teacher.workHistory">授课风格：{{ drawer.teacher.workHistory }}</pre>
         <pre class="long-text" v-if="drawer.teacher.honors">个人荣誉：{{ drawer.teacher.honors }}</pre>
 
         <h4 class="mt">简历（PDF）</h4>
@@ -253,6 +263,7 @@
 import { computed, onMounted, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { teacherApi, educationApi } from '@/api/admin';
+import { resolveAvatarUrl } from '@/utils/avatar';
 
 const list = ref<any[]>([]);
 const total = ref(0);

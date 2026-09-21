@@ -3,7 +3,7 @@
  * 任何 Page 在 onShareAppMessage / onShareTimeline 里直接 return appShare() / timelineShare()
  * 即可让小程序右上角「⋯ → 转发给朋友 / 分享到朋友圈」可用。
  */
-const APP_TITLE = 'LinkTeacher · 直连全球优秀独立老师';
+const APP_TITLE = 'LinkTeach · 直连全球优秀独立老师';
 const HOME_PATH = '/pages/teachers/index/index';
 
 /** 转发给朋友（onShareAppMessage 返回值） */

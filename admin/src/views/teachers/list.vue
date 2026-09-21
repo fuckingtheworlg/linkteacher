@@ -18,7 +18,7 @@
       <el-table-column label="ID" prop="id" width="64" />
       <el-table-column label="头像" width="70">
         <template #default="{ row }">
-          <el-avatar :size="36" :src="row.user?.avatarUrl" />
+          <el-avatar :size="36" :src="avatarOf(row)" />
         </template>
       </el-table-column>
       <el-table-column label="昵称" prop="user.nickname" min-width="120" />
@@ -30,7 +30,14 @@
       </el-table-column>
       <el-table-column label="科目" min-width="180">
         <template #default="{ row }">
-          <el-tag v-for="ts in row.subjects" :key="ts.id" size="small" style="margin-right: 4px">{{ ts.subject?.name }}</el-tag>
+          <el-tag
+            v-for="ts in row.subjects"
+            :key="ts.id"
+            size="small"
+            effect="dark"
+            color="#1f2937"
+            style="margin-right: 4px; border: none"
+          >{{ ts.subject?.name }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="课时费" width="100">
@@ -81,6 +88,7 @@ import { onMounted, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { teacherApi, type TeacherStatus } from '@/api/admin';
 import TeacherFormDrawer from './TeacherFormDrawer.vue';
+import { resolveAvatarUrl } from '@/utils/avatar';
 
 const list = ref<any[]>([]);
 const total = ref(0);
@@ -92,6 +100,10 @@ const loading = ref(false);
 
 const drawerVisible = ref(false);
 const editingId = ref<number | null>(null);
+
+function avatarOf(row: any) {
+  return resolveAvatarUrl(row?.user?.avatarUrl, row?.gender);
+}
 
 async function reload() {
   loading.value = true;

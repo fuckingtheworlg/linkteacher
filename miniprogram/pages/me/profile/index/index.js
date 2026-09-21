@@ -2,11 +2,13 @@ const { meApi } = require('../../../../utils/api');
 const { fmtPrice } = require('../../../../utils/format');
 const { pickAndUploadImage } = require('../../../../utils/upload');
 const { appShare, timelineShare } = require('../../../../utils/share');
+const { resolveAvatarUrl } = require('../../../../utils/avatar');
 
 Page({
   data: {
     teacher: null,
     user: null,
+    displayAvatarUrl: '',
     loading: false,
     canSubmit: false,
     saving: false,
@@ -30,6 +32,7 @@ Page({
       this.setData({
         teacher,
         user,
+        displayAvatarUrl: resolveAvatarUrl(user && user.avatarUrl, teacher && teacher.gender),
         loading: false,
         canSubmit: this.checkCanSubmit(teacher),
         hourlyRateText: teacher && teacher.hourlyRate ? fmtPrice(teacher.hourlyRate) : '0',
@@ -37,7 +40,7 @@ Page({
         minHoursText: teacher && teacher.minHours ? teacher.minHours : 1,
       });
     } catch (err) {
-      this.setData({ teacher: null, user: null, loading: false });
+      this.setData({ teacher: null, user: null, displayAvatarUrl: resolveAvatarUrl('', null), loading: false });
       console.error('[profile] fetch failed', err);
       wx.showToast({ title: err.message || '加载失败', icon: 'none' });
     }

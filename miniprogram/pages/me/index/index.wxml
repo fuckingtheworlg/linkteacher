@@ -3,12 +3,10 @@
   <view class="card user-card">
     <view class="avatar-wrap" bindtap="onPickAvatar">
       <image
-        wx:if="{{ user && user.avatarUrl }}"
         class="avatar"
-        src="{{ user.avatarUrl }}"
+        src="{{ displayAvatarUrl }}"
         mode="aspectFill"
       />
-      <view wx:else class="avatar avatar-placeholder">+</view>
       <view class="avatar-edit-badge">✎</view>
     </view>
     <view class="user-info">

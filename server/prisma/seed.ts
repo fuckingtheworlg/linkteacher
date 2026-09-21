@@ -147,7 +147,7 @@ async function main() {
     {
       slug: 'privacy-policy',
       title: '隐私政策',
-      content: `LinkTeacher（以下简称"本平台"）非常重视用户个人信息保护。本政策说明我们如何收集、使用、存储您的个人信息。
+      content: `LinkTeach（以下简称"本平台"）非常重视用户个人信息保护。本政策说明我们如何收集、使用、存储您的个人信息。
 
 【一、我们收集的信息及目的】
 1. 微信账号信息（头像、昵称）：用于展示您的个人资料、生成账号。
@@ -170,12 +170,12 @@ async function main() {
 【五、用户授权同意】
 在收集您的身份证、真实姓名、位置等信息前，我们会取得您的明确同意。您可拒绝提供，但可能无法完成导师认证。
 
-如有疑问，请联系客服 LinkTeacher 小助手。`,
+如有疑问，请联系客服 LinkTeach 小助手。`,
     },
     {
       slug: 'user-agreement',
       title: '用户服务协议',
-      content: `欢迎使用 LinkTeacher（以下简称"本平台"）。在使用本平台服务前，请您仔细阅读并同意本协议。
+      content: `欢迎使用 LinkTeach（以下简称"本平台"）。在使用本平台服务前，请您仔细阅读并同意本协议。
 
 【一、服务内容】
 本平台为国际课程（IGCSE / A-Level / IB / AP 等）的导师与学生/家长提供信息展示与匹配对接服务。平台不直接参与课程交易。
@@ -194,12 +194,12 @@ async function main() {
 【五、协议变更】
 本平台可能适时更新本协议，更新后将在小程序内公示。
 
-如有疑问，请联系客服 LinkTeacher 小助手。`,
+如有疑问，请联系客服 LinkTeach 小助手。`,
     },
     {
       slug: 'partnership-rules',
       title: '合作规则',
-      content: `欢迎加入 LinkTeacher 国际课程导师匹配平台。
+      content: `欢迎加入 LinkTeach 国际课程导师匹配平台。
 
 【一、入驻须知】
 1. 平台仅接收持有真实学历背景的国际课程导师。
@@ -221,12 +221,12 @@ async function main() {
 2. 收到学生投诉超过 3 次 → 暂停展示并人工复核。
 3. 在平台外撬单或引导学生加私人微信绕过平台 → 暂停展示。
 
-详情请联系客服 LinkTeacher 小助手。`,
+详情请联系客服 LinkTeach 小助手。`,
     },
     {
       slug: 'about-us',
       title: '关于我们',
-      content: `LinkTeacher —— 直连全球优秀独立老师的非机构平台。
+      content: `LinkTeach —— 直连全球优秀独立老师的非机构平台。
 
 我们相信：
 · 优秀的国际课程教育不应只属于大型机构。
@@ -243,12 +243,12 @@ MIT、哈佛、斯坦福、加州伯克利
 · 100% 真实学历审核
 · 0 平台抽成
 · 自由匹配，自由议价
-· 服务由 LinkTeacher 小助手提供，全程在线`,
+· 服务由 LinkTeach 小助手提供，全程在线`,
     },
     {
       slug: 'competitions',
       title: '国际竞赛 · 资源汇总',
-      content: `LinkTeacher 长期跟踪以下含金量较高的国际竞赛，帮助同学们规划课外履历、冲刺名校：
+      content: `LinkTeach 长期跟踪以下含金量较高的国际竞赛，帮助同学们规划课外履历、冲刺名校：
 
 【数学】
 · AMC 8 / 10 / 12（美国数学邀请赛系列）—— 申请美本 STEM 必备

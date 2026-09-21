@@ -13,13 +13,13 @@ Page({
     const a = this.data.article;
     const slug = this.data.slug;
     if (a && slug) {
-      return appShare(`${a.title} - LinkTeacher`, `/pages/article/article?slug=${slug}`);
+      return appShare(`${a.title} - LinkTeach`, `/pages/article/article?slug=${slug}`);
     }
     return appShare();
   },
   onShareTimeline() {
     const a = this.data.article;
-    if (a) return timelineShare(`${a.title} - LinkTeacher`);
+    if (a) return timelineShare(`${a.title} - LinkTeach`);
     return timelineShare();
   },
 

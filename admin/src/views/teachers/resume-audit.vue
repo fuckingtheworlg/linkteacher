@@ -16,7 +16,7 @@
       <el-table-column label="ID" prop="id" width="60" />
       <el-table-column label="头像" width="70">
         <template #default="{ row }">
-          <el-avatar :size="36" :src="row.user?.avatarUrl" />
+          <el-avatar :size="36" :src="resolveAvatarUrl(row.user?.avatarUrl, row.gender)" />
         </template>
       </el-table-column>
       <el-table-column label="昵称" prop="user.nickname" min-width="120" />
@@ -76,6 +76,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { teacherApi } from '@/api/admin';
+import { resolveAvatarUrl } from '@/utils/avatar';
 
 const filter = ref<'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'all'>('PENDING_REVIEW');
 const keyword = ref('');

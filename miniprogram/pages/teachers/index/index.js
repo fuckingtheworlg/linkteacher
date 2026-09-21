@@ -1,6 +1,7 @@
 const { teachersApi, dictApi, bannersApi, matchApi } = require('../../../utils/api');
 const { fmtPrice, genderToText } = require('../../../utils/format');
 const { appShare, timelineShare } = require('../../../utils/share');
+const { resolveAvatarUrl } = require('../../../utils/avatar');
 
 Page({
   data: {
@@ -92,7 +93,7 @@ Page({
     const nickname = (t.user && t.user.nickname) || '老师';
     return {
       id: t.id,
-      avatarUrl: (t.user && t.user.avatarUrl) || '',
+      avatarUrl: resolveAvatarUrl(t.user && t.user.avatarUrl, t.gender),
       avatarLetter: nickname.charAt(0).toUpperCase(),
       nickname,
       genderIcon: genderToText(t.gender),

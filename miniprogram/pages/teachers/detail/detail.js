@@ -1,6 +1,7 @@
 const { teachersApi, matchApi, meApi } = require('../../../utils/api');
 const { fmtPrice, genderToText } = require('../../../utils/format');
 const { appShare, timelineShare } = require('../../../utils/share');
+const { resolveAvatarUrl } = require('../../../utils/avatar');
 
 Page({
   data: {
@@ -74,6 +75,7 @@ Page({
       this.setData({
         teacher: t,
         nickname,
+        avatarUrl: resolveAvatarUrl(t.user && t.user.avatarUrl, t.gender),
         avatarLetter: nickname.charAt(0).toUpperCase(),
         headlines,
         languagesText: languages.join('，'),
@@ -116,7 +118,7 @@ Page({
     const t = this.data.teacher;
     if (t && t.id && !this.data.isPreview) {
       const name = (t.user && t.user.nickname) || '一位老师';
-      return appShare(`向你推荐：${name} - LinkTeacher`, `/pages/teachers/detail/detail?id=${t.id}`);
+      return appShare(`向你推荐：${name} - LinkTeach`, `/pages/teachers/detail/detail?id=${t.id}`);
     }
     return appShare();
   },
@@ -124,7 +126,7 @@ Page({
     const t = this.data.teacher;
     if (t && t.id && !this.data.isPreview) {
       const name = (t.user && t.user.nickname) || '一位老师';
-      return timelineShare(`向你推荐：${name} - LinkTeacher`);
+      return timelineShare(`向你推荐：${name} - LinkTeach`);
     }
     return timelineShare();
   },

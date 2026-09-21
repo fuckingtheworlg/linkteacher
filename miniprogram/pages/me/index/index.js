@@ -3,6 +3,7 @@ const { ensureLogin } = require('../../../utils/auth');
 const { STORAGE_KEYS } = require('../../../utils/config');
 const { pickAndUploadImage } = require('../../../utils/upload');
 const { appShare, timelineShare } = require('../../../utils/share');
+const { resolveAvatarUrl } = require('../../../utils/avatar');
 
 const STATUS_TEXT = {
   DRAFT: '草稿',
@@ -17,6 +18,7 @@ const APP_VERSION = '1.0.0';
 Page({
   data: {
     user: null,
+    displayAvatarUrl: '',
     teacher: null,
     statusText: '',
     rejectReason: '',
@@ -49,14 +51,22 @@ Page({
     try {
       const teacher = await meApi.get();
       const status = teacher && teacher.status;
+      const user = this.data.user || {};
       this.setData({
         teacher,
         statusText: STATUS_TEXT[status] || '',
         rejectReason: (teacher && teacher.rejectReason) || '',
+        displayAvatarUrl: resolveAvatarUrl(user.avatarUrl, teacher && teacher.gender),
       });
     } catch (err) {
       console.warn('[me] fetch teacher me failed (可忽略，学生身份):', err);
-      this.setData({ teacher: null, statusText: '', rejectReason: '' });
+      const user = this.data.user || {};
+      this.setData({
+        teacher: null,
+        statusText: '',
+        rejectReason: '',
+        displayAvatarUrl: resolveAvatarUrl(user.avatarUrl, null),
+      });
     }
 
     try {
@@ -99,7 +109,10 @@ Page({
       const cached = wx.getStorageSync(STORAGE_KEYS.USER) || {};
       const next = { ...cached, avatarUrl: data.url };
       wx.setStorageSync(STORAGE_KEYS.USER, next);
-      this.setData({ user: next });
+      this.setData({
+        user: next,
+        displayAvatarUrl: resolveAvatarUrl(data.url, this.data.teacher && this.data.teacher.gender),
+      });
       wx.showToast({ title: '头像已更新', icon: 'success' });
     } catch (err) {
       if (err && err.canceled) return;

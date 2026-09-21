@@ -117,7 +117,6 @@
         />
       </el-form-item>
       <el-form-item label="指导经验与成果"><el-input v-model="form.mentorExperience" type="textarea" :rows="2" /></el-form-item>
-      <el-form-item label="授课风格"><el-input v-model="form.workHistory" type="textarea" :rows="2" /></el-form-item>
       <el-form-item label="个人荣誉"><el-input v-model="form.honors" type="textarea" :rows="2" /></el-form-item>
 
       <el-divider content-position="left">教育背景（覆盖式保存）</el-divider>
@@ -163,6 +162,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { ElMessage, type FormInstance, type UploadProps } from 'element-plus';
 import { teacherApi, dictApi } from '@/api/admin';
 import { tokenStore } from '@/api/http';
+import { resolveAvatarUrl } from '@/utils/avatar';
 
 const LANGUAGE_OPTIONS = ['中英双语授课', '纯英授课'] as const;
 const TAG_OPTIONS = [
@@ -234,13 +234,7 @@ const universities = ref<any[]>([]);
 const subjectList = ref<any[]>([]);
 const curriculums = ref<any[]>([]);
 
-const displayAvatarUrl = computed(() => {
-  const url = (form.avatarUrl || '').trim();
-  if (url) return url;
-  if (form.gender === 'MALE') return '/default-avatars/male.jpg';
-  if (form.gender === 'FEMALE') return '/default-avatars/female.jpg';
-  return '/default-avatars/logo.jpg';
-});
+const displayAvatarUrl = computed(() => resolveAvatarUrl(form.avatarUrl, form.gender));
 
 /** 兼容旧自由文本：尽量映射到固定选项 */
 function normalizeLanguages(raw: unknown): string[] {

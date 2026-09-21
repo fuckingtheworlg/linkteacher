@@ -1,7 +1,7 @@
 <template>
   <el-container class="layout-root">
     <el-aside width="220px" class="layout-aside">
-      <div class="logo">LinkTeacher</div>
+      <div class="logo">LinkTeach</div>
       <el-menu :default-active="route.path" :default-openeds="['dict']" router class="menu" background-color="#1f2937" text-color="#cbd5e1" active-text-color="#ffffff">
         <el-menu-item index="/dashboard">
           <el-icon><Odometer /></el-icon>

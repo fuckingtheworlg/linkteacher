@@ -24,8 +24,7 @@
   <view class="card">
     <view class="card-row">
       <view class="avatar-wrap" bindtap="onPickAvatar">
-        <image wx:if="{{ user && user.avatarUrl }}" class="avatar" src="{{ user.avatarUrl }}" mode="aspectFill" />
-        <view wx:else class="avatar avatar-placeholder">+</view>
+        <image class="avatar" src="{{ displayAvatarUrl }}" mode="aspectFill" />
         <view class="avatar-edit-badge">✎</view>
       </view>
       <view class="grid">
@@ -116,10 +115,6 @@
   <view class="section-title">导师补充信息</view>
   <view class="card">
     <view class="kv">
-      <view class="cell" bindtap="goEdit" data-field="workHistory">
-        <view class="cell-label">授课风格 ✎</view>
-        <view class="cell-value strong">{{ teacher && teacher.workHistory ? '已填写' : '未填写' }}</view>
-      </view>
       <view class="cell" bindtap="goEdit" data-field="honors">
         <view class="cell-label">个人荣誉 ✎</view>
         <view class="cell-value strong">{{ teacher && teacher.honors ? '已填写' : '未填写' }}</view>

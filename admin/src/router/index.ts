@@ -115,7 +115,7 @@ router.beforeEach((to, _from, next) => {
     next();
   }
   if (to.meta.title) {
-    document.title = `${to.meta.title as string} - LinkTeacher 管理后台`;
+    document.title = `${to.meta.title as string} - LinkTeach 管理后台`;
   }
 });
 
