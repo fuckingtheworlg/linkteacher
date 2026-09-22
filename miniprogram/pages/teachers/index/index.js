@@ -96,6 +96,10 @@ Page({
       avatarUrl: resolveAvatarUrl(t.user && t.user.avatarUrl, t.gender),
       avatarLetter: nickname.charAt(0).toUpperCase(),
       nickname,
+      teachingYearsText:
+        t.teachingYears != null && Number(t.teachingYears) > 0
+          ? `教龄${Number(t.teachingYears)}年`
+          : '',
       genderIcon: genderToText(t.gender),
       addressLine: [t.country, t.city].filter(Boolean).join(' · '),
       isCertified: !!t.isCertified,

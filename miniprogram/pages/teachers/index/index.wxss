@@ -110,6 +110,7 @@
 .row1 { display: flex; justify-content: space-between; align-items: center; }
 .row1-left { display: flex; align-items: center; gap: 10rpx; flex-wrap: wrap; }
 .name { font-size: 30rpx; font-weight: 600; color: #1f2937; }
+.years { font-size: 22rpx; color: #6b7280; }
 .gender { font-size: 22rpx; color: #9ca3af; }
 .cert { color: #16a34a; font-size: 22rpx; flex-shrink: 0; }
 
@@ -119,9 +120,9 @@
 /* 学科标签：与后台深蓝底白字一致（沿用 app.wxss .tag） */
 
 .price-row { display: flex; align-items: baseline; gap: 8rpx; margin-top: 4rpx; flex-wrap: wrap; }
-.price { color: #dc2626; font-weight: 700; font-size: 30rpx; }
+.price { color: #111827; font-weight: 700; font-size: 30rpx; }
 .price-sep { color: #d1d5db; }
-.price-trial { color: #dc2626; font-weight: 600; font-size: 26rpx; }
+.price-trial { color: #111827; font-weight: 600; font-size: 26rpx; }
 
 .headline {
   color: #6b7280;

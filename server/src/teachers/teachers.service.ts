@@ -67,6 +67,7 @@ export class TeachersService {
           tags: true,
           hourlyRate: true,
           trialRate: true,
+          teachingYears: true,
           isCertified: true,
           user: { select: { nickname: true, avatarUrl: true } },
           educations: {

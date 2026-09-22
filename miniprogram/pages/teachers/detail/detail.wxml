@@ -20,6 +20,7 @@
       <view class="header-info">
         <view class="name-line">
           <text class="text-h2">{{ nickname }}</text>
+          <text class="years" wx:if="{{ teachingYearsText }}">{{ teachingYearsText }}</text>
           <text class="gender" wx:if="{{ teacher.gender === 'FEMALE' }}">♀</text>
           <text class="gender" wx:if="{{ teacher.gender === 'MALE' }}">♂</text>
           <text class="cert" wx:if="{{ teacher.isCertified }}">✓ 已认证</text>

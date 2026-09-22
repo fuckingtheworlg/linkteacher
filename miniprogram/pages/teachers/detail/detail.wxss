@@ -33,6 +33,7 @@
 
 .header-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8rpx; }
 .name-line { display: flex; align-items: center; gap: 12rpx; flex-wrap: wrap; }
+.years { color: #6b7280; font-size: 24rpx; }
 .gender { color: #9ca3af; font-size: 26rpx; }
 .cert { color: #16a34a; font-size: 22rpx; }
 .addr-line, .meta-line { display: flex; gap: 8rpx; align-items: center; flex-wrap: wrap; }
@@ -43,8 +44,8 @@
 /* 报价卡片 */
 .price-card { display: flex; align-items: stretch; padding: 24rpx 0; }
 .price-cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6rpx; }
-.price-big { color: #dc2626; font-size: 40rpx; font-weight: 700; }
-.price-unit { color: #dc2626; font-size: 22rpx; font-weight: 400; margin-left: 4rpx; opacity: 0.85; }
+.price-big { color: #111827; font-size: 40rpx; font-weight: 700; }
+.price-unit { color: #374151; font-size: 22rpx; font-weight: 400; margin-left: 4rpx; }
 .price-divider { width: 2rpx; background: #f3f4f6; margin: 0 16rpx; }
 
 /* 教育背景 */

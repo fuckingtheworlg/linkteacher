@@ -103,6 +103,7 @@
         <view class="row1">
           <view class="row1-left">
             <text class="name">{{ item.nickname }}</text>
+            <text class="years" wx:if="{{ item.teachingYearsText }}">{{ item.teachingYearsText }}</text>
             <text class="gender" wx:if="{{ item.genderIcon }}">{{ item.genderIcon }}</text>
           </view>
           <view class="cert" wx:if="{{ item.isCertified }}">✓ 已认证</view>

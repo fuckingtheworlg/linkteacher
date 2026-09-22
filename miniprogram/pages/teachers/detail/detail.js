@@ -77,6 +77,10 @@ Page({
         nickname,
         avatarUrl: resolveAvatarUrl(t.user && t.user.avatarUrl, t.gender),
         avatarLetter: nickname.charAt(0).toUpperCase(),
+        teachingYearsText:
+          t.teachingYears != null && Number(t.teachingYears) > 0
+            ? `教龄${Number(t.teachingYears)}年`
+            : '',
         headlines,
         languagesText: languages.join('，'),
         tagsList: tags,
