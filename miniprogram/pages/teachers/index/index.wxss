@@ -119,10 +119,10 @@
 .tags-row { display: flex; flex-wrap: wrap; gap: 8rpx; margin-top: 4rpx; }
 /* 学科标签：与后台深蓝底白字一致（沿用 app.wxss .tag） */
 
-.price-row { display: flex; align-items: baseline; gap: 8rpx; margin-top: 4rpx; flex-wrap: wrap; }
-.price { color: #111827; font-weight: 700; font-size: 30rpx; }
-.price-sep { color: #d1d5db; }
-.price-trial { color: #111827; font-weight: 600; font-size: 26rpx; }
+.price-row { display: flex; align-items: baseline; gap: 6rpx; margin-top: 4rpx; flex-wrap: wrap; }
+.price-label { color: #111827; font-weight: 600; font-size: 26rpx; }
+.price-amount { color: #dc2626; font-weight: 700; font-size: 30rpx; }
+.price-sep { color: #d1d5db; margin: 0 4rpx; }
 
 .headline {
   color: #6b7280;

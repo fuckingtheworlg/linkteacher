@@ -13,7 +13,7 @@ const FIELD_META = {
   mentorExperience:{ title: '指导经验与成果', type: 'textarea', placeholder: '请填写指导经验与成果', max: 500, target: 'mentorExperience' },
   tags:            { title: '我的标签', type: 'tags',  placeholder: '代际标签单选，例：05后老师 / 在校学生', target: 'tags', single: true },
   honors:          { title: '个人荣誉', type: 'textarea', placeholder: '请填写个人荣誉', max: 800, target: 'honors' },
-  headlines:       { title: '我的简介', type: 'lines', placeholder: '每行一条，最多3条，每条≤20字', target: 'headlines', maxLines: 3, maxLen: 20 },
+  headlines:       { title: '我的简介', type: 'lines', placeholder: '每行一条，条数不限，每条≤20字', target: 'headlines', maxLen: 20 },
 };
 
 const MBTI_OPTIONS = [

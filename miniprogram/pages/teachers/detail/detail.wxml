@@ -44,13 +44,13 @@
   <!-- 报价卡片 -->
   <view class="card price-card">
     <view class="price-cell">
-      <text class="text-sub text-sm">课时费</text>
-      <text class="price-big">¥{{ hourlyRateText }}<text class="price-unit">/h</text></text>
+      <text class="price-label">课时费</text>
+      <text class="price-amount">¥{{ hourlyRateText }}<text class="price-unit">/h</text></text>
     </view>
     <view class="price-divider"></view>
     <view class="price-cell">
-      <text class="text-sub text-sm">试听价</text>
-      <text class="price-big">¥{{ trialRateText }}<text class="price-unit">/h</text></text>
+      <text class="price-label">试听价</text>
+      <text class="price-amount">¥{{ trialRateText }}<text class="price-unit">/h</text></text>
     </view>
   </view>
 

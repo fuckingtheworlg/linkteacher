@@ -108,12 +108,12 @@
         </el-radio-group>
         <el-button v-if="tagSelected" link type="info" size="small" @click="tagSelected = ''">清除</el-button>
       </el-form-item>
-      <el-form-item label="我的简介（最多 3 条，每条 ≤20 字）">
+      <el-form-item label="我的简介（每行一条，每条 ≤20 字）">
         <el-input
           v-model="headlinesText"
           type="textarea"
-          :rows="3"
-          placeholder="每行一条，最多 3 条，每条不超过 20 字"
+          :rows="4"
+          placeholder="每行一条，条数不限，每条不超过 20 字"
         />
       </el-form-item>
       <el-form-item label="指导经验与成果"><el-input v-model="form.mentorExperience" type="textarea" :rows="2" /></el-form-item>
@@ -379,10 +379,6 @@ async function onSubmit() {
   await formRef.value.validate(async (valid) => {
     if (!valid) return;
     const headlines = splitLines(headlinesText.value);
-    if (headlines.length > 3) {
-      ElMessage.warning('我的简介最多 3 条');
-      return;
-    }
     const over = headlines.find((s) => s.length > 20);
     if (over) {
       ElMessage.warning('每条简介不超过 20 字');

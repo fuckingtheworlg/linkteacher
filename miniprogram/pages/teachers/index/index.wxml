@@ -117,9 +117,11 @@
         </view>
 
         <view class="price-row">
-          <text class="price">课时费 ¥{{ item.hourlyRate }}/h</text>
+          <text class="price-label">课时费 </text>
+          <text class="price-amount">¥{{ item.hourlyRate }}/h</text>
           <text class="price-sep">|</text>
-          <text class="price-trial">试听 ¥{{ item.trialRate }}/h</text>
+          <text class="price-label">试听 </text>
+          <text class="price-amount">¥{{ item.trialRate }}/h</text>
         </view>
 
         <view class="headline text-sub text-sm" wx:if="{{ item.headlineSummary }}">{{ item.headlineSummary }}</view>
