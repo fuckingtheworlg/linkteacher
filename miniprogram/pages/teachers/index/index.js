@@ -108,8 +108,7 @@ Page({
       major,
       eduLine: [eduName, major].filter(Boolean).join(' · '),
       subjectsView,
-      firstHeadline: headlineList[0] || '',
-      headlineSummary: headlineList.slice(0, 2).join('；'),
+      headlinesView: headlineList,
     };
   },
 

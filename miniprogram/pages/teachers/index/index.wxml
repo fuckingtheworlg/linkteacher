@@ -124,7 +124,9 @@
           <text class="price-amount">¥{{ item.trialRate }}/h</text>
         </view>
 
-        <view class="headline text-sub text-sm" wx:if="{{ item.headlineSummary }}">{{ item.headlineSummary }}</view>
+        <view class="headlines" wx:if="{{ item.headlinesView.length }}">
+          <view class="headline-item" wx:for="{{ item.headlinesView }}" wx:for-item="h" wx:key="*this">· {{ h }}</view>
+        </view>
       </view>
     </view>
 
