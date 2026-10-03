@@ -13,7 +13,19 @@
             <el-avatar :size="40" :src="resolveAvatarUrl(row.user?.avatarUrl, row.gender)" />
           </template>
         </el-table-column>
-        <el-table-column label="昵称" prop="user.nickname" min-width="120" />
+        <el-table-column label="昵称" prop="user.nickname" min-width="100" />
+        <el-table-column label="电话" min-width="120">
+          <template #default="{ row }">
+            <span v-if="row.user?.phone">{{ row.user.phone }}</span>
+            <span v-else class="muted">未填</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="微信" min-width="100">
+          <template #default="{ row }">
+            <span v-if="row.user?.wechat">{{ row.user.wechat }}</span>
+            <span v-else class="muted">-</span>
+          </template>
+        </el-table-column>
         <el-table-column label="性别" width="70">
           <template #default="{ row }">
             <el-tag size="small" v-if="row.gender === 'MALE'">男</el-tag>
@@ -21,7 +33,7 @@
             <el-tag size="small" type="info" v-else>未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="所在地" min-width="140">
+        <el-table-column label="所在地" min-width="120">
           <template #default="{ row }">{{ [row.country, row.city].filter(Boolean).join(' · ') || '-' }}</template>
         </el-table-column>
         <el-table-column label="科目" min-width="220">
@@ -83,30 +95,65 @@
             </a>
             <span v-else class="muted">未定位</span>
           </el-descriptions-item>
-          <el-descriptions-item label="身份证">
+          <el-descriptions-item label="身份证" :span="2">
             <div class="id-row">
-              <el-image
-                v-if="drawer.teacher.idCardFrontUrl"
-                :src="drawer.teacher.idCardFrontUrl"
-                :preview-src-list="[drawer.teacher.idCardFrontUrl, drawer.teacher.idCardBackUrl].filter(Boolean)"
-                fit="cover"
-                style="width: 120px; height: 76px; border-radius: 4px"
-              />
-              <span v-else class="muted small">人像面未上传</span>
-              <el-image
-                v-if="drawer.teacher.idCardBackUrl"
-                :src="drawer.teacher.idCardBackUrl"
-                :preview-src-list="[drawer.teacher.idCardBackUrl, drawer.teacher.idCardFrontUrl].filter(Boolean)"
-                fit="cover"
-                style="width: 120px; height: 76px; border-radius: 4px"
-              />
-              <span v-else class="muted small">国徽面未上传</span>
+              <div class="id-cell">
+                <el-image
+                  v-if="drawer.teacher.idCardFrontUrl"
+                  :src="drawer.teacher.idCardFrontUrl"
+                  :preview-src-list="[drawer.teacher.idCardFrontUrl, drawer.teacher.idCardBackUrl].filter(Boolean)"
+                  fit="contain"
+                  referrerpolicy="no-referrer"
+                  style="width: 200px; height: 126px; border-radius: 4px; background: #f3f4f6; border: 1px solid #e5e7eb"
+                >
+                  <template #error>
+                    <div class="id-error">加载失败</div>
+                  </template>
+                </el-image>
+                <div v-else class="muted small">人像面未上传</div>
+                <el-link
+                  v-if="drawer.teacher.idCardFrontUrl"
+                  type="primary"
+                  :href="drawer.teacher.idCardFrontUrl"
+                  target="_blank"
+                  :underline="false"
+                  class="id-link"
+                >打开人像面</el-link>
+              </div>
+              <div class="id-cell">
+                <el-image
+                  v-if="drawer.teacher.idCardBackUrl"
+                  :src="drawer.teacher.idCardBackUrl"
+                  :preview-src-list="[drawer.teacher.idCardBackUrl, drawer.teacher.idCardFrontUrl].filter(Boolean)"
+                  fit="contain"
+                  referrerpolicy="no-referrer"
+                  style="width: 200px; height: 126px; border-radius: 4px; background: #f3f4f6; border: 1px solid #e5e7eb"
+                >
+                  <template #error>
+                    <div class="id-error">加载失败</div>
+                  </template>
+                </el-image>
+                <div v-else class="muted small">国徽面未上传</div>
+                <el-link
+                  v-if="drawer.teacher.idCardBackUrl"
+                  type="primary"
+                  :href="drawer.teacher.idCardBackUrl"
+                  target="_blank"
+                  :underline="false"
+                  class="id-link"
+                >打开国徽面</el-link>
+              </div>
             </div>
           </el-descriptions-item>
         </el-descriptions>
 
         <el-descriptions :column="2" border title="基础信息" class="mt">
           <el-descriptions-item label="昵称">{{ drawer.teacher.user?.nickname }}</el-descriptions-item>
+          <el-descriptions-item label="联系电话">
+            <b v-if="drawer.teacher.user?.phone">{{ drawer.teacher.user.phone }}</b>
+            <span v-else class="muted">未填写</span>
+          </el-descriptions-item>
+          <el-descriptions-item label="微信号">{{ drawer.teacher.user?.wechat || '-' }}</el-descriptions-item>
           <el-descriptions-item label="MBTI">{{ drawer.teacher.user?.mbti || '-' }}</el-descriptions-item>
           <el-descriptions-item label="自填地址">{{ drawer.teacher.user?.address || '-' }}</el-descriptions-item>
           <el-descriptions-item label="性别">{{ drawer.teacher.gender }}</el-descriptions-item>
@@ -437,6 +484,12 @@ onMounted(reload);
 .resume-meta { font-size: 12px; margin-top: 6px; }
 .resume-reject { color: #b91c1c; font-size: 13px; margin-top: 6px; background: #fef2f2; padding: 6px 10px; border-radius: 4px; border-left: 3px solid #ef4444; }
 .resume-actions { margin-top: 12px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-.id-row { display: flex; gap: 8px; align-items: center; }
+.id-row { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.id-cell { display: flex; flex-direction: column; gap: 6px; }
+.id-link { font-size: 12px; }
+.id-error {
+  width: 200px; height: 126px; display: flex; align-items: center; justify-content: center;
+  background: #fef2f2; color: #b91c1c; font-size: 12px; border-radius: 4px;
+}
 .muted.small { font-size: 12px; }
 </style>

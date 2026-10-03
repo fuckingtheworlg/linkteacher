@@ -21,7 +21,13 @@
           <el-avatar :size="36" :src="avatarOf(row)" />
         </template>
       </el-table-column>
-      <el-table-column label="昵称" prop="user.nickname" min-width="120" />
+      <el-table-column label="昵称" prop="user.nickname" min-width="100" />
+      <el-table-column label="电话" min-width="120">
+        <template #default="{ row }">{{ row.user?.phone || '-' }}</template>
+      </el-table-column>
+      <el-table-column label="微信" min-width="100">
+        <template #default="{ row }">{{ row.user?.wechat || '-' }}</template>
+      </el-table-column>
       <el-table-column label="真实姓名" prop="realName" min-width="100" />
       <el-table-column label="状态" width="100">
         <template #default="{ row }">

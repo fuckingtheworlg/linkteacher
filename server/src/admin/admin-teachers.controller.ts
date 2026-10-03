@@ -70,6 +70,7 @@ class AdminUpsertTeacherDto {
   @IsOptional() @IsString() @MaxLength(8) mbti?: string;
   @IsOptional() @IsString() @MaxLength(255) address?: string;
   @IsOptional() @IsString() @MaxLength(32) phone?: string;
+  @IsOptional() @IsString() @MaxLength(64) wechat?: string;
 
   // teacher 字段
   @IsOptional() @IsEnum(Gender) gender?: Gender;
@@ -129,7 +130,7 @@ export class AdminTeachersController {
         skip: (page - 1) * pageSize,
         take: pageSize,
         include: {
-          user: { select: { id: true, openid: true, nickname: true, avatarUrl: true, phone: true, mbti: true } },
+          user: { select: { id: true, openid: true, nickname: true, avatarUrl: true, phone: true, wechat: true, mbti: true } },
           educations: { include: { university: true }, orderBy: { sort: 'asc' } },
           subjects: {
             include: {
@@ -255,6 +256,7 @@ export class AdminTeachersController {
           mbti: dto.mbti,
           address: dto.address,
           phone: dto.phone,
+          wechat: dto.wechat,
         },
       });
       // 2) 创建 teacher
@@ -282,6 +284,7 @@ export class AdminTeachersController {
       if (dto.mbti !== undefined) userPatch.mbti = dto.mbti;
       if (dto.address !== undefined) userPatch.address = dto.address;
       if (dto.phone !== undefined) userPatch.phone = dto.phone;
+      if (dto.wechat !== undefined) userPatch.wechat = dto.wechat;
       if (Object.keys(userPatch).length > 0) {
         await tx.user.update({ where: { id: exists.userId }, data: userPatch });
       }

@@ -5,6 +5,8 @@ const FIELD_META = {
   nickname:        { title: '昵称', type: 'input',    placeholder: '请输入昵称', max: 32, target: 'nickname' },
   mbti:            { title: 'MBTI', type: 'mbti',     placeholder: '请选择 MBTI', target: 'mbti' },
   address:         { title: '地址', type: 'input',    placeholder: '例：英国 伯明翰市', max: 64, target: 'address' },
+  phone:           { title: '联系电话', type: 'phone', placeholder: '请输入手机号', max: 20, target: 'phone', required: true },
+  wechat:          { title: '微信号', type: 'input',  placeholder: '选填，方便审核对接', max: 64, target: 'wechat' },
   trialRate:       { title: '试听价 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'trialRate', maxValue: 99999, maxlen: 6 },
   hourlyRate:      { title: '课时费 (¥/h)', type: 'number', placeholder: '请输入数字', target: 'hourlyRate', maxValue: 99999, maxlen: 6 },
   minHours:        { title: '起报小时数', type: 'integer', placeholder: '默认 1', target: 'minHours', maxValue: 24, maxlen: 2 },
@@ -133,8 +135,19 @@ Page({
         return;
       }
       payload[meta.target] = n;
+    } else if (meta.type === 'phone') {
+      const phone = String(valueText || '').trim();
+      if (!phone) {
+        wx.showToast({ title: '请填写联系电话', icon: 'none' });
+        return;
+      }
+      if (!/^1\d{10}$/.test(phone) && !/^\+?\d{6,20}$/.test(phone)) {
+        wx.showToast({ title: '请输入有效电话号码', icon: 'none' });
+        return;
+      }
+      payload[meta.target] = phone;
     } else {
-      payload[meta.target] = valueText;
+      payload[meta.target] = typeof valueText === 'string' ? valueText.trim() : valueText;
     }
 
     this.setData({ saving: true });

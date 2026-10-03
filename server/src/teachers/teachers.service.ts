@@ -136,6 +136,8 @@ export class TeachersService {
       if (dto.avatarUrl !== undefined) userPatch.avatarUrl = dto.avatarUrl;
       if (dto.mbti !== undefined) userPatch.mbti = dto.mbti;
       if (dto.address !== undefined) userPatch.address = dto.address;
+      if (dto.phone !== undefined) userPatch.phone = dto.phone;
+      if (dto.wechat !== undefined) userPatch.wechat = dto.wechat;
       await tx.user.update({ where: { id: userId }, data: userPatch });
 
       // 2. upsert teacher 主表（不动 status / submittedAt / approvedAt）
@@ -258,11 +260,11 @@ export class TeachersService {
   async submitForAudit(userId: number) {
     const teacher = await this.prisma.teacher.findUnique({
       where: { userId },
-      include: { subjects: true, educations: true },
+      include: { subjects: true, educations: true, user: { select: { phone: true } } },
     });
     if (!teacher) throw new BusinessException('请先填写完整资料');
 
-    // 必填校验：身份认证 + 报价 + 至少 1 个学历 + 至少 1 个科目
+    // 必填校验：身份认证 + 联系电话 + 报价 + 至少 1 个学历 + 至少 1 个科目
     const missing: string[] = [];
     if (!teacher.realName) missing.push('真实姓名');
     if (!teacher.idCardFrontUrl) missing.push('身份证正面');
@@ -272,6 +274,7 @@ export class TeachersService {
     if (!teacher.addressDetail || teacher.latitude == null || teacher.longitude == null) {
       missing.push('地址定位（请通过地图选点）');
     }
+    if (!teacher.user?.phone?.trim()) missing.push('联系电话');
     if (!teacher.hourlyRate) missing.push('课时费');
     if (!teacher.trialRate) missing.push('试听价');
     if (!teacher.educations || teacher.educations.length === 0) missing.push('至少 1 段学历背景');

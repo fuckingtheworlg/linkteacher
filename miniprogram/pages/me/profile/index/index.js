@@ -103,6 +103,8 @@ Page({
     if (!t || !t.idCardFrontUrl) missing.push({ label: '身份证正面', target: 'identity' });
     if (!t || !t.idCardBackUrl) missing.push({ label: '身份证反面', target: 'identity' });
     if (!t || !t.addressDetail) missing.push({ label: '地址定位', target: 'identity' });
+    const phone = (this.data.user && this.data.user.phone) || (t.user && t.user.phone);
+    if (!phone) missing.push({ label: '联系电话', target: 'phone' });
     if (!t || !t.hourlyRate) missing.push({ label: '课时费', target: 'hourlyRate' });
     if (!t || !t.trialRate) missing.push({ label: '试听价', target: 'trialRate' });
     if (!t || !t.educations || t.educations.length === 0) missing.push({ label: '至少 1 段学历背景', target: 'education-1' });

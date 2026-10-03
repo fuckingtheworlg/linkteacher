@@ -53,7 +53,10 @@
         <el-col :span="8"><el-form-item label="城市"><el-input v-model="form.city" /></el-form-item></el-col>
         <el-col :span="8"><el-form-item label="手机号"><el-input v-model="form.phone" /></el-form-item></el-col>
       </el-row>
-      <el-form-item label="自填粗略地址"><el-input v-model="form.address" /></el-form-item>
+      <el-row :gutter="16">
+        <el-col :span="12"><el-form-item label="微信号（选填）"><el-input v-model="form.wechat" placeholder="审核对接用" /></el-form-item></el-col>
+        <el-col :span="12"><el-form-item label="自填粗略地址"><el-input v-model="form.address" /></el-form-item></el-col>
+      </el-row>
 
       <el-divider content-position="left">身份认证</el-divider>
       <el-row :gutter="16">
@@ -201,6 +204,7 @@ const blankForm = () => ({
   mbti: '',
   address: '',
   phone: '',
+  wechat: '',
   gender: 'UNKNOWN',
   country: '',
   city: '',
@@ -280,6 +284,7 @@ async function loadTeacher(id: number) {
       mbti: t.user?.mbti || '',
       address: t.user?.address || '',
       phone: t.user?.phone || '',
+      wechat: t.user?.wechat || '',
       gender: t.gender || 'UNKNOWN',
       country: t.country || '',
       city: t.city || '',

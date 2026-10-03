@@ -12,6 +12,17 @@
   />
 
   <input
+    wx:elif="{{ meta.type === 'phone' }}"
+    class="input"
+    type="number"
+    value="{{ valueText }}"
+    placeholder="{{ meta.placeholder }}"
+    placeholder-class="ph"
+    maxlength="{{ meta.max || 20 }}"
+    bindinput="onInput"
+  />
+
+  <input
     wx:elif="{{ meta.type === 'number' }}"
     class="input"
     type="digit"

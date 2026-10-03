@@ -40,6 +40,14 @@
           <view class="cell-label">地址 ✎</view>
           <view class="cell-value">{{ (user && user.address) || '未填写' }}</view>
         </view>
+        <view class="cell wide" bindtap="goEdit" data-field="phone">
+          <view class="cell-label">联系电话 <text class="required">*</text> ✎</view>
+          <view class="cell-value">{{ (user && user.phone) || '未填写' }}</view>
+        </view>
+        <view class="cell wide" bindtap="goEdit" data-field="wechat">
+          <view class="cell-label">微信号（选填）✎</view>
+          <view class="cell-value">{{ (user && user.wechat) || '未填写' }}</view>
+        </view>
       </view>
     </view>
   </view>

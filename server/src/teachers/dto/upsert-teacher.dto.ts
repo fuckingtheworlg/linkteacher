@@ -52,6 +52,8 @@ export class UpsertTeacherDto {
   @IsOptional() @IsString() @MaxLength(255) address?: string;
   @IsOptional() @IsString() @MaxLength(64) nickname?: string;
   @IsOptional() @IsString() avatarUrl?: string;
+  @IsOptional() @IsString() @MaxLength(32) phone?: string;
+  @IsOptional() @IsString() @MaxLength(64) wechat?: string;
 
   // ===== 简历（PDF 由 /api/upload/resume 上传后回写到这里）=====
   @IsOptional() @IsString() @MaxLength(512) resumeUrl?: string;
